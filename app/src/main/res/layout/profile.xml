@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/tracking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getPoints"
+        android:text="Disable Tracking" />
+
+    <Button
+        android:id="@+id/ResetPoints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="resetPoints"
+        android:text="Reset Points" />
+
+    <TextView
+        android:id="@+id/displayPoints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/trackMe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="viewLocation"
+        android:text="See My Location" />
+</LinearLayout>
