@@ -48,10 +48,15 @@ public class LoginScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
+
         if (!prefs.getString("username", "").equals("")) {
-            if (!prefs.getBoolean("tracking", false)) {
-                Intent intent = new Intent(this, MainMenu.class);
-                startActivity(intent);
+            Intent intent = new Intent(this, MainMenu.class);
+            startActivity(intent);
+            if (!prefs.getBoolean("tracking", false) && (prefs.getBoolean("enabled", false))) {
+                editor.putBoolean("tracking", true);
+                editor.putBoolean("enabled", true);
+                editor.apply();
+                AWSMobileClient.getInstance().initialize(this).execute();
                 intent = new Intent(this, Tracker.class);
                 startForegroundService(intent);
             }
@@ -66,8 +71,6 @@ public class LoginScreen extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 123);
-
-        AWSMobileClient.getInstance().initialize(this).execute();
     }
 
     /*
@@ -79,15 +82,25 @@ public class LoginScreen extends AppCompatActivity {
         editor.putString("password", password.getText().toString());
         editor.apply();
         Intent intent = new Intent(this, MainMenu.class);
-        startActivityForResult(intent, 0);
+        startActivity(intent);
 
         AWSMobileClient.getInstance().initialize(this).execute();
 
 
 
         if (!prefs.getBoolean("tracking", false)) {
+            editor.putBoolean("tracking", true);
+            editor.putBoolean("enabled", true);
+            editor.apply();
+            AWSMobileClient.getInstance().initialize(this).execute();
           intent = new Intent(this, Tracker.class);
         startForegroundService(intent);
         }
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

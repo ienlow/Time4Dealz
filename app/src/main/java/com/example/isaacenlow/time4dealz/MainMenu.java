@@ -67,8 +67,6 @@ public class MainMenu extends AppCompatActivity {
 
         timerText = findViewById(R.id.timer);
         handler = new Handler();
-        //progress = findViewById(R.id.progressBar2);
-        //progress.setVisibility(View.VISIBLE);
 
         br = new BroadcastReceiver() {
             @Override
@@ -98,7 +96,7 @@ public class MainMenu extends AppCompatActivity {
                 }
                 else if (intent.getAction().equals("time")) {
                     Bundle extras = getIntent().getExtras();
-                    Log.d("time", String.valueOf(extras.getLong("time")));
+                    //Log.d("time", String.valueOf(extras.getLong("time")));
                 }
             }
         };
@@ -118,10 +116,10 @@ public class MainMenu extends AppCompatActivity {
 
                 String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
 
-                timerText.setText(timeLeftFormatted);
                 handler.post(this);
+                Log.d("tag", String.valueOf(seconds));
+                timerText.setText(timeLeftFormatted);
             }
-            //Log.d("tag", String.valueOf(timeLeftInMilliseconds));
         }
     };
 
@@ -132,6 +130,10 @@ public class MainMenu extends AppCompatActivity {
 
     protected void onResume(){
         super.onResume();
+        setContentView(R.layout.main_menu);
+        button6 = findViewById(R.id.button6);
+        button6.setText("vs. Georgia Southern \n @ Dedmon Center");
+        timerText = findViewById(R.id.timer);
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Success"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Fail"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("time"));
@@ -139,24 +141,13 @@ public class MainMenu extends AppCompatActivity {
 
     protected void onPause () {
         super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
     }
 
     public void teamSchedules(View view) {
+        setContentView(R.layout.loading);
         intent = new Intent(this, TeamSchedules.class);
         startActivity(intent);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void editTracking(View view) {
-        Intent intent = new Intent(this, Tracker.class);
-        if (!prefs.getBoolean("tracking", false)) {
-            stopService(intent);
-            editor.putBoolean("tracking", false);
-        }
-        else {
-            startForegroundService(intent);
-            editor.putBoolean("tracking", true);
-        }
     }
 
     @Override

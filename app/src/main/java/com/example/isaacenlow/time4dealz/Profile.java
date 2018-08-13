@@ -30,23 +30,28 @@ public class Profile extends AppCompatActivity {
        prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
        editor = prefs.edit();
        trackingButton = findViewById(R.id.tracking);
-       if (prefs.getBoolean("tracking", false))
+
+       if (prefs.getBoolean("tracking", false)) {
            trackingButton.setText("Disable Tracking");
+       }
        else {
            trackingButton.setText("Enable Tracking");
        }
+
        trackingButton.setOnClickListener(new View.OnClickListener() {
            @RequiresApi(api = Build.VERSION_CODES.O)
            @Override
            public void onClick(View v) {
-               Intent intent = new Intent(getApplicationContext(), Tracker.class);
+               Intent intent;
                if (prefs.getBoolean("tracking", false)) {
+                   intent = new Intent(getApplicationContext(), Tracker.class);
                    trackingButton.setText("Enable Tracking");
                    editor.putBoolean("tracking", false);
                    editor.apply();
                    stopService(intent);
                }
                else {
+                   intent = new Intent(getApplicationContext(), Tracker.class);
                    trackingButton.setText("Disable Tracking");
                    editor.putBoolean("tracking", true);
                    editor.apply();

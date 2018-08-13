@@ -128,7 +128,7 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                             j++;
                             Intent intentTwo = new Intent("Success");
                             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
-                            //Toast.makeText(getApplicationContext(), String.valueOf(j), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), String.valueOf(j), Toast.LENGTH_SHORT).show();
                             i = 0;
                             if (!timerStarted) {
                                 startTime = SystemClock.uptimeMillis();

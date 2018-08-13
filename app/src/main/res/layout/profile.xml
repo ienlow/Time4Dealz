@@ -14,8 +14,7 @@
         android:id="@+id/tracking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="getPoints"
-        android:text="Disable Tracking" />
+        android:onClick="getPoints" />
 
     <Button
         android:id="@+id/ResetPoints"
