@@ -14,7 +14,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -36,19 +38,36 @@ public class LoginScreen extends AppCompatActivity {
     Context context;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    private EditText login;
+    private EditText username, password;
     private DynamoDBMapper dynamoDBMapper;
     public static final String MY_PREFS = "MyPrefs";
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_screen);
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
+        if (!prefs.getString("username", "").equals("")) {
+            if (!prefs.getBoolean("tracking", false)) {
+                Intent intent = new Intent(this, MainMenu.class);
+                startActivity(intent);
+                intent = new Intent(this, Tracker.class);
+                startForegroundService(intent);
+            }
+
+            finish();
+        }
+        else {
+            setContentView(R.layout.activity_login_screen);
+            username = findViewById(R.id.username);
+            password = findViewById(R.id.password);
+        }
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 123);
+
+        AWSMobileClient.getInstance().initialize(this).execute();
     }
 
     /*
@@ -56,9 +75,11 @@ public class LoginScreen extends AppCompatActivity {
      */
     @SuppressLint("NewApi")
     public void mainMenu(View view) {
-        login = findViewById(R.id.editText);
+        editor.putString("username", username.getText().toString());
+        editor.putString("password", password.getText().toString());
+        editor.apply();
         Intent intent = new Intent(this, MainMenu.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
 
         AWSMobileClient.getInstance().initialize(this).execute();
 
@@ -68,10 +89,5 @@ public class LoginScreen extends AppCompatActivity {
           intent = new Intent(this, Tracker.class);
         startForegroundService(intent);
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 }

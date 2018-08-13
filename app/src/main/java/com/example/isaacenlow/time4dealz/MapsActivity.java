@@ -131,9 +131,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        /*if (mRequestingLocationUpdates) {
+        if (mRequestingLocationUpdates) {
             startLocationUpdates();
-        }*/
+        }
     }
 
     private void startLocationUpdates() {
@@ -148,7 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onPause() {
         super.onPause();
-        //stopLocationUpdates();
+        stopLocationUpdates();
     }
 
     // Save instance state

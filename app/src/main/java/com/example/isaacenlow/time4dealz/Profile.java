@@ -1,5 +1,7 @@
 package com.example.isaacenlow.time4dealz;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -77,5 +79,19 @@ public class Profile extends AppCompatActivity {
 
    public void getPoints(View view) {
        Toast.makeText(this, String.valueOf(points), Toast.LENGTH_SHORT).show();
+   }
+
+   public void logout(View view) {
+        editor.putString("username", "");
+        editor.apply();
+        Intent intent = new Intent(this, Tracker.class);
+        stopService(intent);
+
+        // Restart app
+       Intent i = getBaseContext().getPackageManager()
+               .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+       i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+       finish();
+       startActivity(i);
    }
 }
