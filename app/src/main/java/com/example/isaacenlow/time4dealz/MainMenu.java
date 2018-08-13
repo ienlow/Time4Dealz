@@ -94,9 +94,8 @@ public class MainMenu extends AppCompatActivity {
                     // progress.setVisibility(View.INVISIBLE);
                     //Log.d("fail", "fail");
                 }
-                else if (intent.getAction().equals("time")) {
-                    Bundle extras = getIntent().getExtras();
-                    //Log.d("time", String.valueOf(extras.getLong("time")));
+                else if (intent.getAction().equals("Logout")) {
+                    finish();
                 }
             }
         };
@@ -136,12 +135,13 @@ public class MainMenu extends AppCompatActivity {
         timerText = findViewById(R.id.timer);
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Success"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Fail"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("time"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Logout"));
     }
 
     protected void onPause () {
         super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
+
     }
 
     public void teamSchedules(View view) {
@@ -153,6 +153,7 @@ public class MainMenu extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        handler.removeCallbacks(updateTimer);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
         Log.d("Destroy", String.valueOf(timeLeftInMilliseconds));
     }

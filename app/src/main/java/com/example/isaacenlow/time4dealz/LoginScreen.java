@@ -59,8 +59,8 @@ public class LoginScreen extends AppCompatActivity {
                 AWSMobileClient.getInstance().initialize(this).execute();
                 intent = new Intent(this, Tracker.class);
                 startForegroundService(intent);
+                finish();
             }
-
             finish();
         }
         else {
@@ -81,8 +81,6 @@ public class LoginScreen extends AppCompatActivity {
         editor.putString("username", username.getText().toString());
         editor.putString("password", password.getText().toString());
         editor.apply();
-        Intent intent = new Intent(this, MainMenu.class);
-        startActivity(intent);
 
         AWSMobileClient.getInstance().initialize(this).execute();
 
@@ -93,10 +91,13 @@ public class LoginScreen extends AppCompatActivity {
             editor.putBoolean("enabled", true);
             editor.apply();
             AWSMobileClient.getInstance().initialize(this).execute();
-          intent = new Intent(this, Tracker.class);
+            finish();
+            Intent intent = new Intent(this, Tracker.class);
         startForegroundService(intent);
         }
         finish();
+        Intent  intent = new Intent(this, MainMenu.class);
+        startActivity(intent);
     }
 
     @Override

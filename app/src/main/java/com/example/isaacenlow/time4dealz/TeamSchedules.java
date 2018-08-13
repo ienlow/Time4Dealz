@@ -26,7 +26,6 @@ import java.util.Map;
 public class TeamSchedules extends AppCompatActivity {
     String sport = "Basketball";
     ArrayList<Teams> teams = new ArrayList<>();
-    ArrayList<LocationItems> locations = new ArrayList<>();
     Teams one;
     String done;
     BackgroundWorker backgroundWorker;
