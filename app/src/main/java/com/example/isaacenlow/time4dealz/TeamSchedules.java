@@ -38,15 +38,6 @@ public class TeamSchedules extends AppCompatActivity {
         setContentView(R.layout.team_schedules);
 
         display();
-
-        //progressBar.setVisibility(View.INVISIBLE);
-        //display();
-        /*try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
     }
 
     public void display() {

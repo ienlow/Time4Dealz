@@ -54,13 +54,12 @@ public class LoginScreen extends AppCompatActivity {
             startActivity(intent);
             if (!prefs.getBoolean("tracking", false) && (prefs.getBoolean("enabled", false))) {
                 editor.putBoolean("tracking", true);
-                editor.putBoolean("enabled", true);
                 editor.apply();
-                AWSMobileClient.getInstance().initialize(this).execute();
                 intent = new Intent(this, Tracker.class);
                 startForegroundService(intent);
                 finish();
             }
+            AWSMobileClient.getInstance().initialize(this).execute();
             finish();
         }
         else {
@@ -86,7 +85,7 @@ public class LoginScreen extends AppCompatActivity {
 
 
 
-        if (!prefs.getBoolean("tracking", false)) {
+        if (!prefs.getBoolean("tracking", false) && prefs.getBoolean("enabled", true)) {
             editor.putBoolean("tracking", true);
             editor.putBoolean("enabled", true);
             editor.apply();

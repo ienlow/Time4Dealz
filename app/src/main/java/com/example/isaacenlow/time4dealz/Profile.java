@@ -46,19 +46,22 @@ public class Profile extends AppCompatActivity {
            @Override
            public void onClick(View v) {
                Intent intent;
+               // Set text to enable or disable tracking
                if (prefs.getBoolean("tracking", false)) {
                    intent = new Intent(getApplicationContext(), Tracker.class);
-                   trackingButton.setText("Enable Tracking");
-                   editor.putBoolean("tracking", false);
+                   editor.putBoolean("tracking", false); // set tracking to false
+                   editor.putBoolean("enabled", false); // button enabled is false
                    editor.apply();
-                   stopService(intent);
+                   stopService(intent); // stop tracking
+                   trackingButton.setText("Enable Tracking");
                }
                else {
                    intent = new Intent(getApplicationContext(), Tracker.class);
-                   trackingButton.setText("Disable Tracking");
-                   editor.putBoolean("tracking", true);
+                   editor.putBoolean("tracking", true); // set tracking to true
+                   editor.putBoolean("enabled", true); // button enabled is true
                    editor.apply();
-                   startForegroundService(intent);
+                   startForegroundService(intent); // start tracking
+                   trackingButton.setText("Disable Tracking");
                }
            }
        });

@@ -37,13 +37,19 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 .build();
         ScanRequest scanRequest = new ScanRequest()
                 .withTableName("ExampleSchool")
-                .withAttributesToGet("category");
+                .withAttributesToGet("sport")
+                .withAttributesToGet("location")
+                .withAttributesToGet("playing_against")
+                .withAttributesToGet("time")
+                .withAttributesToGet("date");
         ScanResult result = dynamoDBClient.scan(scanRequest);
         for (Map<String, AttributeValue> item : result.getItems()) {
             try {
-                Teams one = new Teams(item.get("category").getS(), info);
+                Teams one = new Teams("            " + (item.get("sport").getS()) + "                 " + (item.get("date").getS()), "\n                  " + (item.get("playing_against").getS())
+                        + "\n                  " + item.get("location").getS()
+                        + "\n                  " + item.get("time").getS());
                 teams.add(one);
-                Log.d("Item", one.getPlace());
+                //Log.d("Item", one.getPlace());
             } catch (Exception e) {
             }
         }

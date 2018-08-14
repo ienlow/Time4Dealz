@@ -2,6 +2,9 @@ package com.example.isaacenlow.time4dealz;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import java.util.List;
  */
 public class TeamAdapter extends ArrayAdapter<Teams> {
     Context context;
+    Drawable drawable;
 
     public TeamAdapter(Context context, int resource, List<Teams> items) {
         super(context, resource, items);
@@ -27,7 +31,7 @@ public class TeamAdapter extends ArrayAdapter<Teams> {
 
     public class Holder {
         TextView sport_holder;
-        TextView team_holder;
+        //TextView team_holder;
     }
 
     @Override
@@ -40,13 +44,13 @@ public class TeamAdapter extends ArrayAdapter<Teams> {
             view = mInflater.inflate(R.layout.adapter_layout, null);
             holder = new Holder();
             holder.sport_holder = (TextView) view.findViewById(R.id.place);
-            holder.team_holder = (TextView) view.findViewById(R.id.team);
+            //holder.team_holder = (TextView) view.findViewById(R.id.team);
             view.setTag(holder);
         }
         else
             holder = (Holder) view.getTag();
-        holder.sport_holder.setText(teamItem.getPlace());
-        holder.team_holder.setText(teamItem.getTeam());
+        holder.sport_holder.setText(teamItem.getPlace() + " " + teamItem.getTeam());
+       // holder.team_holder.setText(teamItem.getTeam());
         return view;
     }
 }

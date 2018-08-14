@@ -35,4 +35,5 @@
         android:layout_height="wrap_content"
         android:onClick="viewLocation"
         android:text="See My Location" />
+
 </LinearLayout>
