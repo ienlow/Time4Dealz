@@ -62,9 +62,10 @@ public class TeamAdapter extends ArrayAdapter<Teams> {
         else
             holder = (Holder) view.getTag();
         holder.sport_holder.setText(teamItem.getPlace() + " " + teamItem.getTeam());
+        // https://bumptech.github.io/glide/doc/getting-started.html
         Glide
                 .with(context)
-                .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/settings_icon2.png")
+                .load(teamItem.getURL())
                 .into(holder.team_holder);
         return view;
     }

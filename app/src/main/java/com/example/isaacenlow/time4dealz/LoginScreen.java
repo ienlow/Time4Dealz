@@ -51,8 +51,6 @@ public class LoginScreen extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 123);
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
 
         if (!prefs.getString("username", "").equals("")) {
             Intent intent = new Intent(this, MainMenu.class);

@@ -12,11 +12,16 @@ public class Teams {
     String place;
     String team;
     String URL;
+    String index;
 
     public Teams(String place, String team, String _URL) {
         this.place = place;
         this.team = team;
         this.URL = _URL;
+    }
+
+    public String getindex() {
+        return index;
     }
 
     public String getPlace() {

@@ -19,16 +19,18 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class TeamSchedules extends AppCompatActivity {
     String sport = "Basketball";
-    ArrayList<Teams> teams = new ArrayList<>();
+    ArrayList<Teams> teams, tmp;
     Teams one;
     String done;
     BackgroundWorker backgroundWorker;
+    CustomComparator com;
     //ProgressBar progressBar = findViewById(R.id.progressBar);
 
     @Override
@@ -36,8 +38,16 @@ public class TeamSchedules extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_schedules);
-
+        tmp = new ArrayList<>();
+        teams = new ArrayList<>();
         display();
+    }
+
+    public class CustomComparator implements Comparator<Teams> {
+        @Override
+        public int compare(Teams o1, Teams o2) {
+            return o1.getindex().compareTo(o2.getindex());
+        }
     }
 
     public void display() {
@@ -52,10 +62,16 @@ public class TeamSchedules extends AppCompatActivity {
         while (!backgroundWorker.finished()) {
             //progressBar.setVisibility(View.VISIBLE);
         }
-        teams = backgroundWorker.getTeams();
-        //done = teams.get(1).getPlace();
+        tmp = backgroundWorker.getTeams();
+        // https://javarevisited.blogspot.com/2016/05/how-to-reverse-arraylist-in-place-in-java.html
+        int size = tmp.size();
+        for (int i = 0; i < size / 2; i++) {
+            final Teams food = tmp.get(i);
+            tmp.set(i, tmp.get(size - i - 1)); // swap
+            tmp.set(size - i - 1, food); // swap
+        }
         ListView listView = findViewById(R.id.results);
-        TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.adapter_layout, teams);
+        TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.adapter_layout, tmp);
         listView.setAdapter(adapter);
     }
 }
