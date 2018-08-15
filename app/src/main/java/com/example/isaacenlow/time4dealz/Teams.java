@@ -1,5 +1,9 @@
 package com.example.isaacenlow.time4dealz;
 
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.widget.ImageView;
+
 /**
  * Created by Isaac Enlow on 12/5/2016.
  */
@@ -7,10 +11,12 @@ package com.example.isaacenlow.time4dealz;
 public class Teams {
     String place;
     String team;
+    String URL;
 
-    public Teams(String place, String team) {
+    public Teams(String place, String team, String _URL) {
         this.place = place;
         this.team = team;
+        this.URL = _URL;
     }
 
     public String getPlace() {
@@ -19,5 +25,9 @@ public class Teams {
 
     public String getTeam() {
         return team;
+    }
+
+    public String getURL() {
+        return URL;
     }
 }

@@ -41,17 +41,19 @@ public class TeamSchedules extends AppCompatActivity {
     }
 
     public void display() {
+        backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.execute("");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        backgroundWorker = new BackgroundWorker(this);
-        backgroundWorker.execute("");
+
         while (!backgroundWorker.finished()) {
             //progressBar.setVisibility(View.VISIBLE);
         }
         teams = backgroundWorker.getTeams();
+        //done = teams.get(1).getPlace();
         ListView listView = findViewById(R.id.results);
         TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.adapter_layout, teams);
         listView.setAdapter(adapter);
