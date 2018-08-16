@@ -30,7 +30,6 @@ public class TeamSchedules extends AppCompatActivity {
     Teams one;
     String done;
     BackgroundWorker backgroundWorker;
-    CustomComparator com;
     //ProgressBar progressBar = findViewById(R.id.progressBar);
 
     @Override
@@ -41,13 +40,6 @@ public class TeamSchedules extends AppCompatActivity {
         tmp = new ArrayList<>();
         teams = new ArrayList<>();
         display();
-    }
-
-    public class CustomComparator implements Comparator<Teams> {
-        @Override
-        public int compare(Teams o1, Teams o2) {
-            return o1.getindex().compareTo(o2.getindex());
-        }
     }
 
     public void display() {
@@ -66,9 +58,9 @@ public class TeamSchedules extends AppCompatActivity {
         // https://javarevisited.blogspot.com/2016/05/how-to-reverse-arraylist-in-place-in-java.html
         int size = tmp.size();
         for (int i = 0; i < size / 2; i++) {
-            final Teams food = tmp.get(i);
+            final Teams event = tmp.get(i);
             tmp.set(i, tmp.get(size - i - 1)); // swap
-            tmp.set(size - i - 1, food); // swap
+            tmp.set(size - i - 1, event); // swap
         }
         ListView listView = findViewById(R.id.results);
         TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.adapter_layout, tmp);

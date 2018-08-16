@@ -53,16 +53,16 @@ public class LoginScreen extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 123);
 
         if (!prefs.getString("username", "").equals("")) {
-            Intent intent = new Intent(this, MainMenu.class);
-            startActivity(intent);
             if (!prefs.getBoolean("tracking", false) && (prefs.getBoolean("enabled", false))) {
                 editor.putBoolean("tracking", true);
                 editor.apply();
-                intent = new Intent(this, Tracker.class);
+                Intent intent = new Intent(this, Tracker.class);
                 startForegroundService(intent);
-                finish();
+                //finish();
             }
             AWSMobileClient.getInstance().initialize(this).execute();
+            Intent intent = new Intent(this, MainMenu.class);
+            startActivity(intent);
             finish();
         }
         else {
@@ -90,13 +90,12 @@ public class LoginScreen extends AppCompatActivity {
             editor.putBoolean("enabled", true);
             editor.apply();
             AWSMobileClient.getInstance().initialize(this).execute();
-            finish();
             Intent intent = new Intent(this, Tracker.class);
         startForegroundService(intent);
         }
-        finish();
         Intent  intent = new Intent(this, MainMenu.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
