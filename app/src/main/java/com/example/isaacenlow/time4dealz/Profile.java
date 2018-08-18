@@ -104,7 +104,7 @@ public class Profile extends AppCompatActivity {
        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
        intent = new Intent("Logout");
        LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
-       finish();
        startActivity(i);
+       finish();
    }
 }
