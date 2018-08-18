@@ -20,12 +20,12 @@ import java.util.List;
 /**
  * Creates custom adapter for list.
  */
-public class TeamAdapter extends ArrayAdapter<Teams> {
+public class TeamAdapter extends ArrayAdapter<Event> {
     Context context;
     Drawable drawable;
-    List<Teams> list;
+    List<Event> list;
 
-    public TeamAdapter(Context context, int resource, List<Teams> items) {
+    public TeamAdapter(Context context, int resource, List<Event> items) {
         super(context, resource, items);
         this.context = context;
         this.list = items;
@@ -33,30 +33,30 @@ public class TeamAdapter extends ArrayAdapter<Teams> {
 
     public class Holder {
         TextView sport_holder;
-        ImageView team_holder;
+        ImageView opponent_holder;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Holder holder = null;
-        Teams teamItem = getItem(i);
+        Event teamItem = getItem(i);
 
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (view == null) {
             view = mInflater.inflate(R.layout.adapter_layout, null);
             holder = new Holder();
             holder.sport_holder = (TextView) view.findViewById(R.id.place);
-            holder.team_holder = (ImageView) view.findViewById(R.id.imageView2);
+            holder.opponent_holder = (ImageView) view.findViewById(R.id.imageView2);
             view.setTag(holder);
         }
         else
             holder = (Holder) view.getTag();
-        holder.sport_holder.setText(teamItem.getPlace() + " " + teamItem.getTeam());
+        holder.sport_holder.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
         // https://bumptech.github.io/glide/doc/getting-started.html
         Glide
                 .with(context)
                 .load(teamItem.getURL())
-                .into(holder.team_holder);
+                .into(holder.opponent_holder);
         return view;
     }
 }

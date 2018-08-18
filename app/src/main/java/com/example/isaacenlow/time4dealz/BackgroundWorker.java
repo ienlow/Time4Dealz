@@ -1,13 +1,7 @@
 package com.example.isaacenlow.time4dealz;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.provider.Settings;
-import android.system.Os;
-import android.util.Log;
-import android.widget.ImageView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -17,18 +11,14 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.FutureTarget;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class BackgroundWorker extends AsyncTask<String, Void, String> {
     Context context;
     private DynamoDBMapper dynamoDBMapper;
-    ArrayList<Teams> teams = new ArrayList<>();
+    ArrayList<Event> teams = new ArrayList<>();
     String categories[];
     String info = "Dedmon Center";
     boolean finished = false;
@@ -55,8 +45,9 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 .withAttributesToGet("URL");
         ScanResult result = dynamoDBClient.scan(scanRequest);
         for (Map<String, AttributeValue> item : result.getItems()) {
+            // Create new event for every item and format here
             try {
-                Teams one = new Teams("            " + (item.get("sport").getS()) + "                 " + (item.get("date").getS()), "\n                  " + (item.get("playing_against").getS())
+                Event one = new Event("            " + (item.get("sport").getS()) + "                 " + (item.get("date").getS()), "\n                  " + (item.get("playing_against").getS())
                         + "\n                  " + item.get("location").getS()
                         + "\n                  " + item.get("time").getS(), item.get("URL").getS());
                 teams.add(one);
@@ -72,7 +63,7 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
         return finished;
     }
 
-    public ArrayList<Teams> getTeams() {
+    public ArrayList<Event> getTeams() {
         return teams;
     }
 }

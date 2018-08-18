@@ -1,70 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
+    android:background="@android:color/white"
     android:orientation="vertical"
     android:theme="@style/AppTheme">
 
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="28dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:background="@drawable/gradient"
         android:onClick="openProfile"
         android:scaleType="fitStart"
-        app:srcCompat="@android:drawable/ic_menu_preferences" />
+        app:srcCompat="@drawable/settings_icon" />
 
     <Button
         android:id="@+id/button6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/timer"
+        android:layout_alignParentStart="true"
         android:text="Button" />
 
     <TextView
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
         android:text="00:00:00"
+        android:textColor="@android:color/black"
         android:textSize="36sp" />
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginTop="190dp"
-        android:background="@android:color/holo_red_dark"
-        android:text="        Teams \n        Stats &amp; Roster"
+        android:layout_width="326dp"
+        android:layout_height="38dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="165dp"
+        android:background="@drawable/gradient2"
+        android:paddingStart="20dp"
+        android:text="Teams \nStats &amp; Roster"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="@android:color/background_light" />
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
-        android:background="@android:color/holo_red_dark"
+        android:layout_width="327dp"
+        android:layout_height="38dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="113dp"
+        android:background="@drawable/gradient2"
         android:onClick="teamSchedules"
+        android:paddingStart="20dp"
         android:text="Team Schedules \n All Sporting Events"
+        android:textAlignment="viewStart"
         android:textColor="@android:color/background_light" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
-        android:background="@android:color/holo_red_dark"
+        android:layout_width="322dp"
+        android:layout_height="38dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="55dp"
+        android:background="@drawable/gradient2"
+        android:paddingStart="20dp"
         android:text="Rewards \n Redeem"
+        android:textAlignment="viewStart"
         android:textColor="@android:color/background_light" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="215dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageButton"
+        app:srcCompat="@drawable/background" />
+
+</RelativeLayout>
