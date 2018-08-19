@@ -2,12 +2,12 @@ package com.example.isaacenlow.time4dealz;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewOutlineProvider;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class TeamSchedules extends AppCompatActivity {
-    String sport = "Basketball";
     ArrayList<Event> teams, tmp;
     Event one;
     String done;

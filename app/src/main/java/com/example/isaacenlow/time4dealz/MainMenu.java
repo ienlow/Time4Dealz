@@ -54,6 +54,7 @@ public class MainMenu extends AppCompatActivity {
     public static final String MY_PREFS = "MyPrefs";
     //Radford long = -80.5764477 lat = 37.1318
     //Sterling long = -77.405630 lat = 39.040899
+    //Dedmon long = -80.5416 lat = 37.1385
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,6 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.main_menu);
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
-
-
-        button6 = findViewById(R.id.button6);
-        button6.setText("vs. Georgia Southern \n @ Dedmon Center");
 
         timerText = findViewById(R.id.timer);
         handler = new Handler();
@@ -84,12 +81,14 @@ public class MainMenu extends AppCompatActivity {
                         handler.post(updateTimer);
                         timerPaused = false;
                     }
+                    timerText.setVisibility(View.VISIBLE);
                 }
                 else if (intent.getAction().equals("Fail")) {
                     if (i == 0) {
                         timerText.setText("00:00:00");
                         timerPaused = true;
                         handler.removeCallbacks(updateTimer);
+                        timerText.setVisibility(View.INVISIBLE);
                     }
                     i++;
                     // progress.setVisibility(View.INVISIBLE);
@@ -131,8 +130,7 @@ public class MainMenu extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         setContentView(R.layout.main_menu);
-        button6 = findViewById(R.id.button6);
-        button6.setText("vs. Georgia Southern \n @ Dedmon Center");
+        //button6.setText("vs. Georgia Southern \n @ Dedmon Center");
         timerText = findViewById(R.id.timer);
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Success"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Fail"));

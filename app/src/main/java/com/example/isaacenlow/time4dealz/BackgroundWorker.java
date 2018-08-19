@@ -19,8 +19,6 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
     Context context;
     private DynamoDBMapper dynamoDBMapper;
     ArrayList<Event> teams = new ArrayList<>();
-    String categories[];
-    String info = "Dedmon Center";
     boolean finished = false;
     BackgroundWorker (Context ctx) {
         context = ctx;

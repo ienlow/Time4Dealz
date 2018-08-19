@@ -39,6 +39,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int DEFAULT_ZOOM = 15;
     private LatLng radford = new LatLng(37.1318, -80.5764477);
     private LatLng lebanon = new LatLng(36.896034, -82.068117);
+    private LatLng dedmon = new LatLng(37.1385, -80.5416);
     private boolean mRequestingLocationUpdates = false;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest = new LocationRequest();
@@ -76,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // ...
                     //mMap.clear();
                     LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.addCircle(new CircleOptions().center(lebanon).radius(100));
+                    mMap.addCircle(new CircleOptions().center(dedmon).radius(100));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(mCurrentLocation));
                 }
             };
