@@ -52,7 +52,7 @@ public class LoginScreen extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 123);
 
-        if (!prefs.getString("username", "").equals("")) {
+        if (prefs.getBoolean("logged in", false) == true) {
             if (!prefs.getBoolean("tracking", false) && (prefs.getBoolean("enabled", false))) {
                 editor.putBoolean("tracking", true);
                 editor.apply();
@@ -62,6 +62,8 @@ public class LoginScreen extends AppCompatActivity {
             }
             AWSMobileClient.getInstance().initialize(this).execute();
             Intent intent = new Intent(this, MainMenu.class);
+            editor.putBoolean("logged in", true);
+            editor.apply();
             startActivity(intent);
             finish();
         }
@@ -69,6 +71,8 @@ public class LoginScreen extends AppCompatActivity {
             setContentView(R.layout.activity_login_screen);
             username = findViewById(R.id.username);
             password = findViewById(R.id.password);
+            username.setText(prefs.getString("username", ""));
+            password.setText(prefs.getString("password", ""));
         }
     }
 
@@ -76,26 +80,33 @@ public class LoginScreen extends AppCompatActivity {
     Create Main Menu intent and save login info
      */
     @SuppressLint("NewApi")
-    public void mainMenu(View view) {
-        editor.putString("username", username.getText().toString());
-        editor.putString("password", password.getText().toString());
-        editor.apply();
+    public void createMainMenu(View view) {
 
         AWSMobileClient.getInstance().initialize(this).execute();
 
 
 
-        if (!prefs.getBoolean("tracking", false) && prefs.getBoolean("enabled", true)) {
-            editor.putBoolean("tracking", true);
-            editor.putBoolean("enabled", true);
+        if (username.getText().toString().equals("test") && password.getText().toString().equals("password")) {
+            if (!prefs.getBoolean("tracking", false) && prefs.getBoolean("enabled", true)) {
+                // set tracking to true and start service
+                editor.putBoolean("tracking", true);
+                editor.putBoolean("enabled", true);
+                editor.apply();
+                AWSMobileClient.getInstance().initialize(this).execute();
+                Intent intent = new Intent(this, Tracker.class);
+                startForegroundService(intent);
+            }
+            Intent  intent = new Intent(this, MainMenu.class);
+            editor.putBoolean("logged in", true); // set logged in to true
+            editor.putString("username", username.getText().toString()); // save username and password
+            editor.putString("password", password.getText().toString());
             editor.apply();
-            AWSMobileClient.getInstance().initialize(this).execute();
-            Intent intent = new Intent(this, Tracker.class);
-        startForegroundService(intent);
+            startActivity(intent);
+            finish();
         }
-        Intent  intent = new Intent(this, MainMenu.class);
-        startActivity(intent);
-        finish();
+        else {
+            Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

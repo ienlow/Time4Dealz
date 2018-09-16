@@ -51,6 +51,8 @@ public class Profile extends AppCompatActivity {
                    intent = new Intent(getApplicationContext(), Tracker.class);
                    editor.putBoolean("tracking", false); // set tracking to false
                    editor.putBoolean("enabled", false); // button enabled is false
+                   //editor.putLong("timestarted", 0);
+                   editor.putBoolean("timer started", false);
                    editor.apply();
                    stopService(intent); // stop tracking
                    trackingButton.setText("Enable Tracking");
@@ -93,7 +95,7 @@ public class Profile extends AppCompatActivity {
    }
 
    public void logout(View view) {
-        editor.putString("username", "");
+        editor.putBoolean("logged in", false);
         editor.apply();
         Intent intent = new Intent(this, Tracker.class);
         stopService(intent);

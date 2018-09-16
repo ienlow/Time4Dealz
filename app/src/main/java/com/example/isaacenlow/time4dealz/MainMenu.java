@@ -17,8 +17,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,8 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 import java.util.Locale;
 
 import static java.security.AccessController.getContext;
@@ -38,19 +42,22 @@ import static java.security.AccessController.getContext;
 
 public class MainMenu extends AppCompatActivity {
     private Intent intent;
-    private int i, points = 0;
+    private int i;
     private DynamoDBMapper dynamoDBMapper;
-    private Button button6, trackingButton;
+    private Button button6;
     private CountDownTimer timer;
-    private long timeLeftInMilliseconds = 0, startTime = 0, timeSwapBuff = 0, updateTime = 0;//10 mins
-    private TextView timerText;
-    private ProgressBar progress;
+    private long timeLeftInMilliseconds = 0, startTime = 0, timeSwapBuff = 0, updateTime = 0;
+    private TextView timerText, pointsText;
+    HorizontalScrollView horizontalScrollView;
     private BroadcastReceiver br;
     boolean timerPaused = false, timerStarted = false;
     private int seconds, minutes, hours;
     private Handler handler;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
+    TableRow tableRow;
+    ArrayList<TextView> viewArrayList;
+    TextView[] textViews;
     public static final String MY_PREFS = "MyPrefs";
     //Radford long = -80.5764477 lat = 37.1318
     //Sterling long = -77.405630 lat = 39.040899
@@ -62,9 +69,17 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.main_menu);
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
-
         timerText = findViewById(R.id.timer);
+        horizontalScrollView = findViewById(R.id.scrollview);
         handler = new Handler();
+        textViews = new TextView[3];
+        textViews[0] = findViewById(R.id.textView3);
+        textViews[1] = findViewById(R.id.textView2);
+        textViews[2] = findViewById(R.id.textView4);
+        timerStarted = prefs.getBoolean("timer started", false);
+        pointsText = findViewById(R.id.tes);
+        pointsText.setText("Points Earned:\n\t" + prefs.getInt("points", 0));
+        //final boolean timerStarted = prefs.getBoolean("timer started", false);
 
         br = new BroadcastReceiver() {
             @Override
@@ -75,6 +90,8 @@ public class MainMenu extends AppCompatActivity {
                     if (!timerStarted) {
                         startTime = SystemClock.uptimeMillis();
                         handler.post(updateTimer);
+                        editor.putBoolean("timer started", true);
+                        editor.apply();
                     }
                     if (timerPaused) {
                         startTime = SystemClock.uptimeMillis();
@@ -89,6 +106,8 @@ public class MainMenu extends AppCompatActivity {
                         timerPaused = true;
                         handler.removeCallbacks(updateTimer);
                         timerText.setVisibility(View.INVISIBLE);
+                        editor.putBoolean("timer started", false);
+                        editor.apply();
                     }
                     i++;
                     // progress.setVisibility(View.INVISIBLE);
@@ -116,7 +135,6 @@ public class MainMenu extends AppCompatActivity {
                 String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
 
                 handler.post(this);
-                Log.d("tag", String.valueOf(seconds));
                 timerText.setText(timeLeftFormatted);
             }
         }
@@ -130,16 +148,24 @@ public class MainMenu extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         setContentView(R.layout.main_menu);
+        timerStarted = prefs.getBoolean("timer started", false);
         //button6.setText("vs. Georgia Southern \n @ Dedmon Center");
         timerText = findViewById(R.id.timer);
+        pointsText = findViewById(R.id.tes);
+        pointsText.setText("Points Earned:\n\t" + prefs.getInt("points", 0));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Success"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Fail"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Logout"));
+        if (prefs.getBoolean("timer started", false)) {
+            startTime = prefs.getLong("timestarted", 0);
+            handler.post(updateTimer);
+        }
     }
 
     protected void onPause () {
         super.onPause();
-        //LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
+        editor.putLong("timestarted", startTime);
+        editor.apply();
 
     }
 
@@ -152,8 +178,10 @@ public class MainMenu extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        editor.putLong("timestarted", startTime);
+        editor.apply();
         handler.removeCallbacks(updateTimer);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
-        Log.d("Destroy", String.valueOf(timeLeftInMilliseconds));
+        Log.d("Destroy", String.valueOf(startTime));
     }
 }

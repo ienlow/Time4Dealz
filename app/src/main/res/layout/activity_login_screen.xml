@@ -46,7 +46,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/gradient2"
         android:elevation="0dp"
-        android:onClick="mainMenu"
+        android:onClick="createMainMenu"
         android:text="Login"
         android:textColor="@android:color/background_light" />
 

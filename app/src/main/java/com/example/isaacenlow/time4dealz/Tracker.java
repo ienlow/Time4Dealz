@@ -168,8 +168,8 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
      * Create request to update location.
      */
     protected void createLocationRequest() {
-        mLocationRequest.setInterval(2000);
-        mLocationRequest.setFastestInterval(2000);
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
@@ -252,6 +252,8 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
             points = prefs.getInt("points", 0);
             editor.putInt("points", seconds + points);
             editor.putBoolean("tracking", false);
+            editor.putBoolean("timer started", false);
+            //editor.putLong("timestarted", SystemClock.uptimeMillis());
             editor.apply();
         }
         handler.removeCallbacks(updateTimer);
