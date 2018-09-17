@@ -74,7 +74,7 @@ public class Profile extends AppCompatActivity {
        displayPoints.setText(String.valueOf(points));
    }
 
-   /*public void resetPoints(View view) {
+   public void resetPoints(View view) {
        setContentView(R.layout.profile);
        displayPoints = (TextView) findViewById(R.id.displayPoints);
        if (prefs != null) {
@@ -83,7 +83,7 @@ public class Profile extends AppCompatActivity {
        }
        points = prefs.getInt("points", 0);
        displayPoints.setText(String.valueOf(points));
-   }*/
+   }
 
     public void viewLocation(View view) {
         Intent intent = new Intent(this, MapsActivity.class);

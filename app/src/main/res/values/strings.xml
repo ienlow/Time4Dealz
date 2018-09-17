@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Time4Dealz</string>
+    <string name="MY_PREFS">My_Prefs</string>
 </resources>

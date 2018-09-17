@@ -75,7 +75,7 @@ public class MainMenu extends AppCompatActivity {
         textViews = new TextView[3];
         textViews[0] = findViewById(R.id.textView3);
         textViews[1] = findViewById(R.id.textView2);
-        textViews[2] = findViewById(R.id.textView4);
+        //textViews[2] = findViewById(R.id.textView4);
         timerStarted = prefs.getBoolean("timer started", false);
         pointsText = findViewById(R.id.tes);
         pointsText.setText("Points Earned:\n\t" + prefs.getInt("points", 0));
@@ -172,6 +172,11 @@ public class MainMenu extends AppCompatActivity {
     public void teamSchedules(View view) {
         setContentView(R.layout.loading);
         intent = new Intent(this, TeamSchedules.class);
+        startActivity(intent);
+    }
+
+    public void Rewards(View view) {
+        intent = new Intent(this, Rewards.class);
         startActivity(intent);
     }
 

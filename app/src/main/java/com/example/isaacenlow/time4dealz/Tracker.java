@@ -203,7 +203,7 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                 seconds = (int) (updateTime / 1000);
                 minutes = (int) (seconds / 60);
                 hours = minutes / 60;
-                seconds = seconds % 60;
+                //seconds = seconds % 60;
 
                 handler.post(this);
                 //Log.d("Time", String.valueOf(seconds));
@@ -212,7 +212,7 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                 editor = getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
                 if (prefs != null)
                     points = prefs.getInt("points", 0);
-                editor.putInt("points", seconds + points);
+                editor.putInt("points", minutes + seconds + points);
                 editor.apply();
             }
             //Log.d("tag", String.valueOf(timeLeftInMilliseconds));
@@ -250,7 +250,7 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         Toast.makeText(this, "Destroy", Toast.LENGTH_SHORT).show();
         if (prefs != null) {
             points = prefs.getInt("points", 0);
-            editor.putInt("points", seconds + points);
+            editor.putInt("points", minutes + seconds + points);
             editor.putBoolean("tracking", false);
             editor.putBoolean("timer started", false);
             //editor.putLong("timestarted", SystemClock.uptimeMillis());
