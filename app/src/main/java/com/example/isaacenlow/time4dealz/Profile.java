@@ -70,13 +70,13 @@ public class Profile extends AppCompatActivity {
 
        if (prefs != null)
            points = prefs.getInt("points", 0);
-       displayPoints = (TextView) findViewById(R.id.displayPoints);
+       displayPoints = findViewById(R.id.displayPoints);
        displayPoints.setText(String.valueOf(points));
    }
 
    public void resetPoints(View view) {
        setContentView(R.layout.profile);
-       displayPoints = (TextView) findViewById(R.id.displayPoints);
+       displayPoints = findViewById(R.id.displayPoints);
        if (prefs != null) {
            editor.putInt("points", 0);
            editor.apply();

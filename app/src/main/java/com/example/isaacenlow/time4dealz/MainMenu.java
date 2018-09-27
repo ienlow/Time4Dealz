@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TableRow;
@@ -30,6 +31,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -47,7 +49,7 @@ public class MainMenu extends AppCompatActivity {
     private Button button6;
     private CountDownTimer timer;
     private long timeLeftInMilliseconds = 0, startTime = 0, timeSwapBuff = 0, updateTime = 0;
-    private TextView timerText, pointsText;
+    private TextView timerText, pointsText, displayPoints;
     HorizontalScrollView horizontalScrollView;
     private BroadcastReceiver br;
     boolean timerPaused = false, timerStarted = false;
@@ -55,6 +57,7 @@ public class MainMenu extends AppCompatActivity {
     private Handler handler;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
+    private ImageButton profileButton;
     TableRow tableRow;
     ArrayList<TextView> viewArrayList;
     TextView[] textViews;
@@ -73,12 +76,19 @@ public class MainMenu extends AppCompatActivity {
         horizontalScrollView = findViewById(R.id.scrollview);
         handler = new Handler();
         textViews = new TextView[3];
+        profileButton = findViewById(R.id.profileButton);
+        Glide
+                .with(this)
+                .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
+                .apply(RequestOptions.circleCropTransform())
+                .into(profileButton);
         textViews[0] = findViewById(R.id.textView3);
         textViews[1] = findViewById(R.id.textView2);
         //textViews[2] = findViewById(R.id.textView4);
         timerStarted = prefs.getBoolean("timer started", false);
-        pointsText = findViewById(R.id.tes);
-        pointsText.setText("Points Earned:\n\t" + prefs.getInt("points", 0));
+        pointsText = findViewById(R.id.pointsEarned);
+        displayPoints = findViewById(R.id.points);
+        displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
         //final boolean timerStarted = prefs.getBoolean("timer started", false);
 
         br = new BroadcastReceiver() {
@@ -128,7 +138,7 @@ public class MainMenu extends AppCompatActivity {
                 timeLeftInMilliseconds = SystemClock.uptimeMillis() - startTime;
                 updateTime = timeSwapBuff + timeLeftInMilliseconds;
                 seconds = (int) (updateTime / 1000);
-                minutes = (int) (seconds / 60);
+                minutes = seconds / 60;
                 hours = minutes / 60;
                 seconds = seconds % 60;
 
@@ -151,8 +161,15 @@ public class MainMenu extends AppCompatActivity {
         timerStarted = prefs.getBoolean("timer started", false);
         //button6.setText("vs. Georgia Southern \n @ Dedmon Center");
         timerText = findViewById(R.id.timer);
-        pointsText = findViewById(R.id.tes);
-        pointsText.setText("Points Earned:\n\t" + prefs.getInt("points", 0));
+        pointsText = findViewById(R.id.pointsEarned);
+        displayPoints = findViewById(R.id.points);
+        profileButton = findViewById(R.id.profileButton);
+        Glide
+                .with(this)
+                .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
+                .apply(RequestOptions.circleCropTransform())
+                .into(profileButton);
+        displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Success"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Fail"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Logout"));

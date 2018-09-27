@@ -153,7 +153,7 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                         Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     }
                 }
-            };
+            }
         };
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -201,7 +201,7 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                 timeLeftInMilliseconds = SystemClock.uptimeMillis() - startTime;
                 updateTime = timeSwapBuff + timeLeftInMilliseconds;
                 seconds = (int) (updateTime / 1000);
-                minutes = (int) (seconds / 60);
+                minutes = seconds / 60;
                 hours = minutes / 60;
                 //seconds = seconds % 60;
 

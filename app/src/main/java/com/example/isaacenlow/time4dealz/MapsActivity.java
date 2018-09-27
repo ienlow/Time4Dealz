@@ -40,6 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng radford = new LatLng(37.1318, -80.5764477);
     private LatLng lebanon = new LatLng(36.896034, -82.068117);
     private LatLng dedmon = new LatLng(37.1385, -80.5416);
+    private LatLng sterling = new LatLng(39.040899, -77.405630);
     private boolean mRequestingLocationUpdates = false;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest = new LocationRequest();
@@ -77,10 +78,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // ...
                     //mMap.clear();
                     LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.addCircle(new CircleOptions().center(dedmon).radius(100));
+                    mMap.addCircle(new CircleOptions().center(sterling).radius(100));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(mCurrentLocation));
                 }
-            };
+            }
         };
     }
 
@@ -102,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         // Add a marker in Radford and move the camera
-        mMap.addMarker(new MarkerOptions().position(radford).title("Marker in Radford"));
+        //mMap.addMarker(new MarkerOptions().position(sterling).title("Marker in Radford"));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mMap.getCameraPosition()));
 

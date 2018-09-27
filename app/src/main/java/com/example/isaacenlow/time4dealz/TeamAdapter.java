@@ -45,8 +45,8 @@ public class TeamAdapter extends ArrayAdapter<Event> {
         if (view == null) {
             view = mInflater.inflate(R.layout.adapter_layout, null);
             holder = new Holder();
-            holder.sport_holder = (TextView) view.findViewById(R.id.place);
-            holder.opponent_holder = (ImageView) view.findViewById(R.id.imageView2);
+            holder.sport_holder = view.findViewById(R.id.place);
+            holder.opponent_holder = view.findViewById(R.id.imageView2);
             view.setTag(holder);
         }
         else
