@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Time4Dealz</string>
     <string name="MY_PREFS">My_Prefs</string>
+    <integer name="Reward500">500</integer>
+    <integer name="Reward1000">1000</integer>
 </resources>
