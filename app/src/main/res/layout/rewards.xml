@@ -16,39 +16,45 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.284"
+        app:layout_constraintVertical_bias="0.221"
         app:srcCompat="@drawable/gradient" />
 
     <ProgressBar
-        android:id="@+id/rewardsProgress3"
-        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
-        android:layout_width="340dp"
-        android:layout_height="54dp"
-        android:layout_marginBottom="468dp"
+        android:id="@+id/rewardsProgress500"
+        style="@style/myProgress"
+        android:layout_width="345dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="456dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:max="500"
+        android:max="30"
         android:minHeight="0dp"
+        android:paddingBottom="2dp"
+        android:progressBackgroundTint="@android:color/white"
+        android:theme="@style/myProgress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/redeemReward500"
         android:layout_width="wrap_content"
-        android:layout_height="44dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Redeem"
+        android:textAlignment="textStart"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.925"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.273"
-        tools:layout_editor_absoluteX="284dp" />
+        app:layout_constraintVertical_bias="0.208" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -66,15 +72,16 @@
         app:srcCompat="@drawable/gradient" />
 
     <ProgressBar
-        android:id="@+id/rewardsProgress"
-        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
-        android:layout_width="340dp"
-        android:layout_height="54dp"
-        android:layout_marginBottom="348dp"
+        android:id="@+id/rewardsProgress1000"
+        style="@style/myProgress"
+        android:layout_width="345dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="312dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:max="500"
+        android:max="100"
         android:minHeight="0dp"
+        android:paddingBottom="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
@@ -83,14 +90,35 @@
     <Button
         android:id="@+id/redeemReward1000"
         android:layout_width="wrap_content"
-        android:layout_height="44dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Redeem"
+        android:textAlignment="textStart"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.925"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.455"
-        tools:layout_editor_absoluteX="292dp" />
+        app:layout_constraintVertical_bias="0.45" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="81dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="%25 off"
+        app:layout_constraintBottom_toBottomOf="@+id/rewardsProgress500"
+        app:layout_constraintEnd_toEndOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>
