@@ -25,18 +25,18 @@
         android:id="@+id/rewardsProgress500"
         style="@style/myProgress"
         android:layout_width="345dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="456dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
         android:max="30"
         android:minHeight="0dp"
         android:paddingBottom="2dp"
         android:progressBackgroundTint="@android:color/white"
         android:theme="@style/myProgress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+        app:layout_constraintEnd_toEndOf="@+id/redeemReward500"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/redeemReward500"
@@ -75,17 +75,16 @@
         android:id="@+id/rewardsProgress1000"
         style="@style/myProgress"
         android:layout_width="345dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="312dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
         android:max="100"
         android:minHeight="0dp"
         android:paddingBottom="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/redeemReward1000"

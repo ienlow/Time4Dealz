@@ -13,6 +13,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/gradient" />
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="466dp"
+        android:layout_height="514dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:srcCompat="@android:color/white" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
@@ -30,8 +44,8 @@
 
     <Button
         android:id="@+id/button9"
-        android:layout_width="320dp"
-        android:layout_height="45dp"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="104dp"
@@ -47,8 +61,8 @@
 
     <Button
         android:id="@+id/button11"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -68,8 +82,8 @@
 
     <Button
         android:id="@+id/button12"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -111,7 +125,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileButton"
-        app:layout_constraintVertical_bias="0.029"
+        app:layout_constraintVertical_bias="0.098"
         app:srcCompat="@drawable/background" />
 
     <TextView
@@ -189,8 +203,8 @@
 
     <TextView
         android:id="@+id/pointsEarned"
-        android:layout_width="132dp"
-        android:layout_height="46dp"
+        android:layout_width="155dp"
+        android:layout_height="64dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -200,12 +214,13 @@
         android:text="Points Earned"
         android:textAlignment="center"
         android:textColor="@android:color/white"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.231" />
+        app:layout_constraintVertical_bias="0.479" />
 
     <TextView
         android:id="@+id/points"
@@ -219,6 +234,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/pointsEarned"
         app:layout_constraintEnd_toEndOf="@+id/pointsEarned"
+        app:layout_constraintHorizontal_bias="0.525"
         app:layout_constraintStart_toStartOf="@+id/pointsEarned"
         app:layout_constraintTop_toTopOf="@+id/pointsEarned"
         app:layout_constraintVertical_bias="1.0" />

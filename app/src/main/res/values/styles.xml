@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@android:color/holo_red_dark</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/gradient</item>
     </style>
 
     <style name="myProgress" parent="@android:style/Widget.ProgressBar.Horizontal">

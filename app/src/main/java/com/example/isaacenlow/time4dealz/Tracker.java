@@ -117,8 +117,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
-                    // Update UI with location data
-                    // ...
                     LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     try {
                         if (((locationItem.getLongitude() - mCurrentLocation.longitude) < .001)
