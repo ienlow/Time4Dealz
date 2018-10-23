@@ -107,6 +107,8 @@ public class Profile extends AppCompatActivity {
        intent = new Intent("Logout");
        LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
        startActivity(i);
+       i = new Intent(this, LoginScreen.class);
+       startActivity(i);
        finish();
    }
 }

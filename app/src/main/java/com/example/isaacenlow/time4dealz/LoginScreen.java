@@ -46,13 +46,14 @@ public class LoginScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 123);
 
-        if (prefs.getBoolean("logged in", false) == true) {
+        if (prefs.getBoolean("logged in", false)) {
             if (!prefs.getBoolean("tracking", false) && (prefs.getBoolean("enabled", false))) {
                 editor.putBoolean("tracking", true);
                 editor.apply();

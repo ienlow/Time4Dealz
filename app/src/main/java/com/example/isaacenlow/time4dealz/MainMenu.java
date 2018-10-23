@@ -11,11 +11,16 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -61,10 +66,13 @@ public class MainMenu extends AppCompatActivity {
     TableRow tableRow;
     ArrayList<TextView> viewArrayList;
     TextView[] textViews;
+    private ImageView slot1;
     public static final String MY_PREFS = "MyPrefs";
     //Radford long = -80.5764477 lat = 37.1318
     //Sterling long = -77.405630 lat = 39.040899
     //Dedmon long = -80.5416 lat = 37.1385
+    LinearLayoutManager layoutManager
+            = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +90,41 @@ public class MainMenu extends AppCompatActivity {
                 .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
                 .apply(RequestOptions.circleCropTransform())
                 .into(profileButton);
-        textViews[0] = findViewById(R.id.textView3);
-        textViews[1] = findViewById(R.id.textView2);
         //textViews[2] = findViewById(R.id.textView4);
         timerStarted = prefs.getBoolean("timer started", false);
         pointsText = findViewById(R.id.pointsEarned);
         displayPoints = findViewById(R.id.points);
         displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
         //final boolean timerStarted = prefs.getBoolean("timer started", false);
+        RecyclerView myView = (RecyclerView) findViewById(R.id.recycler1);
+        RecyclerView.Adapter adapter = new RecyclerView.Adapter() {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.recycler_view_item, parent);
+                RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(view) {
+                    @Override
+                    public String toString() {
+                        return super.toString();
+                    }
+                };
+                return viewHolder;
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return 0;
+            }
+        };
+        myView.setLayoutManager(layoutManager);
+        myView.setAdapter(adapter);
+
+        //TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.adapter_layout, null);
 
         br = new BroadcastReceiver() {
             @Override

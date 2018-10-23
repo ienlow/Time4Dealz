@@ -6,27 +6,20 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Parcel;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
@@ -44,8 +37,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 
@@ -53,13 +44,12 @@ import com.google.android.gms.tasks.Task;
 public class Tracker extends Service implements GoogleApiClient.OnConnectionFailedListener {
     private LocationCallback mLocationCallback;
     private LatLng lebanon = new LatLng(36.896034, -82.068117);
-    private CircleOptions one;
     private LocationRequest mLocationRequest = new LocationRequest();
     private boolean mRequestingLocationUpdates;
     private FusedLocationProviderClient mFusedLocationClient;
     private DynamoDBMapper dynamoDBMapper;
     private LocationsDO locationItem;
-    private int i, j, points = 0;
+    private int i, points = 0;
     private BroadcastReceiver br;
     private long timeLeftInMilliseconds = 0, startTime = 0, timeSwapBuff = 0, updateTime = 0;
     boolean timerPaused = false, timerStarted = false;
@@ -95,9 +85,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                 .build();
 
-        //Long g = new Intent(this, MainMenu.class).getLongExtra("Time", 0);
-        //Log.d("Time", String.valueOf(g));
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -106,9 +93,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                         LocationsDO.class,
                         //"ienlow",
                         1);
-
-                // Item read
-                //Log.d("News Item:", locationItem.toString());
             }
         }).start();
 
@@ -123,10 +107,8 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                                 && ((locationItem.getLongitude() - mCurrentLocation.longitude) > -.001)
                                 && ((locationItem.getLatitude() - mCurrentLocation.latitude) < .001)
                                 && ((locationItem.getLatitude() - mCurrentLocation.latitude) > -.001)) {
-                            j++;
                             Intent intentTwo = new Intent("Success");
                             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
-                            Toast.makeText(getApplicationContext(), String.valueOf(j), Toast.LENGTH_SHORT).show();
                             i = 0;
                             if (!timerStarted) {
                                 startTime = SystemClock.uptimeMillis();
@@ -148,20 +130,17 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                         }
                     }
                     catch (Exception E){
-                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        Log.d("Tracker", "Error, retrying...");
                     }
                 }
             }
         };
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        startTracking();
-    }
-
-    public void startTracking () {
         createLocationRequest();
         startLocationUpdates();
     }
+
     /**
      * Create request to update location.
      */
@@ -201,10 +180,8 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                 seconds = (int) (updateTime / 1000);
                 minutes = seconds / 60;
                 hours = minutes / 60;
-                //seconds = seconds % 60;
 
                 handler.post(this);
-                //Log.d("Time", String.valueOf(seconds));
             }
             else {
                 editor = getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
@@ -213,7 +190,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                 editor.putInt("points", minutes + seconds + points);
                 editor.apply();
             }
-            //Log.d("tag", String.valueOf(timeLeftInMilliseconds));
         }
     };
 
@@ -251,7 +227,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
             editor.putInt("points", minutes + seconds + points);
             editor.putBoolean("tracking", false);
             editor.putBoolean("timer started", false);
-            //editor.putLong("timestarted", SystemClock.uptimeMillis());
             editor.apply();
         }
         handler.removeCallbacks(updateTimer);
