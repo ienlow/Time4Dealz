@@ -12,8 +12,13 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 
 public class Profile extends AppCompatActivity {
     private SharedPreferences prefs;
@@ -22,6 +27,7 @@ public class Profile extends AppCompatActivity {
     private TextView displayPoints;
     private int points = 0;
     BroadcastReceiver br;
+    ImageView imageView;
     private Button trackingButton;
     public static final String MY_PREFS = "MyPrefs";
 
@@ -40,6 +46,13 @@ public class Profile extends AppCompatActivity {
        else {
            trackingButton.setText("Enable Tracking");
        }
+
+       imageView = findViewById(R.id.image_profile);
+       Glide
+               .with(this)
+               .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
+               .apply(RequestOptions.circleCropTransform())
+               .into(imageView);
 
        trackingButton.setOnClickListener(new View.OnClickListener() {
            @RequiresApi(api = Build.VERSION_CODES.O)
@@ -70,19 +83,17 @@ public class Profile extends AppCompatActivity {
 
        if (prefs != null)
            points = prefs.getInt("points", 0);
-       displayPoints = findViewById(R.id.displayPoints);
+       displayPoints = findViewById(R.id.pointsEarned3);
        displayPoints.setText(String.valueOf(points));
    }
 
    public void resetPoints(View view) {
        setContentView(R.layout.profile);
-       displayPoints = findViewById(R.id.displayPoints);
        if (prefs != null) {
            editor.putInt("points", 0);
            editor.apply();
        }
        points = prefs.getInt("points", 0);
-       displayPoints.setText(String.valueOf(points));
    }
 
     public void viewLocation(View view) {

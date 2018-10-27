@@ -7,6 +7,26 @@
     android:background="@android:color/white"
     android:minHeight="35dp">
 
+    <TextView
+        android:id="@+id/pointsEarned2"
+        android:layout_width="155dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/gradient2"
+        android:fontFamily="sans-serif"
+        android:text="Points Earned"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.479" />
+
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="349dp"
@@ -31,7 +51,8 @@
         android:max="30"
         android:minHeight="0dp"
         android:paddingBottom="2dp"
-        android:progressBackgroundTint="@android:color/white"
+        android:progressBackgroundTint="@android:color/holo_red_dark"
+        android:progressTint="@android:color/holo_red_light"
         android:theme="@style/myProgress"
         app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         app:layout_constraintEnd_toEndOf="@+id/redeemReward500"
@@ -81,6 +102,7 @@
         android:max="100"
         android:minHeight="0dp"
         android:paddingBottom="2dp"
+        android:progressBackgroundTint="@android:color/holo_red_dark"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
@@ -114,11 +136,27 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="%25 off"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/rewardsProgress500"
         app:layout_constraintEnd_toEndOf="@+id/imageView7"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imageView7"
         app:layout_constraintTop_toTopOf="@+id/imageView7"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/rewards_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pointsEarned2"
+        app:layout_constraintEnd_toEndOf="@+id/pointsEarned2"
+        app:layout_constraintStart_toStartOf="@+id/pointsEarned2"
+        app:layout_constraintTop_toTopOf="@+id/pointsEarned2"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -27,6 +28,9 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -39,6 +43,8 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
+
+import java.util.Map;
 
 
 public class Tracker extends Service implements GoogleApiClient.OnConnectionFailedListener {
@@ -68,6 +74,7 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
         handler = new Handler();
+        editor.remove("isAtEvent");
         createNotificationChannel();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel).setSmallIcon(android.R.drawable.ic_menu_mylocation).setContentTitle("Location in use");
         notification = mBuilder.build();
@@ -85,49 +92,53 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                 .build();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                locationItem = dynamoDBMapper.load(
-                        LocationsDO.class,
-                        //"ienlow",
-                        1);
-            }
-        }).start();
+        final TrackerBackgroundWorker trackerBackgroundWorker = new TrackerBackgroundWorker(this);
+        trackerBackgroundWorker.execute("");
 
         locationItem = new LocationsDO();
+        while (!trackerBackgroundWorker.isFinished()) {
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) { }
+        }
         mLocationCallback = new LocationCallback() {
+            ScanResult scanResult = trackerBackgroundWorker.getItems();
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
+                    Boolean isAtEvent = false;
                     LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     try {
-                        if (((locationItem.getLongitude() - mCurrentLocation.longitude) < .001)
-                                && ((locationItem.getLongitude() - mCurrentLocation.longitude) > -.001)
-                                && ((locationItem.getLatitude() - mCurrentLocation.latitude) < .001)
-                                && ((locationItem.getLatitude() - mCurrentLocation.latitude) > -.001)) {
-                            Intent intentTwo = new Intent("Success");
-                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
-                            i = 0;
-                            if (!timerStarted) {
-                                startTime = SystemClock.uptimeMillis();
-                                handler.post(updateTimer);
+                        for (Map<String, AttributeValue> item : scanResult.getItems()) {
+                            if (item.get("active").getBOOL()) {
+                                Log.d("Test", item.get("latitude").getN() + " " + item.get("longitude").getN());
+                                if (((Double.parseDouble(item.get("longitude").getN()) - mCurrentLocation.longitude) < .001)
+                                        && ((Double.parseDouble(item.get("longitude").getN()) - mCurrentLocation.longitude) > -.001)
+                                        && ((Double.parseDouble(item.get("latitude").getN()) - mCurrentLocation.latitude) < .001)
+                                        && ((Double.parseDouble(item.get("latitude").getN()) - mCurrentLocation.latitude) > -.001)) {
+                                    Intent intentTwo = new Intent("Success");
+                                    isAtEvent = true;
+                                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
+                                    i = 0;
+                                    if (!timerStarted) {
+                                        startTime = SystemClock.uptimeMillis();
+                                        handler.post(updateTimer);
+                                    }
+                                    if (timerPaused) {
+                                        startTime = SystemClock.uptimeMillis();
+                                        handler.post(updateTimer);
+                                        timerPaused = false;
+                                    }
+                                }
                             }
-                            if (timerPaused) {
-                                startTime = SystemClock.uptimeMillis();
-                                handler.post(updateTimer);
-                                timerPaused = false;
-                            }
-                        }
-                        else {
-                            Intent intent = new Intent("Fail");
-                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intent);
-                            if (i == 0) {
-                                timerPaused = true;
-                            }
-                            i++;
-                        }
+                                } if (!isAtEvent) {
+                                    Intent intent = new Intent("Fail");
+                                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intent);
+                                    if (i == 0) {
+                                        timerPaused = true;
+                                    }
+                                    i++;
+                                }
                     }
                     catch (Exception E){
                         Log.d("Tracker", "Error, retrying...");
@@ -217,7 +228,10 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
     @Override
     public void onDestroy() {
         super.onDestroy();
+        //while (mFusedLocationClient != null || mLocationCallback != null)
         stopLocationUpdates();
+        mFusedLocationClient.flushLocations();
+
         Intent intent = new Intent("Fail");
         LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(br);

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.prefs.Preferences;
@@ -15,6 +16,7 @@ public class Rewards extends AppCompatActivity {
     ProgressBar progressBar500, progressBar1000;
     SharedPreferences preferences;
     Button redeemReward500, redeemReward1000;
+    TextView rewardsPoints;
     public static final String MY_PREFS = "MyPrefs";
 
     @Override
@@ -29,6 +31,8 @@ public class Rewards extends AppCompatActivity {
         int points = preferences.getInt("points", 0);
         progressBar500.setProgress(points);
         progressBar1000.setProgress(points);
+        rewardsPoints = findViewById(R.id.rewards_points);
+        rewardsPoints.setText(String.valueOf(points));
 
         if (points >= 20) {
             redeemReward500.setVisibility(View.VISIBLE);
