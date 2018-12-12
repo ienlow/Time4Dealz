@@ -38,14 +38,6 @@ public class Profile extends AppCompatActivity {
 
        prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
        editor = prefs.edit();
-       trackingButton = findViewById(R.id.tracking);
-
-       if (prefs.getBoolean("tracking", false)) {
-           trackingButton.setText("Disable Tracking");
-       }
-       else {
-           trackingButton.setText("Enable Tracking");
-       }
 
        imageView = findViewById(R.id.image_profile);
        Glide
@@ -54,32 +46,7 @@ public class Profile extends AppCompatActivity {
                .apply(RequestOptions.circleCropTransform())
                .into(imageView);
 
-       trackingButton.setOnClickListener(new View.OnClickListener() {
-           @RequiresApi(api = Build.VERSION_CODES.O)
-           @Override
-           public void onClick(View v) {
-               Intent intent;
-               // Set text to enable or disable tracking
-               if (prefs.getBoolean("tracking", false)) {
-                   intent = new Intent(getApplicationContext(), Tracker.class);
-                   editor.putBoolean("tracking", false); // set tracking to false
-                   editor.putBoolean("enabled", false); // button enabled is false
-                   //editor.putLong("timestarted", 0);
-                   editor.putBoolean("timer started", false);
-                   editor.apply();
-                   stopService(intent); // stop tracking
-                   trackingButton.setText("Enable Tracking");
-               }
-               else {
-                   intent = new Intent(getApplicationContext(), Tracker.class);
-                   editor.putBoolean("tracking", true); // set tracking to true
-                   editor.putBoolean("enabled", true); // button enabled is true
-                   editor.apply();
-                   startForegroundService(intent); // start tracking
-                   trackingButton.setText("Disable Tracking");
-               }
-           }
-       });
+
 
        if (prefs != null)
            points = prefs.getInt("points", 0);
@@ -95,11 +62,6 @@ public class Profile extends AppCompatActivity {
        }
        points = prefs.getInt("points", 0);
    }
-
-    public void viewLocation(View view) {
-        Intent intent = new Intent(this, MapsActivity.class);
-        startActivity(intent);
-    }
 
    public void getPoints(View view) {
        Toast.makeText(this, String.valueOf(points), Toast.LENGTH_SHORT).show();

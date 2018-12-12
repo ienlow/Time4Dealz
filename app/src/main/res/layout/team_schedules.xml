@@ -6,13 +6,19 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <ListView
         android:id="@+id/results"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:divider="?android:attr/colorBackground"
+        android:divider="@android:color/white"
         android:dividerHeight="15dp"
         android:fadingEdge="vertical"
         android:footerDividersEnabled="true"

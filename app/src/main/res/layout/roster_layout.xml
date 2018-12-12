@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/basketball"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient2"
+        android:onClick="teamSchedules"
+        android:paddingStart="10dp"
+        android:text="Men's Basketball"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="354dp" />
+
+    <Button
+        android:id="@+id/button12"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient2"
+        android:onClick="teamSchedules"
+        android:paddingStart="10dp"
+        android:text="Team Schedule"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="524dp" />
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient2"
+        android:onClick="teamSchedules"
+        android:paddingStart="10dp"
+        android:text="Team Schedule"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="418dp" />
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gradient2"
+        android:onClick="teamSchedules"
+        android:paddingStart="10dp"
+        android:text="Team Schedule"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="474dp" />
+
+</android.support.constraint.ConstraintLayout>

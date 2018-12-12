@@ -39,6 +39,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import static java.security.AccessController.getContext;
@@ -69,10 +70,9 @@ public class MainMenu extends AppCompatActivity {
     private ImageView slot1;
     public static final String MY_PREFS = "MyPrefs";
     //Radford long = -80.5764477 lat = 37.1318
-    //Sterling long = -77.405630 lat = 39.040899
+    //Sterling long = -77.405630 lat = 39.037318
     //Dedmon long = -80.5416 lat = 37.1385
-    LinearLayoutManager layoutManager
-            = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,6 @@ public class MainMenu extends AppCompatActivity {
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
         timerText = findViewById(R.id.timer);
-        horizontalScrollView = findViewById(R.id.scrollview);
         handler = new Handler();
         textViews = new TextView[3];
         profileButton = findViewById(R.id.profileButton);
@@ -95,34 +94,15 @@ public class MainMenu extends AppCompatActivity {
         pointsText = findViewById(R.id.pointsEarned);
         displayPoints = findViewById(R.id.points);
         displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
-        //final boolean timerStarted = prefs.getBoolean("timer started", false);
-        RecyclerView myView = (RecyclerView) findViewById(R.id.recycler1);
-        RecyclerView.Adapter adapter = new RecyclerView.Adapter() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.recycler_view_item, parent);
-                RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(view) {
-                    @Override
-                    public String toString() {
-                        return super.toString();
-                    }
-                };
-                return viewHolder;
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-            }
-
-            @Override
-            public int getItemCount() {
-                return 0;
-            }
-        };
+        //final boolean timerStarted = prefs.geBoolean("timer started", false);
+        int test[] = {1,2,3};
+        ArrayList<String> list = new ArrayList<>();
+        list.add("test1");
+        RecyclerView myView = findViewById(R.id.recycler1);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        MainTeamAdapter teamAdapter = new MainTeamAdapter(getApplicationContext(), 1, list);
+        myView.setAdapter(teamAdapter);
         myView.setLayoutManager(layoutManager);
-        myView.setAdapter(adapter);
 
         //TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.adapter_layout, null);
 
@@ -187,6 +167,11 @@ public class MainMenu extends AppCompatActivity {
 
     public void openProfile(View view) {
         intent = new Intent(this, Profile.class);
+        startActivity(intent);
+    }
+
+    public void openSettings(View view) {
+        intent = new Intent(this, Settings.class);
         startActivity(intent);
     }
 

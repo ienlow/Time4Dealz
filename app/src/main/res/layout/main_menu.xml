@@ -40,6 +40,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="116dp"
+            android:onClick="openSettings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_help" />
     </android.support.constraint.ConstraintLayout>
 
     <Button
@@ -105,14 +117,11 @@
         android:id="@+id/profileButton"
         android:layout_width="49dp"
         android:layout_height="37dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="44dp"
         android:background="@android:color/transparent"
         android:onClick="openProfile"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.875"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
     <ImageView
@@ -147,18 +156,9 @@
         app:layout_constraintTop_toTopOf="@+id/wallpaper"
         app:layout_constraintVertical_bias="0.602" />
 
-    <HorizontalScrollView
-        android:id="@+id/scrollview"
-        android:layout_width="136dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timer">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler1"
@@ -166,10 +166,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="visible"
-            tools:itemCount="3">
+            tools:listitem="@layout/recycler_row">
 
         </android.support.v7.widget.RecyclerView>
-    </HorizontalScrollView>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/pointsEarned"
