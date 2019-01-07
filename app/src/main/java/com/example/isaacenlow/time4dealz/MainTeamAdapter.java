@@ -4,58 +4,62 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.ViewHolder> {
+public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyViewHolder> {
     Context context;
     Drawable drawable;
-    ArrayList<String> list;
+    ArrayList<Event> list;
     LayoutInflater inflater;
 
-    public MainTeamAdapter(Context context, int resource, ArrayList<String> _list) {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView mTextView;
+        public ImageView opponentHolder;
+        public MyViewHolder(View v) {
+            super(v);
+            mTextView = v.findViewById(R.id.row1);
+            opponentHolder = v.findViewById(R.id.row2);
+        }
+    }
+
+    public MainTeamAdapter(Context context, ArrayList<Event> _list) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         list = _list;
-       //Toast.makeText(context, "test", Toast.LENGTH_SHORT).show();
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View teamView = inflater.inflate(R.layout.recycler_row, parent, false);
-        return new ViewHolder(teamView);
+    public MainTeamAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recycler_row, parent, false);
+        MyViewHolder vh = new MyViewHolder(v);
+        return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //String event = list.get(position).getSportDate();
-        //int event = list[position];
-        Toast.makeText(context, "test", Toast.LENGTH_SHORT).show();
-        holder.sport_holder.setText(list.get(position));
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Event teamItem = list.get(position);
+        //Log.d("item", teamItem.getSportDate());
+        holder.mTextView.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
+        Glide
+                .with(context)
+                .load(teamItem.getURL())
+                .into(holder.opponentHolder);
     }
 
     @Override
     public int getItemCount() {
         return list.size();
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView sport_holder;
-        ViewHolder(View itemView) {
-            super(itemView);
-            sport_holder = itemView.findViewById(R.id.row1);
-        }
-
-        @Override
-        public void onClick(View view) {
-
-        }
     }
 }

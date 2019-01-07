@@ -17,6 +17,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import static java.security.AccessController.getContext;
@@ -73,7 +75,6 @@ public class MainMenu extends AppCompatActivity {
     //Sterling long = -77.405630 lat = 39.037318
     //Dedmon long = -80.5416 lat = 37.1385
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,16 +96,20 @@ public class MainMenu extends AppCompatActivity {
         displayPoints = findViewById(R.id.points);
         displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
         //final boolean timerStarted = prefs.geBoolean("timer started", false);
-        int test[] = {1,2,3};
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList list = new ArrayList<>();
         list.add("test1");
+        list.add("test2");
+        list.add("test2");
+        list.add("test2");
+        list.add("test2");
         RecyclerView myView = findViewById(R.id.recycler1);
+        if (myView == null) {
+            Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        MainTeamAdapter teamAdapter = new MainTeamAdapter(getApplicationContext(), 1, list);
-        myView.setAdapter(teamAdapter);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         myView.setLayoutManager(layoutManager);
-
-        //TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.adapter_layout, null);
+        myView.setAdapter(new MainTeamAdapter(getApplicationContext(), list));
 
         br = new BroadcastReceiver() {
             @Override
@@ -178,6 +183,24 @@ public class MainMenu extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         setContentView(R.layout.main_menu);
+        ArrayList list = new ArrayList<>();
+        list.add("test1");
+        list.add("test2");
+        list.add("test2");
+        list.add("test2");
+        list.add("test2");
+        BackgroundWorker backgroundWorker = new BackgroundWorker(getApplication());
+        backgroundWorker.execute("");
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RecyclerView myView = findViewById(R.id.recycler1);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        myView.setLayoutManager(layoutManager);
+        myView.setAdapter(new MainTeamAdapter(getApplicationContext(), backgroundWorker.getTeams()));
         timerStarted = prefs.getBoolean("timer started", false);
         //button6.setText("vs. Georgia Southern \n @ Dedmon Center");
         timerText = findViewById(R.id.timer);
