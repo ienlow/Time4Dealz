@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telecom.Call;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +38,9 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -43,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static java.security.AccessController.getContext;
 
@@ -96,20 +102,8 @@ public class MainMenu extends AppCompatActivity {
         displayPoints = findViewById(R.id.points);
         displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
         //final boolean timerStarted = prefs.geBoolean("timer started", false);
-        ArrayList list = new ArrayList<>();
-        list.add("test1");
-        list.add("test2");
-        list.add("test2");
-        list.add("test2");
-        list.add("test2");
-        RecyclerView myView = findViewById(R.id.recycler1);
-        if (myView == null) {
-            Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
-        }
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        myView.setLayoutManager(layoutManager);
-        myView.setAdapter(new MainTeamAdapter(getApplicationContext(), list));
+        BackgroundWorker backgroundWorker = new BackgroundWorker();
+        backgroundWorker.execute();
 
         br = new BroadcastReceiver() {
             @Override
@@ -150,6 +144,62 @@ public class MainMenu extends AppCompatActivity {
         };
     }
 
+    public class BackgroundWorker extends AsyncTask<String, Void, String> {
+        Context context;
+        private DynamoDBMapper dynamoDBMapper;
+        ArrayList<Event> teams = new ArrayList<>();
+        boolean finished = false;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+            dynamoDBMapper = DynamoDBMapper.builder()
+                    .dynamoDBClient(dynamoDBClient)
+                    .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                    .build();
+            ScanRequest scanRequest = new ScanRequest()
+                    .withTableName("ExampleSchool")
+                    .withAttributesToGet("indexName")
+                    .withAttributesToGet("sport")
+                    .withAttributesToGet("location")
+                    .withAttributesToGet("playing_against")
+                    .withAttributesToGet("time")
+                    .withAttributesToGet("date")
+                    .withAttributesToGet("URL");
+            ScanResult result = dynamoDBClient.scan(scanRequest);
+            for (Map<String, AttributeValue> item : result.getItems()) {
+                // Create new event for every item and format here
+                try {
+                    Event one = new Event("            " + (item.get("sport").getS()) + "                 " + (item.get("date").getS()), "\n                  " + (item.get("playing_against").getS())
+                            + "\n                  " + item.get("location").getS()
+                            + "\n                  " + item.get("time").getS(), item.get("URL").getS());
+                    teams.add(one);
+                    //Log.d("Item", one.getPlace());
+                } catch (Exception e) {
+                }
+            }
+
+            finished = true;
+            return "finished";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            ArrayList<Event> list = new ArrayList<>();
+            MainTeamAdapter adapter;
+            RecyclerView myView = findViewById(R.id.recycler1);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            adapter = new MainTeamAdapter(getApplicationContext(), teams);
+            myView.setLayoutManager(layoutManager);
+            myView.setAdapter(adapter);
+            Log.d("list", list.size() + "");
+        }
+    }
+
+
     Runnable updateTimer = new Runnable() {
         @Override
         public void run() {
@@ -183,24 +233,8 @@ public class MainMenu extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         setContentView(R.layout.main_menu);
-        ArrayList list = new ArrayList<>();
-        list.add("test1");
-        list.add("test2");
-        list.add("test2");
-        list.add("test2");
-        list.add("test2");
-        BackgroundWorker backgroundWorker = new BackgroundWorker(getApplication());
-        backgroundWorker.execute("");
-        try {
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        RecyclerView myView = findViewById(R.id.recycler1);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        myView.setLayoutManager(layoutManager);
-        myView.setAdapter(new MainTeamAdapter(getApplicationContext(), backgroundWorker.getTeams()));
+        BackgroundWorker backgroundWorker = new BackgroundWorker();
+        backgroundWorker.execute();
         timerStarted = prefs.getBoolean("timer started", false);
         //button6.setText("vs. Georgia Southern \n @ Dedmon Center");
         timerText = findViewById(R.id.timer);
