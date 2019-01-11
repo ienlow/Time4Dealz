@@ -1,60 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/basketball"
+        android:id="@+id/basketball_btn"
         android:layout_width="340dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/gradient2"
         android:onClick="teamSchedules"
         android:paddingStart="10dp"
         android:text="Men's Basketball"
         android:textAlignment="viewStart"
         android:textColor="@android:color/white"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="354dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
-        android:id="@+id/button12"
+        android:id="@+id/soccer_btn"
         android:layout_width="340dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="248dp"
         android:background="@drawable/gradient2"
         android:onClick="teamSchedules"
         android:paddingStart="10dp"
-        android:text="Team Schedule"
+        android:text="Soccer"
         android:textAlignment="viewStart"
         android:textColor="@android:color/white"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="524dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/tennis_btn"
         android:layout_width="340dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="152dp"
         android:background="@drawable/gradient2"
         android:onClick="teamSchedules"
         android:paddingStart="10dp"
-        android:text="Team Schedule"
+        android:text="Tennis"
         android:textAlignment="viewStart"
         android:textColor="@android:color/white"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="418dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/baseball_btn"
         android:layout_width="340dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="344dp"
         android:background="@drawable/gradient2"
         android:onClick="teamSchedules"
         android:paddingStart="10dp"
-        android:text="Team Schedule"
+        android:text="Baseball"
         android:textAlignment="viewStart"
         android:textColor="@android:color/white"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="474dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

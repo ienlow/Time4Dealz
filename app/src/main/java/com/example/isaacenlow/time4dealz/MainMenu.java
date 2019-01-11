@@ -179,15 +179,12 @@ public class MainMenu extends AppCompatActivity {
                 } catch (Exception e) {
                 }
             }
-
-            finished = true;
-            return "finished";
+            return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            ArrayList<Event> list = new ArrayList<>();
             MainTeamAdapter adapter;
             RecyclerView myView = findViewById(R.id.recycler1);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -195,7 +192,7 @@ public class MainMenu extends AppCompatActivity {
             adapter = new MainTeamAdapter(getApplicationContext(), teams);
             myView.setLayoutManager(layoutManager);
             myView.setAdapter(adapter);
-            Log.d("list", list.size() + "");
+            Log.d("list", teams.size() + "");
         }
     }
 
@@ -260,7 +257,6 @@ public class MainMenu extends AppCompatActivity {
         super.onPause();
         editor.putLong("timestarted", startTime);
         editor.apply();
-
     }
 
     public void teamSchedules(View view) {
@@ -271,6 +267,11 @@ public class MainMenu extends AppCompatActivity {
 
     public void Rewards(View view) {
         intent = new Intent(this, Rewards.class);
+        startActivity(intent);
+    }
+
+    public void teamRosters(View view) {
+        intent = new Intent(this, TeamsRosters.class);
         startActivity(intent);
     }
 
