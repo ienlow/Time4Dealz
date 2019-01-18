@@ -67,6 +67,12 @@
             android:label="MapsActivity">
         </activity>
 
+        <activity
+            android:name=".TeamsRosters"
+            android:label="TeamsRosters">
+
+        </activity>
+
         <service
             android:name=".Tracker"
             android:label="Tracker">

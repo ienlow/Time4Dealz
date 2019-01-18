@@ -60,11 +60,8 @@ public class MainMenu extends AppCompatActivity {
     private Intent intent;
     private int i;
     private DynamoDBMapper dynamoDBMapper;
-    private Button button6;
-    private CountDownTimer timer;
     private long timeLeftInMilliseconds = 0, startTime = 0, timeSwapBuff = 0, updateTime = 0;
     private TextView timerText, pointsText, displayPoints;
-    HorizontalScrollView horizontalScrollView;
     private BroadcastReceiver br;
     boolean timerPaused = false, timerStarted = false;
     private int seconds, minutes, hours;
@@ -72,15 +69,15 @@ public class MainMenu extends AppCompatActivity {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private ImageButton profileButton;
-    TableRow tableRow;
-    ArrayList<TextView> viewArrayList;
     TextView[] textViews;
+    boolean tracking;
     private ImageView slot1;
     public static final String MY_PREFS = "MyPrefs";
     //Radford long = -80.5764477 lat = 37.1318
     //Sterling long = -77.405630 lat = 39.037318
     //Dedmon long = -80.5416 lat = 37.1385
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,12 +93,11 @@ public class MainMenu extends AppCompatActivity {
                 .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
                 .apply(RequestOptions.circleCropTransform())
                 .into(profileButton);
-        //textViews[2] = findViewById(R.id.textView4);
         timerStarted = prefs.getBoolean("timer started", false);
         pointsText = findViewById(R.id.pointsEarned);
         displayPoints = findViewById(R.id.points);
         displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
-        //final boolean timerStarted = prefs.geBoolean("timer started", false);
+        //Log.d("checked", setTracking(); ? "true" : "false");
         BackgroundWorker backgroundWorker = new BackgroundWorker();
         backgroundWorker.execute();
 
@@ -110,9 +106,14 @@ public class MainMenu extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("Success")) {
                     i = 0;
-                    //progress.setVisibility(View.INVISIBLE);
                     if (!timerStarted) {
-                        startTime = SystemClock.uptimeMillis();
+                        if (prefs.getBoolean("timer started", false)) {
+                            startTime = prefs.getLong("timestarted", 0);
+                            Log.d("start time", String.valueOf(startTime));
+                        }
+                        else {
+                            startTime = SystemClock.uptimeMillis();
+                        }
                         handler.post(updateTimer);
                         editor.putBoolean("timer started", true);
                         editor.apply();
@@ -134,8 +135,6 @@ public class MainMenu extends AppCompatActivity {
                         editor.apply();
                     }
                     i++;
-                    // progress.setVisibility(View.INVISIBLE);
-                    //Log.d("fail", "fail");
                 }
                 else if (intent.getAction().equals("Logout")) {
                     finish();
@@ -144,11 +143,8 @@ public class MainMenu extends AppCompatActivity {
         };
     }
 
-    public class BackgroundWorker extends AsyncTask<String, Void, String> {
-        Context context;
-        private DynamoDBMapper dynamoDBMapper;
+    private class BackgroundWorker extends AsyncTask<String, Void, String> {
         ArrayList<Event> teams = new ArrayList<>();
-        boolean finished = false;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -229,28 +225,17 @@ public class MainMenu extends AppCompatActivity {
 
     protected void onResume(){
         super.onResume();
-        setContentView(R.layout.main_menu);
-        BackgroundWorker backgroundWorker = new BackgroundWorker();
-        backgroundWorker.execute();
-        timerStarted = prefs.getBoolean("timer started", false);
-        //button6.setText("vs. Georgia Southern \n @ Dedmon Center");
-        timerText = findViewById(R.id.timer);
-        pointsText = findViewById(R.id.pointsEarned);
-        displayPoints = findViewById(R.id.points);
-        profileButton = findViewById(R.id.profileButton);
-        Glide
-                .with(this)
-                .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
-                .apply(RequestOptions.circleCropTransform())
-                .into(profileButton);
-        displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
+
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Success"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Fail"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Logout"));
         if (prefs.getBoolean("timer started", false)) {
             startTime = prefs.getLong("timestarted", 0);
+            Log.d("start time", String.valueOf(startTime));
             handler.post(updateTimer);
         }
+        pointsText = findViewById(R.id.pointsEarned);
+        displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
     }
 
     protected void onPause () {
@@ -260,7 +245,6 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void teamSchedules(View view) {
-        setContentView(R.layout.loading);
         intent = new Intent(this, TeamSchedules.class);
         startActivity(intent);
     }

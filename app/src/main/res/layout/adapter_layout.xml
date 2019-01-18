@@ -14,7 +14,6 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/my_button"
         android:elevation="10dp"
-        android:text="TextView"
         android:textAppearance="@android:style/TextAppearance.Material.Medium.Inverse"
         android:textColor="@android:color/black"
         android:textSize="14sp" />

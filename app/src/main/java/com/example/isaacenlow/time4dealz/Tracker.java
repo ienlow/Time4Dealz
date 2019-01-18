@@ -74,7 +74,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
         handler = new Handler();
-        editor.remove("isAtEvent");
         createNotificationChannel();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel).setSmallIcon(android.R.drawable.ic_menu_mylocation).setContentTitle("Location in use");
         notification = mBuilder.build();
@@ -228,21 +227,18 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //while (mFusedLocationClient != null || mLocationCallback != null)
         stopLocationUpdates();
         mFusedLocationClient.flushLocations();
-
         Intent intent = new Intent("Fail");
         LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
-        Toast.makeText(this, "Destroy", Toast.LENGTH_SHORT).show();
+        editor.putBoolean("timer started", false);
         if (prefs != null) {
             points = prefs.getInt("points", 0);
             editor.putInt("points", minutes + seconds + points);
             editor.putBoolean("tracking", false);
-            editor.putBoolean("timer started", false);
-            editor.apply();
         }
+        editor.apply();
         handler.removeCallbacks(updateTimer);
     }
 
