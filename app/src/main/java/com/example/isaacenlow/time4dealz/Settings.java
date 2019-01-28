@@ -38,7 +38,6 @@ public class Settings extends AppCompatActivity {
                     editor.putBoolean("tracking", false); // set tracking to false
                     editor.putBoolean("enabled", false); // button enabled is false
                     //editor.putLong("timestarted", 0);
-                    editor.putBoolean("timer started", false);
                     editor.putBoolean("checked", false);
                     editor.apply();
                     stopService(intent); // stop tracking

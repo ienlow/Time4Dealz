@@ -66,6 +66,7 @@ public class LoginScreen extends AppCompatActivity {
             editor.putBoolean("logged in", true);
             editor.apply();
             startActivity(intent);
+            Log.d("onCreate", "activity started");
             finish();
         }
         else {
@@ -102,6 +103,7 @@ public class LoginScreen extends AppCompatActivity {
             editor.putString("username", username.getText().toString()); // save username and password
             editor.putString("password", password.getText().toString());
             editor.apply();
+            Log.d("createMainMenu", "activity started");
             startActivity(intent);
             finish();
         }
@@ -112,6 +114,7 @@ public class LoginScreen extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        finish();
         moveTaskToBack(true);
     }
 }

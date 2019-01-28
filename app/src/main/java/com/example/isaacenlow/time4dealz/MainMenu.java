@@ -71,7 +71,6 @@ public class MainMenu extends AppCompatActivity {
     private ImageButton profileButton;
     TextView[] textViews;
     boolean tracking;
-    private ImageView slot1;
     public static final String MY_PREFS = "MyPrefs";
     //Radford long = -80.5764477 lat = 37.1318
     //Sterling long = -77.405630 lat = 39.037318
@@ -93,40 +92,44 @@ public class MainMenu extends AppCompatActivity {
                 .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
                 .apply(RequestOptions.circleCropTransform())
                 .into(profileButton);
-        timerStarted = prefs.getBoolean("timer started", false);
         pointsText = findViewById(R.id.pointsEarned);
         displayPoints = findViewById(R.id.points);
         displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
+        timerStarted = prefs.getBoolean("timer started", false);
         //Log.d("checked", setTracking(); ? "true" : "false");
         BackgroundWorker backgroundWorker = new BackgroundWorker();
         backgroundWorker.execute();
 
         br = new BroadcastReceiver() {
+            int successCount = 0;
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("Success")) {
                     i = 0;
-                    if (!timerStarted) {
-                        if (prefs.getBoolean("timer started", false)) {
-                            startTime = prefs.getLong("timestarted", 0);
-                            Log.d("start time", String.valueOf(startTime));
-                        }
-                        else {
+                    if (successCount < 1) {
+                        if (!timerStarted) {
+                            editor.putBoolean("timer started", true);
+                            editor.apply();
+                            startTime = intent.getLongExtra("start time", SystemClock.uptimeMillis());
+                            handler.post(updateTimer);
+                        } else if (timerPaused) {
                             startTime = SystemClock.uptimeMillis();
+                            handler.post(updateTimer);
+                            timerPaused = false;
+                        } else {
+                            editor.putBoolean("timer started", true);
+                            editor.apply();
+                            startTime = intent.getLongExtra("start time", SystemClock.uptimeMillis());
+                            handler.post(updateTimer);
                         }
-                        handler.post(updateTimer);
-                        editor.putBoolean("timer started", true);
-                        editor.apply();
-                    }
-                    if (timerPaused) {
-                        startTime = SystemClock.uptimeMillis();
-                        handler.post(updateTimer);
-                        timerPaused = false;
+                        Log.d("onReceive Time", String.valueOf(startTime));
+                        successCount++;
                     }
                     timerText.setVisibility(View.VISIBLE);
                 }
                 else if (intent.getAction().equals("Fail")) {
                     if (i == 0) {
+                        successCount = 0;
                         timerText.setText("00:00:00");
                         timerPaused = true;
                         handler.removeCallbacks(updateTimer);
@@ -137,6 +140,9 @@ public class MainMenu extends AppCompatActivity {
                     i++;
                 }
                 else if (intent.getAction().equals("Logout")) {
+                    successCount = 0;
+                    editor.putBoolean("timer started", false);
+                    editor.apply();
                     finish();
                 }
             }
@@ -209,6 +215,7 @@ public class MainMenu extends AppCompatActivity {
 
                 handler.post(this);
                 timerText.setText(timeLeftFormatted);
+                //Log.d("timer", "COUNTING");
             }
         }
     };
@@ -229,19 +236,12 @@ public class MainMenu extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Success"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Fail"));
         LocalBroadcastManager.getInstance(this).registerReceiver(br, new IntentFilter("Logout"));
-        if (prefs.getBoolean("timer started", false)) {
-            startTime = prefs.getLong("timestarted", 0);
-            Log.d("start time", String.valueOf(startTime));
-            handler.post(updateTimer);
-        }
         pointsText = findViewById(R.id.pointsEarned);
         displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
     }
 
     protected void onPause () {
         super.onPause();
-        editor.putLong("timestarted", startTime);
-        editor.apply();
     }
 
     public void teamSchedules(View view) {
@@ -262,10 +262,13 @@ public class MainMenu extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        editor.putLong("timestarted", startTime);
-        editor.apply();
         handler.removeCallbacks(updateTimer);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
-        Log.d("Destroy", String.valueOf(startTime));
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        moveTaskToBack(true);
     }
 }

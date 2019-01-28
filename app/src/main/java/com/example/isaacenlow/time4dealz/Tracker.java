@@ -116,8 +116,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                                         && ((Double.parseDouble(item.get("latitude").getN()) - mCurrentLocation.latitude) < .001)
                                         && ((Double.parseDouble(item.get("latitude").getN()) - mCurrentLocation.latitude) > -.001)) {
                                     Intent intentTwo = new Intent("Success");
-                                    isAtEvent = true;
-                                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
                                     i = 0;
                                     if (!timerStarted) {
                                         startTime = SystemClock.uptimeMillis();
@@ -128,6 +126,9 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                                         handler.post(updateTimer);
                                         timerPaused = false;
                                     }
+                                    intentTwo.putExtra("start time", startTime);
+                                    isAtEvent = true;
+                                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
                                 }
                             }
                                 } if (!isAtEvent) {
@@ -232,14 +233,22 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         Intent intent = new Intent("Fail");
         LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
-        editor.putBoolean("timer started", false);
+        //editor.putBoolean("timer started", false);
+        //Toast.makeText(this, "Destroy", Toast.LENGTH_SHORT).show();
         if (prefs != null) {
             points = prefs.getInt("points", 0);
             editor.putInt("points", minutes + seconds + points);
             editor.putBoolean("tracking", false);
+            //editor.putLong("timestarted", SystemClock.uptimeMillis());
+            editor.apply();
         }
-        editor.apply();
         handler.removeCallbacks(updateTimer);
+    }
+
+    public interface TrackerInt {
+        long time = 0;
+        public long setTime();
+        public void getTime(long _time);
     }
 
     @Nullable
@@ -248,4 +257,3 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         return null;
     }
 }
-
