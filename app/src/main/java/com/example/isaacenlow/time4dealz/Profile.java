@@ -41,15 +41,26 @@ public class Profile extends AppCompatActivity {
        editor = prefs.edit();
 
        imageView = findViewById(R.id.image_profile);
+       String userIdUrl = "";
+       switch (prefs.getString("username", "")) {
+           case "isaac":
+               userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg";
+               break;
+           case "james":
+               userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/james_overton.jpg";
+               break;
+           case "deQuan":
+               userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/deQuan-gause.jpg";
+       }
        Glide
                .with(this)
-               .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
+               .load(userIdUrl)
                .apply(RequestOptions.circleCropTransform())
                .into(imageView);
 
        if (prefs != null)
            points = prefs.getInt("points", 0);
-       displayPoints = findViewById(R.id.pointsEarned3);
+       displayPoints = findViewById(R.id.points_profile);
        displayPoints.setText(String.valueOf(points));
    }
 

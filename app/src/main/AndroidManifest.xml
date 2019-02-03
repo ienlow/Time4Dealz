@@ -73,6 +73,12 @@
 
         </activity>
 
+        <activity
+            android:name=".CurrentGame"
+            android:label="CurrentGame">
+        </activity>
+        <activity android:name=".Roster" />
+
         <service
             android:name=".Tracker"
             android:label="Tracker">

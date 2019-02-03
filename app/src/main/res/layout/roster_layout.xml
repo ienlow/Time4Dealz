@@ -1,80 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:visibility="visible">
 
-    <Button
-        android:id="@+id/basketball_btn"
-        android:layout_width="340dp"
-        android:layout_height="50dp"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="183dp"
+        android:layout_marginTop="476dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/roster_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="146dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="405dp"
+            tools:listitem="@layout/roster_row_layout" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/gradient" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="wrap_content"
+        android:layout_height="232dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/background" />
+
+    <TextView
+        android:id="@+id/roster_sport"
+        android:layout_width="314dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="177dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="177dp"
+        android:layout_marginBottom="212dp"
+        android:background="@drawable/gradient2"
+        android:paddingStart="10dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="10dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10"
+        app:layout_constraintVertical_bias="0.286" />
+
+    <TextView
+        android:id="@+id/points_earned_roster"
+        android:layout_width="155dp"
+        android:layout_height="64dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/gradient2"
-        android:paddingStart="10dp"
-        android:text="Men's Basketball"
-        android:textAlignment="viewStart"
+        android:fontFamily="sans-serif"
+        android:text="Points Earned"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/timer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.479" />
 
-    <Button
-        android:id="@+id/soccer_btn"
-        android:layout_width="340dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="248dp"
-        android:background="@drawable/gradient2"
-        android:paddingStart="10dp"
-        android:text="Soccer"
-        android:textAlignment="viewStart"
+    <TextView
+        android:id="@+id/points_roster"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginBottom="2dp"
+        android:text="TextView"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/points_earned_roster"
+        app:layout_constraintEnd_toEndOf="@+id/points_earned_roster"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="@+id/points_earned_roster"
+        app:layout_constraintTop_toTopOf="@+id/points_earned_roster"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <Button
-        android:id="@+id/tennis_btn"
-        android:layout_width="340dp"
-        android:layout_height="50dp"
+    <ImageButton
+        android:id="@+id/profile_button_roster"
+        android:layout_width="49dp"
+        android:layout_height="37dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="152dp"
-        android:background="@drawable/gradient2"
-        android:paddingStart="10dp"
-        android:text="Tennis"
-        android:textAlignment="viewStart"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="32dp"
+        android:background="@android:color/transparent"
+        android:onClick="openProfile"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/points_roster"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/baseball_btn"
-        android:layout_width="340dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="344dp"
-        android:background="@drawable/gradient2"
-        android:paddingStart="10dp"
-        android:text="Baseball"
-        android:textAlignment="viewStart"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.example.isaacenlow.time4dealz;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import java.util.List;
@@ -25,6 +27,8 @@ public class TeamAdapter extends ArrayAdapter<Event> {
     Context context;
     Drawable drawable;
     List<Event> list;
+    String sportDate = "", opponentLocation = "";
+    int j;
 
     public TeamAdapter(Context context, int resource, List<Event> items) {
         super(context, resource, items);
@@ -52,6 +56,8 @@ public class TeamAdapter extends ArrayAdapter<Event> {
         }
         else
             holder = (Holder) view.getTag();
+        sportDate = teamItem.getSportDate();
+        opponentLocation = teamItem.getOpponentLocation();
         holder.sport_holder.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
         // https://bumptech.github.io/glide/doc/getting-started.html
         Glide

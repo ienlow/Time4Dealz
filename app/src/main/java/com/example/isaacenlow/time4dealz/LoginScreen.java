@@ -88,7 +88,9 @@ public class LoginScreen extends AppCompatActivity {
 
 
 
-        if (username.getText().toString().equals("test") && password.getText().toString().equals("password")) {
+        if ((username.getText().toString().equals("isaac")) ||
+                (username.getText().toString().equals("james")) ||
+                        (username.getText().toString().equals("deQuan")) && password.getText().toString().equals("password")) {
             if (!prefs.getBoolean("tracking", false) && prefs.getBoolean("enabled", true)) {
                 // set tracking to true and start service
                 editor.putBoolean("tracking", true);

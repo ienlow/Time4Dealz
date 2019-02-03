@@ -81,15 +81,26 @@ public class MainMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+        String userIdUrl = "";
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
+        switch (prefs.getString("username", "")) {
+            case "isaac":
+                userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg";
+                break;
+            case "james":
+                userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/james_overton.jpg";
+                break;
+            case "deQuan":
+                userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/deQuan-gause.jpg";
+        }
         timerText = findViewById(R.id.timer);
         handler = new Handler();
         textViews = new TextView[3];
         profileButton = findViewById(R.id.profileButton);
         Glide
                 .with(this)
-                .load("https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg")
+                .load(userIdUrl)
                 .apply(RequestOptions.circleCropTransform())
                 .into(profileButton);
         pointsText = findViewById(R.id.pointsEarned);
@@ -188,13 +199,23 @@ public class MainMenu extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             MainTeamAdapter adapter;
+            ArrayList<Event> tmp = teams;
+            for (int i = 0; i < tmp.size() / 2; i++) {
+                final Event event = tmp.get(i);
+                tmp.set(i, tmp.get(tmp.size() - i - 1));
+                tmp.set(tmp.size() - i - 1, event);
+            }
             RecyclerView myView = findViewById(R.id.recycler1);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            adapter = new MainTeamAdapter(getApplicationContext(), teams);
+            adapter = new MainTeamAdapter(getApplicationContext(), tmp);
             myView.setLayoutManager(layoutManager);
             myView.setAdapter(adapter);
-            Log.d("list", teams.size() + "");
+            myView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                }
+            });
         }
     }
 
@@ -210,6 +231,7 @@ public class MainMenu extends AppCompatActivity {
                 minutes = seconds / 60;
                 hours = minutes / 60;
                 seconds = seconds % 60;
+                minutes = minutes % 60;
 
                 String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
 

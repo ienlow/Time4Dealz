@@ -1,12 +1,16 @@
 package com.example.isaacenlow.time4dealz;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewOutlineProvider;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.ListView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
@@ -18,7 +22,11 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public class TeamSchedules extends AppCompatActivity {
@@ -88,6 +96,14 @@ public class TeamSchedules extends AppCompatActivity {
             ListView listView = findViewById(R.id.results);
             TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.adapter_layout, tmp);
             listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(getApplicationContext(), CurrentGame.class);
+                    intent.putExtra("info", tmp.get(i).sport_date);
+                    startActivity(intent);
+                }
+            });
             Log.d("list", teams.size() + "");
         }
     }
