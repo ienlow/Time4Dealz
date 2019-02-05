@@ -40,7 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng radford = new LatLng(37.1318, -80.5764477);
     private LatLng lebanon = new LatLng(36.896034, -82.068117);
     private LatLng dedmon = new LatLng(37.1385, -80.5416);
-    private LatLng sterling = new LatLng(39.037334, -77.401394);
+    private LatLng sterling = new LatLng(39.040899, -77.037234);
     private boolean mRequestingLocationUpdates = false;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest = new LocationRequest();

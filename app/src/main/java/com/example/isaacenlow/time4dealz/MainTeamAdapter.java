@@ -1,6 +1,7 @@
 package com.example.isaacenlow.time4dealz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -48,7 +50,7 @@ public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         Event teamItem = list.get(position);
         //Log.d("item", teamItem.getSportDate());
         holder.mTextView.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
@@ -56,6 +58,13 @@ public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyView
                 .with(context)
                 .load(teamItem.getURL())
                 .into(holder.opponentHolder);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CurrentGame.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

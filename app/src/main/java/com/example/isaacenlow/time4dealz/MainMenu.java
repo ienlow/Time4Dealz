@@ -76,6 +76,10 @@ public class MainMenu extends AppCompatActivity {
     //Sterling long = -77.405630 lat = 39.037318
     //Dedmon long = -80.5416 lat = 37.1385
 
+    public interface OnItemClickListener {
+        void onItemClick(Event event);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +209,7 @@ public class MainMenu extends AppCompatActivity {
                 tmp.set(i, tmp.get(tmp.size() - i - 1));
                 tmp.set(tmp.size() - i - 1, event);
             }
-            RecyclerView myView = findViewById(R.id.recycler1);
+            final RecyclerView myView = findViewById(R.id.recycler1);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             adapter = new MainTeamAdapter(getApplicationContext(), tmp);
@@ -214,6 +218,8 @@ public class MainMenu extends AppCompatActivity {
             myView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int position = myView.getChildLayoutPosition(view);
+
                 }
             });
         }

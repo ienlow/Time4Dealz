@@ -2,8 +2,6 @@ package com.example.isaacenlow.time4dealz;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import java.util.List;
@@ -47,15 +44,21 @@ public class TeamAdapter extends ArrayAdapter<Event> {
         Event teamItem = getItem(i);
 
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        if (view == null) {
+        if (i >= 1) {
             view = mInflater.inflate(R.layout.adapter_layout, null);
             holder = new Holder();
             holder.sport_holder = view.findViewById(R.id.place);
             holder.opponent_holder = view.findViewById(R.id.imageView2);
             view.setTag(holder);
         }
-        else
-            holder = (Holder) view.getTag();
+        else {
+            view = mInflater.inflate(R.layout.adapter_layout2, null);
+            holder = new Holder();
+            holder.sport_holder = view.findViewById(R.id.place2);
+            holder.opponent_holder = view.findViewById(R.id.imageView3);
+            view.setTag(holder);
+        }
+
         sportDate = teamItem.getSportDate();
         opponentLocation = teamItem.getOpponentLocation();
         holder.sport_holder.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
