@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class TrackerBackgroundWorker extends AsyncTask<String, Void, String> {
     Context context;
-    ScanResult scanResult;
+    private ScanResult scanResult;
     private DynamoDBMapper dynamoDBMapper;
     ArrayList<Event> teams = new ArrayList<>();
     boolean finished = false;

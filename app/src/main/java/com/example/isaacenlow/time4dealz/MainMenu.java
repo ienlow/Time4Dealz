@@ -43,6 +43,7 @@ import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,15 +71,11 @@ public class MainMenu extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private ImageButton profileButton;
     TextView[] textViews;
-    boolean tracking;
+    double latitude[] = new double[]{}, longitude[] = new double[]{};
     public static final String MY_PREFS = "MyPrefs";
     //Radford long = -80.5764477 lat = 37.1318
     //Sterling long = -77.405630 lat = 39.037318
     //Dedmon long = -80.5416 lat = 37.1385
-
-    public interface OnItemClickListener {
-        void onItemClick(Event event);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -166,6 +163,7 @@ public class MainMenu extends AppCompatActivity {
 
     private class BackgroundWorker extends AsyncTask<String, Void, String> {
         ArrayList<Event> teams = new ArrayList<>();
+        int i = 0;
 
         @Override
         protected String doInBackground(String... strings) {

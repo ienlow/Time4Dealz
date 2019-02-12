@@ -3,4 +3,5 @@
     <string name="MY_PREFS">My_Prefs</string>
     <integer name="Reward500">20</integer>
     <integer name="Reward1000">1000</integer>
+    <integer name="Reward2000">2000</integer>
 </resources>

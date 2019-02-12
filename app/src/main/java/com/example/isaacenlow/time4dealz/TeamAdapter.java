@@ -27,7 +27,7 @@ public class TeamAdapter extends ArrayAdapter<Event> {
     String sportDate = "", opponentLocation = "";
     int j;
 
-    public TeamAdapter(Context context, int resource, List<Event> items) {
+    TeamAdapter(Context context, int resource, List<Event> items) {
         super(context, resource, items);
         this.context = context;
         this.list = items;

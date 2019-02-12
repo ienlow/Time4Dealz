@@ -27,136 +27,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.479" />
 
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="349dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.221"
-        app:srcCompat="@drawable/gradient" />
-
-    <ProgressBar
-        android:id="@+id/rewardsProgress500"
-        style="@style/myProgress"
-        android:layout_width="345dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="8dp"
-        android:max="30"
-        android:minHeight="0dp"
-        android:paddingBottom="2dp"
-        android:progressBackgroundTint="@android:color/holo_red_dark"
-        android:progressTint="@android:color/holo_red_light"
-        android:theme="@style/myProgress"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-        app:layout_constraintEnd_toEndOf="@+id/redeemReward500"
-        app:layout_constraintStart_toStartOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="@+id/imageView7"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/redeemReward500"
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Redeem"
-        android:textAlignment="textStart"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.208" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="349dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.47"
-        app:srcCompat="@drawable/gradient" />
-
-    <ProgressBar
-        android:id="@+id/rewardsProgress1000"
-        style="@style/myProgress"
-        android:layout_width="345dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="8dp"
-        android:max="100"
-        android:minHeight="0dp"
-        android:paddingBottom="2dp"
-        android:progressBackgroundTint="@android:color/holo_red_dark"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/redeemReward1000"
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Redeem"
-        android:textAlignment="textStart"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="81dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="%25 off"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/rewardsProgress500"
-        app:layout_constraintEnd_toEndOf="@+id/imageView7"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="@+id/imageView7"
-        app:layout_constraintVertical_bias="0.0" />
-
     <TextView
         android:id="@+id/rewards_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:paddingBottom="2dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/pointsEarned2"
         app:layout_constraintEnd_toEndOf="@+id/pointsEarned2"
         app:layout_constraintStart_toStartOf="@+id/pointsEarned2"
         app:layout_constraintTop_toTopOf="@+id/pointsEarned2"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ListView
+        android:id="@+id/rewards_list"
+        android:layout_width="0dp"
+        android:layout_height="501dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="8dp"
+        android:divider="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

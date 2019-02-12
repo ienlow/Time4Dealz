@@ -1,9 +1,9 @@
 package com.example.isaacenlow.time4dealz;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +11,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,8 +35,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
@@ -43,6 +53,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng sterling = new LatLng(39.040899, -77.037234);
     private boolean mRequestingLocationUpdates = false;
     private LocationCallback mLocationCallback;
+    private List<LatLng> locations = new ArrayList<>();
+    private ScanResult scanResult;
     private LocationRequest mLocationRequest = new LocationRequest();
     private int i;
     private String mMapState = "Points";
@@ -53,8 +65,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        i = 0;
-        Intent intent = getIntent();
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -69,20 +79,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+        BackgroundWorker backgroundWorker = new BackgroundWorker();
+        backgroundWorker.execute();
 
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
-                    // Update UI with location data
-                    // ...
-                    //mMap.clear();
-                    LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.addCircle(new CircleOptions().center(sterling).radius(100));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(mCurrentLocation));
+                    for (int i = 0; i < locations.size(); i++) {
+                        LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        if (locations != null) {
+                            mMap.addCircle(new CircleOptions().center(locations.get(i)).radius(100));
+                        }
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(mCurrentLocation));
+                    }
                 }
             }
         };
+    }
+
+    private class BackgroundWorker extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+            ScanRequest scanRequest = new ScanRequest()
+                    .withTableName("ExampleSchool")
+                    .withAttributesToGet("active")
+                    .withAttributesToGet("latitude")
+                    .withAttributesToGet(("longitude"));
+            scanResult = dynamoDBClient.scan(scanRequest);
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(String result) {
+            super.onPostExecute(result);
+            for (Map<String, AttributeValue> item : scanResult.getItems()) {
+                if (item.get("active").getBOOL()) {
+                    locations.add(new LatLng(Double.parseDouble(item.get("latitude").getN()), Double.parseDouble(item.get("longitude").getN())));
+                }
+            }
+            Toast.makeText(getApplicationContext(), locations.size() + "", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -118,7 +158,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * Create request to update location.
      */
     protected void createLocationRequest() {
-        mLocationRequest.setInterval(10000);
+        mLocationRequest.setInterval(5000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
