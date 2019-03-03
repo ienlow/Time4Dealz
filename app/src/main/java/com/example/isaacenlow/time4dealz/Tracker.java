@@ -215,7 +215,7 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Notification";
             String description = "Start";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_NONE;
             NotificationChannel channel = new NotificationChannel("com.example.isaacenlow.time4dealz", name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance

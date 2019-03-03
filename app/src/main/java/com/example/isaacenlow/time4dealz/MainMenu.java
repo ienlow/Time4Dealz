@@ -117,7 +117,6 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("Success")) {
-                    i = 0;
                     if (successCount < 1) {
                         if (!timerStarted) {
                             editor.putBoolean("timer started", true);
@@ -140,7 +139,6 @@ public class MainMenu extends AppCompatActivity {
                     timerText.setVisibility(View.VISIBLE);
                 }
                 else if (intent.getAction().equals("Fail")) {
-                    if (i == 0) {
                         successCount = 0;
                         timerText.setText("00:00:00");
                         timerPaused = true;
@@ -148,8 +146,6 @@ public class MainMenu extends AppCompatActivity {
                         timerText.setVisibility(View.INVISIBLE);
                         editor.putBoolean("timer started", false);
                         editor.apply();
-                    }
-                    i++;
                 }
                 else if (intent.getAction().equals("Logout")) {
                     successCount = 0;

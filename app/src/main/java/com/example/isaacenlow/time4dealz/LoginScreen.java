@@ -114,6 +114,11 @@ public class LoginScreen extends AppCompatActivity {
         }
     }
 
+    public void adminPage(View view) {
+        Intent intent = new Intent(this, adminPage.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         finish();

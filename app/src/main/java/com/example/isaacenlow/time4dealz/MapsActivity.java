@@ -57,20 +57,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ScanResult scanResult;
     private LocationRequest mLocationRequest = new LocationRequest();
     private int i;
+
     private String mMapState = "Points";
     //import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper; use for db calls
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker();
+        backgroundWorker.execute();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         // Initialize Google API
         mGoogleApiClient = new GoogleApiClient
@@ -79,8 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-        BackgroundWorker backgroundWorker = new BackgroundWorker();
-        backgroundWorker.execute();
 
         mLocationCallback = new LocationCallback() {
             @Override
@@ -98,7 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
     }
 
-    private class BackgroundWorker extends AsyncTask<String, Void, String> {
+    private class BackgroundWorker extends AsyncTask<String, Void, String> implements OnMapReadyCallback {
 
         @Override
         protected String doInBackground(String... strings) {
@@ -121,7 +119,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     locations.add(new LatLng(Double.parseDouble(item.get("latitude").getN()), Double.parseDouble(item.get("longitude").getN())));
                 }
             }
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
             Toast.makeText(getApplicationContext(), locations.size() + "", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            mMap = googleMap;
+
+            // Add a marker in Radford and move the camera
+            //mMap.addMarker(new MarkerOptions().position(sterling).title("Marker in Radford"));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM));
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mMap.getCameraPosition()));
+
+            //createLocationRequest();
+
+            startLocationUpdates();
+
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            mMap.setMyLocationEnabled(true);
         }
     }
 
@@ -136,22 +165,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        // Add a marker in Radford and move the camera
-        //mMap.addMarker(new MarkerOptions().position(sterling).title("Marker in Radford"));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM));
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mMap.getCameraPosition()));
-
-        //createLocationRequest();
-
-        startLocationUpdates();
-
-        mMap.setMyLocationEnabled(true);
     }
 
     /**

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
@@ -13,6 +13,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/my_button"
+        android:elevation="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
         android:textAppearance="@android:style/TextAppearance.Material.Medium.Inverse"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
@@ -21,9 +25,12 @@
         android:id="@+id/imageView2"
         android:layout_width="20dp"
         android:layout_height="18dp"
-        android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/place"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="0dp"
         android:background="@drawable/image_view"
+        android:elevation="5dp"
         android:forceHasOverlappingRendering="true" />
 
 </RelativeLayout>

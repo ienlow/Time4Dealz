@@ -50,4 +50,12 @@
         android:text="Login"
         android:textColor="@android:color/background_light" />
 
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="adminPage"
+        android:text="Login as admin" />
+
 </LinearLayout>

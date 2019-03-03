@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class RewardsAdapter extends ArrayAdapter<RewardItem> {
         if (points >= rewardItem.points) {
             holder.redeemButton.setVisibility(View.VISIBLE);
         }
+        Log.d("RewardsItem", "Discount: " + rewardItem.discount + " points: " + rewardItem.points + " position: " + i);
         return view;
     }
 }
