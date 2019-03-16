@@ -5,12 +5,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
@@ -37,6 +35,9 @@ public class Rewards extends AppCompatActivity {
         backgroundWorker.execute();
     }
 
+    /**
+     * Get the rewards from database to load into list view adapter
+     */
     class BackgroundWorker extends AsyncTask<String, Void, String> {
         ArrayList<RewardItem> list = new ArrayList<>();
         Context context;

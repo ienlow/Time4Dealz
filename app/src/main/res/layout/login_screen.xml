@@ -51,6 +51,13 @@
         android:textColor="@android:color/background_light" />
 
     <Button
+        android:id="@+id/loginCreateAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="createAccount"
+        android:text="Create Account" />
+
+    <Button
         android:id="@+id/button8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

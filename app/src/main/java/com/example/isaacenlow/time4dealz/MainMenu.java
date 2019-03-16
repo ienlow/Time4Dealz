@@ -85,15 +85,11 @@ public class MainMenu extends AppCompatActivity {
         String userIdUrl = "";
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
-        switch (prefs.getString("username", "")) {
-            case "isaac":
-                userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg";
-                break;
-            case "james":
-                userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/james_overton.jpg";
-                break;
-            case "deQuan":
-                userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/deQuan-gause.jpg";
+        if (!prefs.getString("imageURL", "").equals("null")) {
+            userIdUrl = prefs.getString("imageURL", "");
+        }
+        else {
+            userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/radford+logo.png";
         }
         timerText = findViewById(R.id.timer);
         handler = new Handler();

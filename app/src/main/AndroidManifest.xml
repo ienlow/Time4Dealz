@@ -85,9 +85,10 @@
         </activity>
         <activity android:name=".Roster" />
 
-        <activity android:name=".adminPage"/>
+        <activity android:name=".AdminPage"/>
 
-        <activity android:name=".updateRewards"/>
+        <activity android:name=".UpdateRewards"/>
+        <activity android:name=".CreateAccount" />
 
         <service
             android:name=".Tracker"

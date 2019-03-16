@@ -2,7 +2,6 @@ package com.example.isaacenlow.time4dealz;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +18,15 @@ import java.util.ArrayList;
 public class RewardsAdapter extends ArrayAdapter<RewardItem> {
     ArrayList<RewardItem> list;
     Context context;
-    SharedPreferences preferences;
     int points;
 
+    /**
+     *
+     * @param context
+     * @param resource
+     * @param list is sorted list from Rewards.java
+     * @param points is user points from Rewards.java
+     */
     RewardsAdapter(@NonNull Context context, int resource, ArrayList<RewardItem> list, int points) {
         super(context, resource, list);
         this.list = list;
@@ -38,7 +43,6 @@ public class RewardsAdapter extends ArrayAdapter<RewardItem> {
 
     public View getView(final int i, View view, final ViewGroup viewGroup) {
         Holder holder = null;
-        RewardItem rewardItem = getItem(i);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (view == null) {
@@ -49,10 +53,6 @@ public class RewardsAdapter extends ArrayAdapter<RewardItem> {
             holder.progressBar = view.findViewById(R.id.rewardsProgress);
             holder.redeemButton = view.findViewById(R.id.redeemReward);
             holder.pointsNeeded = view.findViewById(R.id.points_needed);
-            holder.discountText.setText(rewardItem.discount);
-            holder.pointsNeeded.setText(points + " of " + rewardItem.points);
-            holder.progressBar.setMax(rewardItem.points);
-            holder.progressBar.setProgress(points);
             holder.redeemButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -60,13 +60,21 @@ public class RewardsAdapter extends ArrayAdapter<RewardItem> {
                     context.startActivity(intent);
                 }
             });
-            view.setTag(holder);
         }
         else {
             holder = (Holder) view.getTag();
         }
+        RewardItem rewardItem = getItem(i);
+        view.setTag(holder);
+        holder.discountText.setText(rewardItem.discount);
+        holder.pointsNeeded.setText(rewardItem.points + " of " + rewardItem.points);
+        holder.progressBar.setMax(rewardItem.points);
+        holder.progressBar.setProgress(points);
         if (points >= rewardItem.points) {
             holder.redeemButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.redeemButton.setVisibility(View.INVISIBLE);
         }
         Log.d("RewardsItem", "Discount: " + rewardItem.discount + " points: " + rewardItem.points + " position: " + i);
         return view;

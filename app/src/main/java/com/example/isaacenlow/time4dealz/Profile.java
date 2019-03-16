@@ -25,7 +25,7 @@ public class Profile extends AppCompatActivity {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private Button getPoints;
-    private TextView displayPoints;
+    private TextView displayPoints, userName;
     private int points = 0;
     BroadcastReceiver br;
     ImageView imageView;
@@ -42,15 +42,11 @@ public class Profile extends AppCompatActivity {
 
        imageView = findViewById(R.id.image_profile);
        String userIdUrl = "";
-       switch (prefs.getString("username", "")) {
-           case "isaac":
-               userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/20881984_1283029611819396_6052734634897167129_n+(2).jpg";
-               break;
-           case "james":
-               userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/james_overton.jpg";
-               break;
-           case "deQuan":
-               userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/deQuan-gause.jpg";
+       if (!prefs.getString("imageURL", "").equals("null")) {
+           userIdUrl = prefs.getString("imageURL", "");
+       }
+       else {
+           userIdUrl = "https://s3.amazonaws.com/timedealz-deployments-mobilehub-204377156/Icons/radford+logo.png";
        }
        Glide
                .with(this)
@@ -61,7 +57,9 @@ public class Profile extends AppCompatActivity {
        if (prefs != null)
            points = prefs.getInt("points", 0);
        displayPoints = findViewById(R.id.points_profile);
+       userName = findViewById(R.id.profileUserName);
        displayPoints.setText(String.valueOf(points));
+       userName.setText(prefs.getString("username", ""));
    }
 
    public void resetPoints(View view) {

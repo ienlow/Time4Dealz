@@ -20,7 +20,7 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 import java.util.Map;
 
-public class updateRewards extends AppCompatActivity {
+public class UpdateRewards extends AppCompatActivity {
     DynamoDBMapper dynamoDBMapper;
 
 
@@ -115,7 +115,7 @@ public class updateRewards extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Toast.makeText(updateRewards.this, "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UpdateRewards.this, "Success", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

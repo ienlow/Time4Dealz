@@ -1,31 +1,27 @@
 package com.example.isaacenlow.time4dealz;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by isaac on 2/21/2018.
@@ -39,13 +35,15 @@ public class LoginScreen extends AppCompatActivity {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private EditText username, password;
-    private DynamoDBMapper dynamoDBMapper;
     public static final String MY_PREFS = "MyPrefs";
+    AmazonDynamoDBClient dynamoDBClient;
 
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AWSMobileClient.getInstance().initialize(this).execute();
+        dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
 
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
@@ -61,7 +59,6 @@ public class LoginScreen extends AppCompatActivity {
                 startForegroundService(intent);
                 //finish();
             }
-            AWSMobileClient.getInstance().initialize(this).execute();
             Intent intent = new Intent(this, MainMenu.class);
             editor.putBoolean("logged in", true);
             editor.apply();
@@ -70,7 +67,7 @@ public class LoginScreen extends AppCompatActivity {
             finish();
         }
         else {
-            setContentView(R.layout.activity_login_screen);
+            setContentView(R.layout.login_screen);
             username = findViewById(R.id.username);
             password = findViewById(R.id.password);
             username.setText(prefs.getString("username", ""));
@@ -78,44 +75,68 @@ public class LoginScreen extends AppCompatActivity {
         }
     }
 
-    /*
-    Create Main Menu intent and save login info
-     */
     @SuppressLint("NewApi")
-    public void createMainMenu(View view) {
-
-        AWSMobileClient.getInstance().initialize(this).execute();
-
-
-
-        if ((username.getText().toString().equals("isaac")) ||
-                (username.getText().toString().equals("james")) ||
-                        (username.getText().toString().equals("deQuan")) && password.getText().toString().equals("password")) {
-            if (!prefs.getBoolean("tracking", false) && prefs.getBoolean("enabled", true)) {
-                // set tracking to true and start service
-                editor.putBoolean("tracking", true);
-                editor.putBoolean("enabled", true);
-                editor.apply();
-                AWSMobileClient.getInstance().initialize(this).execute();
-                Intent intent = new Intent(this, Tracker.class);
-                startForegroundService(intent);
+    class BackgroundWorker extends AsyncTask<String, Void, String>
+    {
+        private String match = "false";
+        @Override
+        protected String doInBackground(String... strings) {
+            ScanRequest scanRequest = new ScanRequest()
+                    .withTableName("ExampleSchoolUserAccounts")
+                    .withAttributesToGet("userID")
+                    .withAttributesToGet("password")
+                    .withAttributesToGet("imageURL");
+            ScanResult scanResult = dynamoDBClient.scan(scanRequest);
+            for (Map<String, AttributeValue> item : scanResult.getItems()) {
+                if (username.getText().toString().equals(item.get("userID").getS())
+                        && password.getText().toString().equals(item.get("password").getS())) {
+                    if (!prefs.getBoolean("tracking", false) && prefs.getBoolean("enabled", true)) {
+                        // set tracking to true and start service
+                        editor.putBoolean("tracking", true);
+                        editor.putBoolean("enabled", true);
+                        editor.apply();
+                        Intent intent = new Intent(getApplicationContext(), Tracker.class);
+                        startForegroundService(intent);
+                    }
+                    Intent  intent = new Intent(getApplicationContext(), MainMenu.class);
+                    editor.putBoolean("logged in", true); // set logged in to true
+                    editor.putString("username", username.getText().toString()); // save username and password
+                    editor.putString("password", password.getText().toString());
+                    editor.putString("imageURL", item.get("imageURL").getS());
+                    editor.apply();
+                    Log.d("createMainMenu", "activity started");
+                    startActivity(intent);
+                    finish();
+                    match = "true";
+                }
             }
-            Intent  intent = new Intent(this, MainMenu.class);
-            editor.putBoolean("logged in", true); // set logged in to true
-            editor.putString("username", username.getText().toString()); // save username and password
-            editor.putString("password", password.getText().toString());
-            editor.apply();
-            Log.d("createMainMenu", "activity started");
-            startActivity(intent);
-            finish();
+            return match;
         }
-        else {
-            Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (match.equals("false")) {
+                Toast.makeText(LoginScreen.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
+    /*
+    Create Main Menu intent and save login info
+     */
+    public void createMainMenu(View view) {
+        BackgroundWorker backgroundWorker = new BackgroundWorker();
+        backgroundWorker.execute();
+    }
+
     public void adminPage(View view) {
-        Intent intent = new Intent(this, adminPage.class);
+        Intent intent = new Intent(this, AdminPage.class);
+        startActivity(intent);
+    }
+
+    public void createAccount(View view) {
+        Intent intent = new Intent(this, CreateAccount.class);
         startActivity(intent);
     }
 
