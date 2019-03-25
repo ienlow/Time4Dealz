@@ -67,7 +67,7 @@ public class RewardsAdapter extends ArrayAdapter<RewardItem> {
         RewardItem rewardItem = getItem(i);
         view.setTag(holder);
         holder.discountText.setText(rewardItem.discount);
-        holder.pointsNeeded.setText(rewardItem.points + " of " + rewardItem.points);
+        holder.pointsNeeded.setText(points + " of " + rewardItem.points);
         holder.progressBar.setMax(rewardItem.points);
         holder.progressBar.setProgress(points);
         if (points >= rewardItem.points) {

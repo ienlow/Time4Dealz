@@ -53,7 +53,7 @@ public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         Event teamItem = list.get(position);
         //Log.d("item", teamItem.getSportDate());
-        holder.mTextView.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
+        //holder.mTextView.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
         Glide
                 .with(context)
                 .load(teamItem.getURL())

@@ -40,6 +40,16 @@ public class CreateAccount extends AppCompatActivity {
         private String userName = "";
         private String password = "";
         private String imageURL = "";
+        private int points = 0;
+
+        @DynamoDBAttribute(attributeName = "userPoints")
+        public int getPoints() {
+            return points;
+        }
+
+        public void setPoints(int points) {
+            this.points = points;
+        }
 
         @DynamoDBAttribute(attributeName = "imageURL")
         public String getImageURL() {
@@ -83,6 +93,7 @@ public class CreateAccount extends AppCompatActivity {
             util.setUserName(userName.getText().toString());
             util.setPassword(password.getText().toString());
             util.setImageURL("null");
+            util.setPoints(0);
             new Thread(new Runnable() {
                 @Override
                 public void run() {

@@ -85,7 +85,8 @@ public class LoginScreen extends AppCompatActivity {
                     .withTableName("ExampleSchoolUserAccounts")
                     .withAttributesToGet("userID")
                     .withAttributesToGet("password")
-                    .withAttributesToGet("imageURL");
+                    .withAttributesToGet("imageURL")
+                    .withAttributesToGet("userPoints");
             ScanResult scanResult = dynamoDBClient.scan(scanRequest);
             for (Map<String, AttributeValue> item : scanResult.getItems()) {
                 if (username.getText().toString().equals(item.get("userID").getS())
@@ -103,6 +104,7 @@ public class LoginScreen extends AppCompatActivity {
                     editor.putString("username", username.getText().toString()); // save username and password
                     editor.putString("password", password.getText().toString());
                     editor.putString("imageURL", item.get("imageURL").getS());
+                    editor.putInt("points", Integer.valueOf(item.get("userPoints").getN()));
                     editor.apply();
                     Log.d("createMainMenu", "activity started");
                     startActivity(intent);

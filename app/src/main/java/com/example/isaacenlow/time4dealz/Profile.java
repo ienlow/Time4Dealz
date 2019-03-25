@@ -68,7 +68,7 @@ public class Profile extends AppCompatActivity {
            editor.putInt("points", 0);
            editor.apply();
        }
-       points = prefs.getInt("points", 0);
+       points = 0;
    }
 
    public void getPoints(View view) {

@@ -47,9 +47,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 
 import static java.security.AccessController.getContext;
 
@@ -178,9 +180,25 @@ public class MainMenu extends AppCompatActivity {
             for (Map<String, AttributeValue> item : result.getItems()) {
                 // Create new event for every item and format here
                 try {
-                    Event one = new Event("            " + (item.get("sport").getS()) + "                 " + (item.get("date").getS()), "\n                  " + (item.get("playing_against").getS())
-                            + "\n                  " + item.get("location").getS()
-                            + "\n                  " + item.get("time").getS(), item.get("URL").getS());
+                    int year = 0, month = 0, day = 0;
+                    Calendar calendar = Calendar.getInstance();
+                    Scanner scanner = new Scanner(item.get("date").getS());
+                    scanner.useDelimiter("/");
+                    if (scanner.hasNext()) {
+                        month = Integer.valueOf(scanner.next());
+                        day = Integer.valueOf(scanner.next());
+                        year = Integer.valueOf(scanner.next());
+                        Log.d("DATE_ADAPTER: ", String.valueOf(year) + " " + String.valueOf(month) + " " + String.valueOf(day));
+                    }
+                    calendar.set(year, month, day);
+                    Event one = new Event(
+                            item.get("sport").getS(),
+                            item.get("date").getS(),
+                            item.get("playing_against").getS(),
+                            item.get("location").getS(),
+                            item.get("time").getS(),
+                            item.get("URL").getS(),
+                            calendar);
                     teams.add(one);
                     //Log.d("Item", one.getPlace());
                 } catch (Exception e) {

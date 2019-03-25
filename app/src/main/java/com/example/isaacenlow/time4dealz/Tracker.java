@@ -236,8 +236,8 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         //editor.putBoolean("timer started", false);
         //Toast.makeText(this, "Destroy", Toast.LENGTH_SHORT).show();
         if (prefs != null) {
-            points = prefs.getInt("points", 0);
-            editor.putInt("points", minutes + seconds + points);
+            points = prefs.getInt("points", 0) + minutes + seconds ;
+            editor.putInt("points", points);
             editor.putBoolean("tracking", false);
             //editor.putLong("timestarted", SystemClock.uptimeMillis());
             editor.apply();
