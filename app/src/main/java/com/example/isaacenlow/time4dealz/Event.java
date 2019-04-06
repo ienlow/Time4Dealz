@@ -18,8 +18,9 @@ public class Event {
     String time;
     String URL;
     Calendar calendar;
+    int type;
 
-    public Event(String _sport, String _date, String _opponent, String _location, String _time, String _URL, Calendar calendar) {
+    public Event(String _sport, String _date, String _opponent, String _location, String _time, String _URL, Calendar calendar, int type) {
         this.sport = _sport;
         this.date = _date;
         this.opponent = _opponent;
@@ -27,6 +28,7 @@ public class Event {
         this.time = _time;
         this.URL = _URL;
         this.calendar = calendar;
+        this.type = type;
     }
 
     public String getSport() {
@@ -54,4 +56,6 @@ public class Event {
     }
 
     public Calendar getCalendar() {return calendar;}
+
+    public int getType() {return type;}
 }

@@ -52,6 +52,7 @@ public class LoginScreen extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 123);
 
         if (prefs.getBoolean("logged in", false)) {
+            // if there isn't already a tracking service running and tracking prefs is set to true
             if (!prefs.getBoolean("tracking", false) && (prefs.getBoolean("enabled", false))) {
                 editor.putBoolean("tracking", true);
                 editor.apply();

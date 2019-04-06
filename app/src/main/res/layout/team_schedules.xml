@@ -16,7 +16,7 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
-        android:dividerHeight="25dp"
+        android:dividerHeight="0dp"
         android:fadingEdge="vertical"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"

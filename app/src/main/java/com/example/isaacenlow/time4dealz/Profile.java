@@ -17,6 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -31,11 +39,23 @@ public class Profile extends AppCompatActivity {
     ImageView imageView;
     private Button trackingButton;
     public static final String MY_PREFS = "MyPrefs";
+    DynamoDBMapper dynamoDBMapper;
+    AmazonDynamoDBClient dynamoDBClient;
 
-   @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
        setContentView(R.layout.profile);
+
+       AWSMobileClient.getInstance().initialize(this).execute();
+        dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+
+
+       dynamoDBMapper = DynamoDBMapper
+               .builder()
+               .dynamoDBClient(dynamoDBClient)
+               .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+               .build();
 
        prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
        editor = prefs.edit();
@@ -62,6 +82,31 @@ public class Profile extends AppCompatActivity {
        userName.setText(prefs.getString("username", ""));
    }
 
+    @DynamoDBTable(tableName = "ExampleSchoolUserAccounts")
+   public class SavePoints {
+        private String userName = "";
+        private int points = 0;
+
+        @DynamoDBAttribute(attributeName = "userPoints")
+        public int getPoints() {
+            return points;
+        }
+
+        public void setPoints(int points) {
+            this.points = points;
+        }
+
+        @DynamoDBHashKey(attributeName = "userID")
+        @DynamoDBAttribute(attributeName = "userID")
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+   }
+
    public void resetPoints(View view) {
        setContentView(R.layout.profile);
        if (prefs != null) {
@@ -79,6 +124,16 @@ public class Profile extends AppCompatActivity {
         editor.putBoolean("logged in", false);
         editor.putBoolean("timer started", false);
         editor.apply();
+        final String userName = prefs.getString("username", "");
+       final SavePoints accountUtil = new SavePoints();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                accountUtil.setPoints(points);
+                accountUtil.setUserName(userName);
+                dynamoDBMapper.save(accountUtil);
+            }
+        }).start();
         Intent intent = new Intent(this, Tracker.class);
         stopService(intent);
 

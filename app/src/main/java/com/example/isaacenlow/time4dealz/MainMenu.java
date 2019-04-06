@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -72,7 +73,9 @@ public class MainMenu extends AppCompatActivity {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private ImageButton profileButton;
-    TextView[] textViews;
+    ArrayList<Event> orderedEvents = new ArrayList<>();
+    ArrayList<Event> upcomingEvents = new ArrayList<>();
+    ArrayList<Event> currentEvents = new ArrayList<>();
     double latitude[] = new double[]{}, longitude[] = new double[]{};
     public static final String MY_PREFS = "MyPrefs";
     //Radford long = -80.5764477 lat = 37.1318
@@ -95,7 +98,6 @@ public class MainMenu extends AppCompatActivity {
         }
         timerText = findViewById(R.id.timer);
         handler = new Handler();
-        textViews = new TextView[3];
         profileButton = findViewById(R.id.profileButton);
         Glide
                 .with(this)
@@ -198,7 +200,7 @@ public class MainMenu extends AppCompatActivity {
                             item.get("location").getS(),
                             item.get("time").getS(),
                             item.get("URL").getS(),
-                            calendar);
+                            calendar, 0);
                     teams.add(one);
                     //Log.d("Item", one.getPlace());
                 } catch (Exception e) {
@@ -211,16 +213,78 @@ public class MainMenu extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             MainTeamAdapter adapter;
-            ArrayList<Event> tmp = teams;
-            for (int i = 0; i < tmp.size() / 2; i++) {
-                final Event event = tmp.get(i);
-                tmp.set(i, tmp.get(tmp.size() - i - 1));
-                tmp.set(tmp.size() - i - 1, event);
+            Calendar calendar = Calendar.getInstance();
+            DatePicker datePicker = new DatePicker(getApplicationContext());
+            // order the events
+            for (int i = 0; i < teams.size(); i++) {
+                for (int j = 0; j < teams.size()-i-1; j++) {
+                    int month1 = 0, month2 = 0, year1 = 0, year2 = 0, day1 = 0, day2 = 0, hour1 = 0, hour2 = 0, minute1 = 0, minute2 = 0;
+                    Scanner scanner = new Scanner(teams.get(j).date);
+                    Scanner scanner1 = new Scanner((teams.get(j).time));
+                    scanner.useDelimiter("/");
+                    scanner1.useDelimiter(":");
+                    if (scanner.hasNext()) {
+                        month1 = Integer.valueOf(scanner.next());
+                        day1 = Integer.valueOf(scanner.next());
+                        year1 = Integer.valueOf(scanner.next());
+                    }
+                    if (scanner1.hasNext()) {
+                        hour1 = Integer.valueOf(scanner1.next());
+                        minute1 = Integer.valueOf(scanner1.next());
+                    }
+                    scanner = new Scanner(teams.get(j+1).date);
+                    scanner1 = new Scanner(teams.get(j+1).time);
+                    scanner.useDelimiter("/");
+                    scanner1.useDelimiter(":");
+                    if (scanner.hasNext()) {
+                        month2 = Integer.valueOf(scanner.next());
+                        day2 = Integer.valueOf(scanner.next());
+                        year2 = Integer.valueOf(scanner.next());
+                    }
+                    if (scanner1.hasNext()) {
+                        hour2 = Integer.valueOf(scanner1.next());
+                        minute2 = Integer.valueOf(scanner1.next());
+                    }
+                    scanner1.close();
+                    scanner.close();
+                    Calendar calendar1 = Calendar.getInstance();
+                    Calendar calendar2 = Calendar.getInstance();
+                    calendar1.set(year1, month1, day1, hour1, minute1);
+                    calendar2.set(year2, month2, day2, hour2, minute2);
+                    if (calendar1.after(calendar2)) {
+                        final Event tmpCal = teams.get(j);
+                        teams.set(j, teams.get(j+1));
+                        teams.set(j+1, tmpCal);
+                    }
+                    //Log.d("DATE_ORDERED: ", String.valueOf(year1) + " " + String.valueOf(month1) + " " + String.valueOf(day1));
+                }
+            }
+
+            for (int i = 0; i < teams.size(); i++) {
+                int month = 0, year = 0, day = 0;
+                Calendar calendar1 = Calendar.getInstance();
+                Scanner scanner = new Scanner(teams.get(i).date);
+                scanner.useDelimiter("/");
+                if (scanner.hasNext()) {
+                    month = Integer.valueOf(scanner.next()) - 1;
+                    day = Integer.valueOf(scanner.next());
+                    year = Integer.valueOf(scanner.next());
+                    Log.d("DATE1: ", String.valueOf(year) + " " + String.valueOf(month) + " " + String.valueOf(day));
+                }
+                scanner.close();
+                calendar1.set(year, month, day);
+                if ((datePicker.getMonth() == month &&
+                        datePicker.getYear() == year &&
+                        datePicker.getDayOfMonth() == day)) {
+                    orderedEvents.add(teams.get(i));
+                } else if (calendar1.after(calendar)) {
+                    orderedEvents.add(teams.get(i));
+                }
             }
             final RecyclerView myView = findViewById(R.id.recycler1);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            adapter = new MainTeamAdapter(getApplicationContext(), tmp);
+            adapter = new MainTeamAdapter(getApplicationContext(), orderedEvents);
             myView.setLayoutManager(layoutManager);
             myView.setAdapter(adapter);
             myView.setOnClickListener(new View.OnClickListener() {

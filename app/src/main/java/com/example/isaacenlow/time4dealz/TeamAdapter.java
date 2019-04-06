@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,19 +28,31 @@ import java.util.Scanner;
  */
 public class TeamAdapter extends ArrayAdapter<Event> {
     Context context;
-    Drawable drawable;
-    List<Event> list;
-    String sportDate = "", opponentLocation = "";
-    int j;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+    List<Event> teams;
 
-    TeamAdapter(Context context, int resource, List<Event> items, SharedPreferences preferences, SharedPreferences.Editor editor) {
-        super(context, resource, items);
+    /**
+     * Get number of layouts being used
+     * @return
+     */
+    @Override
+    public int getViewTypeCount() {
+        return 3;
+    }
+
+    /**
+     * Get the position type
+     * @param position
+     * @return
+     */
+    @Override
+    public int getItemViewType(int position) {
+        return teams.get(position).type;
+    }
+
+    TeamAdapter(Context context, int resource, List<Event> teams) {
+        super(context, resource, teams);
         this.context = context;
-        this.list = items;
-        this.preferences = preferences;
-        this.editor = editor;
+        this.teams = teams;
     }
 
     public class Holder {
@@ -54,28 +64,20 @@ public class TeamAdapter extends ArrayAdapter<Event> {
         ImageView opponentimage_holder;
         TextView place;
         TextView upcoming_events;
-        TextView current_event;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Holder holder = null;
-
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        if (i < 1) {
-            view = mInflater.inflate(R.layout.adapter_layout2, null);
-            holder = new Holder();
-            holder.current_event = view.findViewById(R.id.current_event);
-            holder.sport_holder = view.findViewById(R.id.team_sport2);
-            holder.date_holder = view.findViewById(R.id.team_date2);
-            holder.opponent_holder = view.findViewById(R.id.team_opponent2);
-            holder.location_holder = view.findViewById(R.id.team_location2);
-            holder.time_holder = view.findViewById(R.id.team_time2);
-            holder.opponentimage_holder = view.findViewById(R.id.imageView3);
-            holder.place = view.findViewById(R.id.place2);
-        }
-        else {
-            view = mInflater.inflate(R.layout.adapter_layout, null);
+        if (view == null) {
+            if (teams.get(i).type == 1) {
+                view = mInflater.inflate(R.layout.current_events_adapter, null);
+            } else if (teams.get(i).type == 2) {
+                view = mInflater.inflate(R.layout.upcoming_events_adapter, null);
+            } else {
+                view = mInflater.inflate(R.layout.team_schedules_adapter, null);
+            }
             holder = new Holder();
             holder.upcoming_events = view.findViewById(R.id.upcoming_events);
             holder.sport_holder = view.findViewById(R.id.team_sport);
@@ -85,32 +87,36 @@ public class TeamAdapter extends ArrayAdapter<Event> {
             holder.time_holder = view.findViewById(R.id.team_time);
             holder.opponentimage_holder = view.findViewById(R.id.imageView);
             holder.place = view.findViewById(R.id.place);
+            view.setTag(holder);
+        } else {
+            holder = (Holder) view.getTag();
         }
 
-        Event teamItem = getItem(i);
-        Calendar calendar1 = Calendar.getInstance();
-        view.setTag(holder);
-        if (preferences.getBoolean("show upcoming", false) && list.get(++i).getCalendar().after(calendar1)) {
-            holder.upcoming_events.setVisibility(View.VISIBLE);
-            editor.putBoolean("show upcoming", false);
-            editor.apply();
-        } else if (teamItem.getCalendar().before(calendar1) && holder.upcoming_events != null){
-            holder.upcoming_events.setVisibility(View.GONE);
-            editor.putBoolean("show upcoming", true);
-            editor.apply();
-        }
-        holder.sport_holder.setText(teamItem.getSport());
-        holder.date_holder.setText(teamItem.getDate());
-        if (holder.opponent_holder != null) {
-            holder.opponent_holder.setText(teamItem.getOpponent());
-            holder.location_holder.setText(teamItem.getLocation());
-            holder.time_holder.setText(teamItem.getTime());
+        if (holder != null) {
+            holder.sport_holder.setText(teams.get(i).getSport());
+            holder.date_holder.setText(teams.get(i).getDate());
+            holder.opponent_holder.setText(teams.get(i).getOpponent());
+            holder.location_holder.setText(teams.get(i).getLocation());
+            int hour = 0, minute = 0;
+            Scanner scanner = new Scanner(teams.get(i).getTime());
+            scanner.useDelimiter(":");
+            if (scanner.hasNext()) {
+                hour = Integer.valueOf(scanner.next());
+                minute = Integer.valueOf(scanner.next());
+            }
+            if (hour > 12 && minute == 0) {
+                hour -= 12;
+                holder.time_holder.setText(String.valueOf(hour + ":" + minute + "0 PM"));
+            } else if (hour == 12 && minute == 0) {
+                holder.time_holder.setText(String.valueOf(hour + ":" + minute + "0 PM"));
+            }
+            scanner.close();
+            Glide
+                    .with(context)
+                    .load(teams.get(i).getURL())
+                    .into(holder.opponentimage_holder);
         }
         // https://bumptech.github.io/glide/doc/getting-started.html
-        Glide
-                .with(context)
-                .load(teamItem.getURL())
-                .into(holder.opponentimage_holder);
         return view;
     }
 }

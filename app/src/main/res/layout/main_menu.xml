@@ -175,8 +175,8 @@
             android:layout_width="match_parent"
             android:layout_height="107dp"
             android:orientation="horizontal"
-            android:visibility="visible"
             tools:context=".MainMenu"
+            tools:itemCount="1"
             tools:listitem="@layout/recycler_row">
 
         </android.support.v7.widget.RecyclerView>

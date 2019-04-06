@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyViewHolder> {
     Context context;
@@ -25,12 +26,24 @@ public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyView
     LayoutInflater inflater;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
-        public ImageView opponentHolder;
+        TextView sport_holder;
+        TextView date_holder;
+        TextView opponent_holder;
+        TextView location_holder;
+        TextView time_holder;
+        ImageView opponentimage_holder;
+        TextView place;
+        TextView upcoming_events;
         public MyViewHolder(View v) {
             super(v);
-            mTextView = v.findViewById(R.id.row1);
-            opponentHolder = v.findViewById(R.id.row2);
+            upcoming_events = v.findViewById(R.id.upcoming_events);
+            sport_holder = v.findViewById(R.id.team_sport);
+            date_holder = v.findViewById(R.id.team_date);
+            opponent_holder = v.findViewById(R.id.team_opponent);
+            location_holder = v.findViewById(R.id.team_location);
+            time_holder = v.findViewById(R.id.team_time);
+            opponentimage_holder = v.findViewById(R.id.imageView);
+            place = v.findViewById(R.id.place);
         }
     }
 
@@ -54,10 +67,28 @@ public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyView
         Event teamItem = list.get(position);
         //Log.d("item", teamItem.getSportDate());
         //holder.mTextView.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
+        holder.sport_holder.setText(list.get(position).getSport());
+        holder.date_holder.setText(list.get(position).getDate());
+        holder.opponent_holder.setText(list.get(position).getOpponent());
+        holder.location_holder.setText(list.get(position).getLocation());
+        int hour = 0, minute = 0;
+        Scanner scanner = new Scanner(list.get(position).getTime());
+        scanner.useDelimiter(":");
+        if (scanner.hasNext()) {
+            hour = Integer.valueOf(scanner.next());
+            minute = Integer.valueOf(scanner.next());
+        }
+        if (hour > 12 && minute == 0) {
+            hour -= 12;
+            holder.time_holder.setText(String.valueOf(hour + ":" + minute + "0 PM"));
+        } else if (hour == 12 && minute == 0) {
+            holder.time_holder.setText(String.valueOf(hour + ":" + minute + "0 PM"));
+        }
+        scanner.close();
         Glide
                 .with(context)
                 .load(teamItem.getURL())
-                .into(holder.opponentHolder);
+                .into(holder.opponentimage_holder);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

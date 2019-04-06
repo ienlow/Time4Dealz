@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/upcoming_events"
@@ -12,17 +12,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="110dp"
-        android:layout_marginBottom="-12dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="10dp"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:text="Upcoming Events"
+        android:text="UPCOMING EVENTS"
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="206dp"
+        tools:layout_editor_absoluteY="16dp" />
+
 
     <TextView
         android:id="@+id/place"
@@ -32,8 +34,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="-120dp"
         android:background="@drawable/my_button"
         android:elevation="5dp"
         android:paddingStart="5dp"
@@ -47,16 +50,16 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="17dp"
-        android:layout_height="16dp"
+        android:layout_width="27dp"
+        android:layout_height="20dp"
         android:layout_alignStart="@+id/place"
         android:layout_alignTop="@+id/place"
         android:layout_alignEnd="@+id/place"
         android:layout_alignBottom="@+id/place"
         android:layout_marginStart="6dp"
         android:layout_marginTop="3dp"
-        android:layout_marginEnd="369dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginEnd="359dp"
+        android:layout_marginBottom="68dp"
         android:background="@drawable/image_view"
         android:elevation="5dp"
         android:forceHasOverlappingRendering="true" />
@@ -72,7 +75,6 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="53dp"
         android:layout_marginBottom="60dp"
-        android:layout_toStartOf="@+id/team_date2"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -81,13 +83,12 @@
         android:id="@+id/team_date"
         android:layout_width="112dp"
         android:layout_height="15dp"
-        android:layout_alignStart="@+id/imageView2"
         android:layout_alignTop="@+id/place"
         android:layout_alignEnd="@+id/place"
         android:layout_alignBottom="@+id/place"
         android:layout_marginStart="38dp"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="11dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="60dp"
         android:elevation="5dp"
         android:text="TextView"
@@ -102,7 +103,7 @@
         android:layout_alignEnd="@+id/place"
         android:layout_marginStart="137dp"
         android:layout_marginTop="21dp"
-        android:layout_marginEnd="94dp"
+        android:layout_marginEnd="95dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -116,7 +117,7 @@
         android:layout_alignEnd="@+id/place"
         android:layout_marginStart="137dp"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="94dp"
+        android:layout_marginEnd="95dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -136,5 +137,4 @@
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
-
 </RelativeLayout>
