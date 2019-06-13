@@ -16,4 +16,9 @@ public class AdminPage extends AppCompatActivity {
         Intent intent = new Intent(this, UpdateRewards.class);
         startActivity(intent);
     }
+
+    public void updateEvent(View view) {
+        Intent intent = new Intent(this, UpdateEvent.class);
+        startActivity(intent);
+    }
 }

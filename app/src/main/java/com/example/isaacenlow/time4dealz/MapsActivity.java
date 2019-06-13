@@ -4,10 +4,10 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,7 +28,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,7 +43,6 @@ import java.util.Map;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
-    private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient mFusedLocationClient;
     private int DEFAULT_ZOOM = 15;
     private LatLng radford = new LatLng(37.1318, -80.5764477);
@@ -55,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationCallback mLocationCallback;
     private List<LatLng> locations = new ArrayList<>();
     private ScanResult scanResult;
-    private LocationRequest mLocationRequest = new LocationRequest();
+    private LocationRequest mLocationRequest = LocationRequest.create();
     private int i;
 
     private String mMapState = "Points";
@@ -70,15 +68,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
-        // Initialize Google API
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
 
         mLocationCallback = new LocationCallback() {
             @Override
@@ -136,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM));
             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mMap.getCameraPosition()));
 
-            //createLocationRequest();
+            createLocationRequest();
 
             startLocationUpdates();
 
@@ -227,13 +216,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
         Log.i("Stop", "connection");
     }
 }

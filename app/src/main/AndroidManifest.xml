@@ -89,6 +89,8 @@
 
         <activity android:name=".UpdateRewards"/>
         <activity android:name=".CreateAccount" />
+        <activity android:name=".CreateEvent" />
+        <activity android:name=".UpdateEvent"/>
 
         <service
             android:name=".Tracker"

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -37,7 +38,7 @@ public class Profile extends AppCompatActivity {
     private int points = 0;
     BroadcastReceiver br;
     ImageView imageView;
-    private Button trackingButton;
+    private Button profileAdminBtn;
     public static final String MY_PREFS = "MyPrefs";
     DynamoDBMapper dynamoDBMapper;
     AmazonDynamoDBClient dynamoDBClient;
@@ -74,77 +75,38 @@ public class Profile extends AppCompatActivity {
                .apply(RequestOptions.circleCropTransform())
                .into(imageView);
 
-       if (prefs != null)
-           points = prefs.getInt("points", 0);
        displayPoints = findViewById(R.id.points_profile);
        userName = findViewById(R.id.profileUserName);
-       displayPoints.setText(String.valueOf(points));
+       displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
        userName.setText(prefs.getString("username", ""));
-   }
+       profileAdminBtn = findViewById(R.id.profileAdminBtn);
 
-    @DynamoDBTable(tableName = "ExampleSchoolUserAccounts")
-   public class SavePoints {
-        private String userName = "";
-        private int points = 0;
 
-        @DynamoDBAttribute(attributeName = "userPoints")
-        public int getPoints() {
-            return points;
-        }
-
-        public void setPoints(int points) {
-            this.points = points;
-        }
-
-        @DynamoDBHashKey(attributeName = "userID")
-        @DynamoDBAttribute(attributeName = "userID")
-        public String getUserName() {
-            return userName;
-        }
-
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
-   }
-
-   public void resetPoints(View view) {
-       setContentView(R.layout.profile);
-       if (prefs != null) {
-           editor.putInt("points", 0);
-           editor.apply();
-       }
-       points = 0;
    }
 
    public void getPoints(View view) {
        Toast.makeText(this, String.valueOf(points), Toast.LENGTH_SHORT).show();
    }
 
-   public void logout(View view) {
-        editor.putBoolean("logged in", false);
-        editor.putBoolean("timer started", false);
-        editor.apply();
-        final String userName = prefs.getString("username", "");
-       final SavePoints accountUtil = new SavePoints();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                accountUtil.setPoints(points);
-                accountUtil.setUserName(userName);
-                dynamoDBMapper.save(accountUtil);
-            }
-        }).start();
-        Intent intent = new Intent(this, Tracker.class);
-        stopService(intent);
+   public void adminPage(View view) {
+        Intent intent = new Intent(this, AdminPage.class);
+        startActivity(intent);
+   }
 
-        // Restart app
+   public void logout(View view) {
+       Intent intent = new Intent(getBaseContext(), Tracker.class);
+       stopService(intent);
+       editor.putBoolean("logged in", false);
+       editor.putBoolean("timer started", false);
+       editor.apply();
+       // Restart app
        Intent i = getBaseContext().getPackageManager()
                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
        intent = new Intent("Logout");
-       LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
+       LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intent);
        startActivity(i);
-       i = new Intent(this, LoginScreen.class);
+       i = new Intent(getApplicationContext(), LoginScreen.class);
        startActivity(i);
        finish();
    }

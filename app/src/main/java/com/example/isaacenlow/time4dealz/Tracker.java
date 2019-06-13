@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -24,7 +25,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -91,65 +95,81 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                 .build();
 
-        final TrackerBackgroundWorker trackerBackgroundWorker = new TrackerBackgroundWorker(this);
-        trackerBackgroundWorker.execute("");
+        TrackerBackgroundWorker trackerBackgroundWorker = new TrackerBackgroundWorker();
+        trackerBackgroundWorker.execute();
 
         locationItem = new LocationsDO();
-        while (!trackerBackgroundWorker.isFinished()) {
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) { }
+    }
+
+    class TrackerBackgroundWorker extends AsyncTask<String, Void, String> {
+        ScanResult scanResult;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+            ScanRequest scanRequest = new ScanRequest()
+                    .withTableName("ExampleSchool")
+                    .withAttributesToGet("active")
+                    .withAttributesToGet("latitude")
+                    .withAttributesToGet(("longitude"));
+            scanResult = dynamoDBClient.scan(scanRequest);
+            return null;
         }
-        mLocationCallback = new LocationCallback() {
-            ScanResult scanResult = trackerBackgroundWorker.getItems();
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                for (Location location : locationResult.getLocations()) {
-                    Boolean isAtEvent = false;
-                    LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    try {
-                        for (Map<String, AttributeValue> item : scanResult.getItems()) {
-                            if (item.get("active").getBOOL()) {
-                                Log.d("Test", item.get("latitude").getN() + " " + item.get("longitude").getN());
-                                if (((Double.parseDouble(item.get("longitude").getN()) - mCurrentLocation.longitude) < .001)
-                                        && ((Double.parseDouble(item.get("longitude").getN()) - mCurrentLocation.longitude) > -.001)
-                                        && ((Double.parseDouble(item.get("latitude").getN()) - mCurrentLocation.latitude) < .001)
-                                        && ((Double.parseDouble(item.get("latitude").getN()) - mCurrentLocation.latitude) > -.001)) {
-                                    Intent intentTwo = new Intent("Success");
-                                    i = 0;
-                                    if (!timerStarted) {
-                                        startTime = SystemClock.uptimeMillis();
-                                        handler.post(updateTimer);
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            mLocationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    for (Location location : locationResult.getLocations()) {
+                        Boolean isAtEvent = false;
+                        LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        try {
+                            for (Map<String, AttributeValue> item : scanResult.getItems()) {
+                                if (item.get("active").getBOOL()) {
+                                    Log.d("Test", item.get("latitude").getN() + " " + item.get("longitude").getN());
+                                    if (((Double.parseDouble(item.get("longitude").getN()) - mCurrentLocation.longitude) < .001)
+                                            && ((Double.parseDouble(item.get("longitude").getN()) - mCurrentLocation.longitude) > -.001)
+                                            && ((Double.parseDouble(item.get("latitude").getN()) - mCurrentLocation.latitude) < .001)
+                                            && ((Double.parseDouble(item.get("latitude").getN()) - mCurrentLocation.latitude) > -.001)) {
+                                        Intent intentTwo = new Intent("Success");
+                                        i = 0;
+                                        if (!timerStarted) {
+                                            startTime = SystemClock.uptimeMillis();
+                                            handler.post(updateTimer);
+                                        }
+                                        if (timerPaused) {
+                                            startTime = SystemClock.uptimeMillis();
+                                            handler.post(updateTimer);
+                                            timerPaused = false;
+                                        }
+                                        intentTwo.putExtra("start time", startTime);
+                                        isAtEvent = true;
+                                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
                                     }
-                                    if (timerPaused) {
-                                        startTime = SystemClock.uptimeMillis();
-                                        handler.post(updateTimer);
-                                        timerPaused = false;
-                                    }
-                                    intentTwo.putExtra("start time", startTime);
-                                    isAtEvent = true;
-                                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
                                 }
+                            } if (!isAtEvent) {
+                                Intent intent = new Intent("Fail");
+                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intent);
+                                if (i == 0) {
+                                    timerPaused = true;
+                                }
+                                i++;
                             }
-                                } if (!isAtEvent) {
-                                    Intent intent = new Intent("Fail");
-                                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intent);
-                                    if (i == 0) {
-                                        timerPaused = true;
-                                    }
-                                    i++;
-                                }
-                    }
-                    catch (Exception E){
-                        Log.d("Tracker", "Error, retrying...");
+                        }
+                        catch (Exception E){
+                            Log.d("Tracker", "Error, retrying...");
+                        }
                     }
                 }
-            }
-        };
+            };
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        createLocationRequest();
-        startLocationUpdates();
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+            createLocationRequest();
+            startLocationUpdates();
+        }
     }
 
     /**
@@ -197,8 +217,8 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
             else {
                 editor = getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
                 if (prefs != null)
-                    points = prefs.getInt("points", 0);
-                editor.putInt("points", minutes + seconds + points);
+                    points = prefs.getInt("points", 0) + minutes + seconds;
+                editor.putInt("points", points);
                 editor.apply();
             }
         }
@@ -225,6 +245,31 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         }
     }
 
+    @DynamoDBTable(tableName = "ExampleSchoolUserAccounts")
+    public class SavePoints {
+        private String userName = "";
+        private int utilPoints = 0;
+
+        @DynamoDBAttribute(attributeName = "userPoints")
+        public int getPoints() {
+            return utilPoints;
+        }
+
+        public void setPoints(int points) {
+            this.utilPoints = points;
+        }
+
+        @DynamoDBHashKey(attributeName = "userID")
+        @DynamoDBAttribute(attributeName = "userID")
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -233,22 +278,26 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
         Intent intent = new Intent("Fail");
         LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
-        //editor.putBoolean("timer started", false);
-        //Toast.makeText(this, "Destroy", Toast.LENGTH_SHORT).show();
         if (prefs != null) {
-            points = prefs.getInt("points", 0) + minutes + seconds ;
+            points = prefs.getInt("points", 0) + minutes + seconds;
             editor.putInt("points", points);
             editor.putBoolean("tracking", false);
-            //editor.putLong("timestarted", SystemClock.uptimeMillis());
             editor.apply();
         }
         handler.removeCallbacks(updateTimer);
-    }
-
-    public interface TrackerInt {
-        long time = 0;
-        public long setTime();
-        public void getTime(long _time);
+        final String userName = prefs.getString("username", "");
+        final SavePoints accountUtil = new SavePoints();
+        try {
+            Thread.sleep(500);
+        } catch (Exception e){}
+        accountUtil.setPoints(prefs.getInt("points", 0));
+        accountUtil.setUserName(userName);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dynamoDBMapper.save(accountUtil);
+            }
+        }).start();
     }
 
     @Nullable

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/createEventBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="154dp"
+        android:layout_marginTop="554dp"
+        android:onClick="saveEventOnClick"
+        android:text="Save Event" />
+
+    <Button
+        android:id="@+id/checkLocation"
+        android:layout_width="99dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="286dp"
+        android:layout_marginTop="489dp"
+        android:onClick="getAddressOnClick"
+        android:text="Check Location" />
+
+    <EditText
+        android:id="@+id/createEventAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/createEventVenue"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/white_round_button"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingEnd="5dp"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/createEventAddress"
+        android:layout_alignTop="@+id/createEventAddress"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:text="Street Address" />
+
+    <EditText
+        android:id="@+id/createEventVenue"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/createEventOpponent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/white_round_button"
+        android:ems="10"
+        android:inputType="textAutoComplete"
+        android:paddingEnd="5dp"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/createEventVenue"
+        android:layout_alignTop="@+id/createEventVenue"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Venue Name" />
+
+    <CheckBox
+        android:id="@+id/createEventActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="479dp"
+        android:text="Active" />
+
+    <EditText
+        android:id="@+id/createEventOpponent"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="216dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/white_round_button"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingEnd="5dp"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/createEventOpponent"
+        android:layout_alignTop="@+id/createEventOpponent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Opponent" />
+
+    <Spinner
+        android:id="@+id/timeSpinner"
+        android:layout_width="231dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="225dp"
+        android:layout_marginTop="154dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/white_round_button"
+        android:entries="@array/time"
+        android:paddingStart="5dp"
+        android:textAlignment="textStart" />
+
+    <Spinner
+        android:id="@+id/sportSpinner"
+        android:layout_width="228dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/timeSpinner"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="-64dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/white_round_button"
+        android:entries="@array/sports"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:textAlignment="textStart" />
+
+    <Button
+        android:id="@+id/createEventDate"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="154dp"
+        android:background="@drawable/white_round_button"
+        android:text="Date" />
+
+</RelativeLayout>

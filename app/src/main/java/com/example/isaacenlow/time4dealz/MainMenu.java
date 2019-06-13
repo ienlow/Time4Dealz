@@ -1,5 +1,9 @@
 package com.example.isaacenlow.time4dealz;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -73,11 +77,13 @@ public class MainMenu extends AppCompatActivity {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private ImageButton profileButton;
+    private ImageView imageView;
     ArrayList<Event> orderedEvents = new ArrayList<>();
     ArrayList<Event> upcomingEvents = new ArrayList<>();
     ArrayList<Event> currentEvents = new ArrayList<>();
     double latitude[] = new double[]{}, longitude[] = new double[]{};
     public static final String MY_PREFS = "MyPrefs";
+    AnimatorSet animatorSet;
     //Radford long = -80.5764477 lat = 37.1318
     //Sterling long = -77.405630 lat = 39.037318
     //Dedmon long = -80.5416 lat = 37.1385
@@ -85,6 +91,7 @@ public class MainMenu extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        animatorSet = new AnimatorSet();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
         String userIdUrl = "";

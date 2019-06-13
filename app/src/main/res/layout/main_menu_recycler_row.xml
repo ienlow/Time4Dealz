@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="320dp"
+    android:layout_width="310dp"
     android:layout_height="100dp">
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_alignBottom="@+id/place"
         android:layout_marginStart="6dp"
         android:layout_marginTop="3dp"
-        android:layout_marginEnd="280dp"
+        android:layout_marginEnd="270dp"
         android:layout_marginBottom="68dp"
         android:background="@drawable/image_view"
         android:elevation="5dp"
@@ -80,9 +80,9 @@
         android:layout_alignStart="@+id/place"
         android:layout_alignTop="@+id/place"
         android:layout_alignEnd="@+id/place"
-        android:layout_marginStart="137dp"
+        android:layout_marginStart="109dp"
         android:layout_marginTop="21dp"
-        android:layout_marginEnd="95dp"
+        android:layout_marginEnd="115dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -94,9 +94,9 @@
         android:layout_below="@+id/team_opponent"
         android:layout_alignStart="@+id/place"
         android:layout_alignEnd="@+id/place"
-        android:layout_marginStart="137dp"
+        android:layout_marginStart="109dp"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="95dp"
+        android:layout_marginEnd="123dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -109,9 +109,9 @@
         android:layout_alignStart="@+id/place"
         android:layout_alignEnd="@+id/place"
         android:layout_alignBottom="@+id/place"
-        android:layout_marginStart="137dp"
+        android:layout_marginStart="109dp"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="95dp"
+        android:layout_marginEnd="123dp"
         android:layout_marginBottom="15dp"
         android:elevation="5dp"
         android:text="TextView"

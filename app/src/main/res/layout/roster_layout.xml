@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="405dp"
-            tools:listitem="@layout/roster_row_layout" />
+            tools:listitem="@layout/roster_adapter_layout" />
     </LinearLayout>
 
     <ImageView

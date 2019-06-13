@@ -3,16 +3,13 @@ package com.example.isaacenlow.time4dealz;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ public class RosterAdapter extends RecyclerView.Adapter<RosterAdapter.MyViewHold
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.roster_row_layout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.roster_adapter_layout, parent, false);
         return new MyViewHolder(view);
     }
 

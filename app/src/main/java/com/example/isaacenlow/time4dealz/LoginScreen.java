@@ -133,11 +133,6 @@ public class LoginScreen extends AppCompatActivity {
         backgroundWorker.execute();
     }
 
-    public void adminPage(View view) {
-        Intent intent = new Intent(this, AdminPage.class);
-        startActivity(intent);
-    }
-
     public void createAccount(View view) {
         Intent intent = new Intent(this, CreateAccount.class);
         startActivity(intent);
