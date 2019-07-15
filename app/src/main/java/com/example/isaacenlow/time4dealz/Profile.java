@@ -79,18 +79,20 @@ public class Profile extends AppCompatActivity {
        userName = findViewById(R.id.profileUserName);
        displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
        userName.setText(prefs.getString("username", ""));
-       profileAdminBtn = findViewById(R.id.profileAdminBtn);
 
 
+   }
+
+   public void saveProfileInfo() {
+        String email="";
+        String password="";
+        String age="";
+        String status="";
+        String phoneNumber="";
    }
 
    public void getPoints(View view) {
        Toast.makeText(this, String.valueOf(points), Toast.LENGTH_SHORT).show();
-   }
-
-   public void adminPage(View view) {
-        Intent intent = new Intent(this, AdminPage.class);
-        startActivity(intent);
    }
 
    public void logout(View view) {

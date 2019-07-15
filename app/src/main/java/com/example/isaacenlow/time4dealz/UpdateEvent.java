@@ -184,7 +184,9 @@ public class UpdateEvent extends AppCompatActivity {
             //Log.d("teams list", orderedTeams.size() + "");
             //Log.d("current events list", currentEvents.size() + "");
             //Log.d("upcoming events list", upcomingEvents.size() + "");
-            orderedTeams.get(0).type = 0;
+            if (orderedTeams.size() > 0 ) {
+                orderedTeams.get(0).type = 0;
+            }
 
             ListView listView = findViewById(R.id.AdminResults);
             TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.team_schedules_adapter, orderedTeams);

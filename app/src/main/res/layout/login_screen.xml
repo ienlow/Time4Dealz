@@ -94,12 +94,16 @@
 
     <Button
         android:id="@+id/button8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="490dp"
+        android:layout_width="220dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/button2"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="95dp"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/white_round_button"
         android:onClick="adminPage"
-        android:text="Login as admin" />
+        android:text="ADMIN PAGE"
+        android:textColor="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/textView9"

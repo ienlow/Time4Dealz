@@ -46,11 +46,11 @@ public class CreateEvent extends AppCompatActivity {
     String strAddress = "";
     double latitude, longitude;
     CheckBox activeCheck;
+    int day, month, year;
     DynamoDBMapper dynamoDBMapper;
     Spinner sportSpinner, timeSpinner;
     CalendarView calendarView;
     final CreateNewEventDBUtil eventDBUtil = new CreateNewEventDBUtil();
-    DatePickerDialog.OnDateSetListener onDateSetListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,12 +66,18 @@ public class CreateEvent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 datePickerDialog.show();
-                onDateSetListener.onDateSet(datePickerDialog.getDatePicker(), 0, 0, 0);
             }
         });
         //calendarView = findViewById(R.id.calendarView);
-        DatePicker datePicker = new DatePicker(this);
-        eventDBUtil.setDate(datePicker.getMonth() + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear());
+        DatePickerDialog.OnDateSetListener onDateSetListener;
+        DatePicker datePicker = datePickerDialog.getDatePicker();
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                Toast.makeText(getApplicationContext(), String.valueOf(datePicker.getMonth() + 1 + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear()), Toast.LENGTH_SHORT).show();
+                eventDBUtil.setDate(datePicker.getMonth() + 1 + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear());
+            }
+        });
         /*calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
