@@ -181,10 +181,10 @@ public class MainMenu extends AppCompatActivity {
                     .withAttributesToGet("indexName")
                     .withAttributesToGet("sport")
                     .withAttributesToGet("location")
-                    .withAttributesToGet("playing_against")
+                    .withAttributesToGet("opponent")
                     .withAttributesToGet("time")
                     .withAttributesToGet("date")
-                    .withAttributesToGet("URL");
+                    .withAttributesToGet("url");
             ScanResult result = dynamoDBClient.scan(scanRequest);
             for (Map<String, AttributeValue> item : result.getItems()) {
                 // Create new event for every item and format here
@@ -203,10 +203,10 @@ public class MainMenu extends AppCompatActivity {
                     Event one = new Event(
                             item.get("sport").getS(),
                             item.get("date").getS(),
-                            item.get("playing_against").getS(),
+                            item.get("opponent").getS(),
                             item.get("location").getS(),
                             item.get("time").getS(),
-                            item.get("URL").getS(),
+                            item.get("url").getS(),
                             calendar, 0);
                     teams.add(one);
                     //Log.d("Item", one.getPlace());

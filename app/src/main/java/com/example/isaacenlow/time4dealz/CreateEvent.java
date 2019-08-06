@@ -34,6 +34,8 @@ import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -76,6 +78,11 @@ public class CreateEvent extends AppCompatActivity {
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 Toast.makeText(getApplicationContext(), String.valueOf(datePicker.getMonth() + 1 + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear()), Toast.LENGTH_SHORT).show();
                 eventDBUtil.setDate(datePicker.getMonth() + 1 + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear());
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+                cal.set(Calendar.MONTH, datePicker.getMonth());
+                cal.set(Calendar.YEAR, datePicker.getYear());
+                eventDBUtil.setEpochTime(cal.getTimeInMillis()/1000);
             }
         });
         /*calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -210,8 +217,9 @@ public class CreateEvent extends AppCompatActivity {
         private double latitude, longitude;
         private int itemId;
         private boolean active = false;
+        private long epochTime;
 
-        @DynamoDBAttribute(attributeName = "URL")
+        @DynamoDBAttribute(attributeName = "url")
         public String getURL() { return URL; }
 
         @DynamoDBAttribute(attributeName = "sport")
@@ -235,7 +243,7 @@ public class CreateEvent extends AppCompatActivity {
             return time;
         }
 
-        @DynamoDBAttribute(attributeName = "playing_against")
+        @DynamoDBAttribute(attributeName = "opponent")
         public String getOpponent() {
             return opponent;
         }
@@ -252,6 +260,9 @@ public class CreateEvent extends AppCompatActivity {
 
         @DynamoDBAttribute(attributeName = "location")
         public String getLocation() { return location; }
+
+        @DynamoDBAttribute(attributeName = "unixTime")
+        public long getEpochTime() { return epochTime; }
 
         void setItemId(int itemId) { this.itemId = itemId; }
 
@@ -288,6 +299,10 @@ public class CreateEvent extends AppCompatActivity {
         }
 
         void setURL(String URL) { this.URL = URL; }
+
+        void setEpochTime(long epochTime) {
+            this.epochTime = epochTime;
+        }
     }
 
     public class CreateEventBackgroundWorker extends AsyncTask<String, Void, String> {
