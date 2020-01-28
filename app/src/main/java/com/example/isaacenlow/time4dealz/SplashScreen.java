@@ -3,7 +3,10 @@ package com.example.isaacenlow.time4dealz;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SplashScreen extends AppCompatActivity {
     private SharedPreferences prefs;
@@ -29,6 +32,11 @@ public class SplashScreen extends AppCompatActivity {
                     }
                 }
             }).start();
+        }
+        else if (!prefs.getBoolean("interests_selected", false)){
+            Intent intent = new Intent(SplashScreen.this, Interests.class);
+            startActivity(intent);
+            finish();
         }
         else {
             Intent intent = new Intent(SplashScreen.this, LoginScreen.class);

@@ -1,42 +1,35 @@
 package com.example.isaacenlow.time4dealz;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
-import android.util.AttributeSet;
+//import android.support.annotation.RequiresApi;
+//import android.support.v4.content.LocalBroadcastManager;
+//import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.widget.LinearLayoutManager;
+//import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -48,17 +41,23 @@ import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
-
-import static java.security.AccessController.getContext;
+import java.util.logging.Logger;
 
 /**
  * Created by isaac on 2/24/2018.
@@ -94,6 +93,42 @@ public class MainMenu extends AppCompatActivity {
         animatorSet = new AnimatorSet();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Document document = Jsoup.connect("https://calendar.radford.edu/view/monthif").userAgent("Mozilla").data("name", "jsoup").get();
+                    //Log.d("html", document.getElementsByClass("lw_cal_spotlight_event").toString());
+                    int x = 1;
+                    for (Element element : document.select("h2")) {
+                        Log.d("heading: " + x++, element.text());
+                    }
+                    //Log.d("html", document.select("h2").text());
+                } catch (IOException e) {
+                    Log.getStackTraceString(e);
+                }
+            }
+        }).start();*/
+        Intent notifications = new Intent(getApplicationContext(), MyFirebaseMessagingService.class);
+        //startService(notifications);
+        /*FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg);
+                        Toast.makeText(MainMenu.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });*/
         String userIdUrl = "";
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
@@ -164,6 +199,7 @@ public class MainMenu extends AppCompatActivity {
         };
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private class BackgroundWorker extends AsyncTask<String, Void, String> {
         ArrayList<Event> teams = new ArrayList<>();
         int i = 0;
@@ -207,6 +243,7 @@ public class MainMenu extends AppCompatActivity {
                             item.get("location").getS(),
                             item.get("time").getS(),
                             item.get("url").getS(),
+                            null,//item.get("url").getS(),
                             calendar, 0);
                     teams.add(one);
                     //Log.d("Item", one.getPlace());

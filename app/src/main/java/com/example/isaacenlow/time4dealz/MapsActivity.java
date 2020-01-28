@@ -5,11 +5,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.regions.Region;
@@ -93,7 +94,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
             ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchool")
-                    .withAttributesToGet("active")
                     .withAttributesToGet("latitude")
                     .withAttributesToGet(("longitude"));
             scanResult = dynamoDBClient.scan(scanRequest);
@@ -104,9 +104,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onPostExecute(String result) {
             super.onPostExecute(result);
             for (Map<String, AttributeValue> item : scanResult.getItems()) {
-                if (item.get("active").getBOOL()) {
-                    locations.add(new LatLng(Double.parseDouble(item.get("latitude").getN()), Double.parseDouble(item.get("longitude").getN())));
-                }
+                locations.add(new LatLng(Double.parseDouble(item.get("latitude").getN()), Double.parseDouble(item.get("longitude").getN())));
             }
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 

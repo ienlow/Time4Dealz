@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="286dp"
-        android:layout_marginTop="489dp"
+        android:layout_marginStart="288dp"
+        android:layout_marginTop="391dp"
         android:onClick="getAddressOnClick"
         android:text="Check Location" />
 
@@ -79,16 +79,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="Venue Name" />
-
-    <CheckBox
-        android:id="@+id/createEventActive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="479dp"
-        android:text="Active" />
 
     <EditText
         android:id="@+id/createEventOpponent"
@@ -157,5 +147,16 @@
         android:layout_marginTop="154dp"
         android:background="@drawable/white_round_button"
         android:text="Date" />
+
+    <Button
+        android:id="@+id/expireEventDate"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="154dp"
+        android:layout_toEndOf="@+id/createEventDate"
+        android:background="@drawable/white_round_button"
+        android:text="Expire" />
 
 </RelativeLayout>

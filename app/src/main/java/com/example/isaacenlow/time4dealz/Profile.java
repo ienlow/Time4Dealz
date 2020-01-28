@@ -1,17 +1,12 @@
 package com.example.isaacenlow.time4dealz;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,14 +15,10 @@ import android.widget.Toast;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 
 public class Profile extends AppCompatActivity {
@@ -83,12 +74,58 @@ public class Profile extends AppCompatActivity {
 
    }
 
-   public void saveProfileInfo() {
-        String email="";
-        String password="";
-        String age="";
-        String status="";
-        String phoneNumber="";
+   @DynamoDBTable(tableName = "user")
+   public class saveProfileInfo {
+       private String email="";
+       private String password="";
+       private String age="";
+       private String status="";
+       private String phoneNumber="";
+
+       @DynamoDBAttribute(attributeName = "")
+       public String getPassword() {
+           return password;
+       }
+
+       public void setPassword(String password) {
+           this.password = password;
+       }
+
+       @DynamoDBAttribute(attributeName = "")
+       public String getAge() {
+           return age;
+       }
+
+       public void setAge(String age) {
+           this.age = age;
+       }
+
+       @DynamoDBAttribute(attributeName = "")
+       public String getStatus() {
+           return status;
+       }
+
+       public void setStatus(String status) {
+           this.status = status;
+       }
+
+       @DynamoDBAttribute(attributeName = "")
+       public String getPhoneNumber() {
+           return phoneNumber;
+       }
+
+       public void setPhoneNumber(String phoneNumber) {
+           this.phoneNumber = phoneNumber;
+       }
+
+       @DynamoDBAttribute(attributeName = "")
+       public String getEmail() {
+           return email;
+       }
+
+       public void setEmail(String email) {
+           this.email = email;
+       }
    }
 
    public void getPoints(View view) {

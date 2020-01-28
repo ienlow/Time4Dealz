@@ -1,7 +1,7 @@
 package com.example.isaacenlow.time4dealz;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class RewardBarcode extends AppCompatActivity {
     @Override

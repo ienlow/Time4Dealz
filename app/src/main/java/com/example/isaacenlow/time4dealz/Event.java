@@ -18,15 +18,17 @@ public class Event {
     String time;
     String URL;
     Calendar calendar;
+    String imageUrl;
     int type;
 
-    public Event(String _sport, String _date, String _opponent, String _location, String _time, String _URL, Calendar calendar, int type) {
+    public Event(String _sport, String _date, String _opponent, String _location, String _time, String _URL, String imageUrl, Calendar calendar, int type) {
         this.sport = _sport;
         this.date = _date;
         this.opponent = _opponent;
         this.location = _location;
         this.time = _time;
         this.URL = _URL;
+        this.imageUrl = imageUrl;
         this.calendar = calendar;
         this.type = type;
     }
@@ -54,6 +56,8 @@ public class Event {
     public String getURL() {
         return URL;
     }
+
+    public String getImageUrl() { return  imageUrl; }
 
     public Calendar getCalendar() {return calendar;}
 

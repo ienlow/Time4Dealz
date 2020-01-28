@@ -44,7 +44,7 @@
         android:paddingBottom="5dp"
         android:shadowDx="0"
         android:shadowDy="0"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium.Inverse"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
@@ -67,14 +67,14 @@
     <TextView
         android:id="@+id/team_sport"
         android:layout_width="127dp"
-        android:layout_height="15dp"
+        android:layout_height="17dp"
         android:layout_alignStart="@+id/imageView"
         android:layout_alignTop="@+id/place"
         android:layout_alignBottom="@+id/place"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="53dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="56dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -88,11 +88,11 @@
         android:layout_alignBottom="@+id/place"
         android:layout_marginStart="38dp"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="60dp"
         android:elevation="5dp"
         android:text="TextView"
-        android:textAlignment="viewStart" />
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/team_opponent"
@@ -137,4 +137,20 @@
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
+
+    <ImageView
+        android:id="@+id/opponentImage"
+        android:layout_width="91dp"
+        android:layout_height="64dp"
+        android:layout_alignStart="@+id/place"
+        android:layout_alignTop="@+id/place"
+        android:layout_alignEnd="@+id/place"
+        android:layout_alignBottom="@+id/place"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="247dp"
+        android:layout_marginBottom="4dp"
+        android:elevation="5dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
 </RelativeLayout>

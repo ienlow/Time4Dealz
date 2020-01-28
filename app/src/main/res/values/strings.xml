@@ -6,4 +6,5 @@
     <integer name="Reward2000">2000</integer>
     <integer name="REWARDS_NAME_MAX_LENGTH">20</integer>
     <integer name="REWARDS_POINTS_MAX_LENGTH">10</integer>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 </resources>

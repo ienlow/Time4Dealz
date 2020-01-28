@@ -2,39 +2,44 @@ package com.example.isaacenlow.time4dealz;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBNativeBoolean;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.internal.Constants;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -43,16 +48,17 @@ import java.util.Scanner;
 
 public class CreateEvent extends AppCompatActivity {
     TextView getAddress, opponentText, getVenueName;
-    Button createEventBtn;
+    Button createEventBtn, expireEventBtn;
     String address_line;
     String strAddress = "";
     double latitude, longitude;
-    CheckBox activeCheck;
     int day, month, year;
     DynamoDBMapper dynamoDBMapper;
     Spinner sportSpinner, timeSpinner;
     CalendarView calendarView;
     final CreateNewEventDBUtil eventDBUtil = new CreateNewEventDBUtil();
+    private final String MY_ACCESS_KEY_ID = "AKIAI463R65FLPFATF4A";
+    private final String MY_SECRET_KEY = "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";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +69,7 @@ public class CreateEvent extends AppCompatActivity {
         getVenueName = findViewById(R.id.createEventVenue);
         getAddress = findViewById(R.id.createEventAddress);
         createEventBtn = findViewById(R.id.createEventDate);
+        expireEventBtn = findViewById(R.id.expireEventDate);
         final DatePickerDialog datePickerDialog = new DatePickerDialog(this);
         createEventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,10 +77,25 @@ public class CreateEvent extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-        //calendarView = findViewById(R.id.calendarView);
-        DatePickerDialog.OnDateSetListener onDateSetListener;
-        DatePicker datePicker = datePickerDialog.getDatePicker();
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                Toast.makeText(getApplicationContext(), String.valueOf(datePicker.getMonth() + 1 + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear()), Toast.LENGTH_SHORT).show();
+                eventDBUtil.setDate(datePicker.getMonth() + 1 + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear());
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+                cal.set(Calendar.MONTH, datePicker.getMonth());
+                cal.set(Calendar.YEAR, datePicker.getYear());
+            }
+        });
+        final DatePickerDialog datePickerDialogExpire = new DatePickerDialog(this);
+        expireEventBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialogExpire.show();
+            }
+        });
+        datePickerDialogExpire.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 Toast.makeText(getApplicationContext(), String.valueOf(datePicker.getMonth() + 1 + "/" + datePicker.getDayOfMonth() + "/" + datePicker.getYear()), Toast.LENGTH_SHORT).show();
@@ -85,15 +107,7 @@ public class CreateEvent extends AppCompatActivity {
                 eventDBUtil.setEpochTime(cal.getTimeInMillis()/1000);
             }
         });
-        /*calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                Toast.makeText(CreateEvent.this, year + "/" + month + "/" + day, Toast.LENGTH_SHORT).show();
-                eventDBUtil.setDate(month + "/" + day + "/" + year);
-            }
-        });*/
         opponentText = findViewById(R.id.createEventOpponent);
-        activeCheck = findViewById(R.id.createEventActive);
         timeSpinner = findViewById(R.id.timeSpinner);
         sportSpinner = findViewById(R.id.sportSpinner);
         ArrayAdapter timeAdapter = ArrayAdapter.createFromResource(this, R.array.time, R.layout.support_simple_spinner_dropdown_item);
@@ -159,6 +173,10 @@ public class CreateEvent extends AppCompatActivity {
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                 .build();
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        //startActivityForResult(intent, PHOTO_SELECTED);
     }
 
     public String getAddressFromLocation(Context context, String strAddress) {
@@ -194,7 +212,6 @@ public class CreateEvent extends AppCompatActivity {
      * @param view
      */
     public void saveEventOnClick(View view) {
-        eventDBUtil.setActive(activeCheck.isChecked());
         eventDBUtil.setOpponent(opponentText.getText().toString());
         eventDBUtil.setLocation(getVenueName.getText().toString());
         strAddress = getVenueName.getText().toString() + ", " + getAddress.getText().toString();
@@ -216,7 +233,6 @@ public class CreateEvent extends AppCompatActivity {
         private String URL;
         private double latitude, longitude;
         private int itemId;
-        private boolean active = false;
         private long epochTime;
 
         @DynamoDBAttribute(attributeName = "url")
@@ -247,10 +263,6 @@ public class CreateEvent extends AppCompatActivity {
         public String getOpponent() {
             return opponent;
         }
-
-        @DynamoDBAttribute(attributeName = "active")
-        @DynamoDBNativeBoolean
-        public boolean getActive() { return active; }
 
         @DynamoDBHashKey(attributeName = "itemId")
         @DynamoDBAttribute(attributeName = "itemId")
@@ -290,10 +302,6 @@ public class CreateEvent extends AppCompatActivity {
             this.longitude = longitude;
         }
 
-        void setActive(boolean active) {
-            this.active = active;
-        }
-
         void setLocation(String location) {
             this.location = location;
         }
@@ -326,7 +334,14 @@ public class CreateEvent extends AppCompatActivity {
                     }
                 }
             }
-            Log.d("ID Read", String.valueOf(id));
+            AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials( MY_ACCESS_KEY_ID, MY_SECRET_KEY));
+            PutObjectRequest por = new PutObjectRequest("timedealz-deployments-mobilehub-204377156", "dale", new java.io.File(""));
+            s3Client.putObject(por);
+            ResponseHeaderOverrides override = new ResponseHeaderOverrides();override.setContentType("image/jpeg");
+            GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest( "timedealz-deployments-mobilehub-204377156", "dale" );// Added an hour's worth of milliseconds to the current time.urlRequest.setExpiration(    new Date( System.currentTimeMillis() + 3600000 ) );urlRequest.setResponseHeaders( override );
+            URL url = s3Client.generatePresignedUrl(urlRequest);
+            eventDBUtil.setURL(url.toString());
+            Log.d("ID Read", String.valueOf(id) + "URL " + url.toString());
             eventDBUtil.setItemId(id);
             eventDBUtil.setLatitude(latitude);
             eventDBUtil.setLongitude(longitude);

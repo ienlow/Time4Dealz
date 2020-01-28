@@ -45,13 +45,13 @@
     <Button
         android:id="@+id/button9"
         android:layout_width="340dp"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="35dp"
         android:layout_marginTop="424dp"
-        android:layout_marginEnd="35dp"
+        android:layout_marginEnd="34dp"
         android:background="@drawable/gradient2"
         android:onClick="teamRosters"
         android:paddingStart="10dp"
@@ -61,20 +61,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/tennis_btn"
+        android:id="@+id/events_btn"
         android:layout_width="340dp"
         android:layout_height="50dp"
         android:layout_below="@+id/button9"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="34dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/gradient2"
         android:onClick="teamSchedules"
         android:paddingStart="10dp"
-        android:text="Team Schedule"
+        android:text="Events Schedule"
         android:textAlignment="viewStart"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,10 +88,10 @@
         android:id="@+id/button12"
         android:layout_width="340dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/tennis_btn"
+        android:layout_below="@+id/events_btn"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="34dp"
         android:layout_marginBottom="16dp"
@@ -162,16 +162,16 @@
 
     <TextView
         android:id="@+id/textView19"
-        android:layout_width="83dp"
-        android:layout_height="26dp"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
         android:layout_alignStart="@+id/button9"
         android:layout_alignTop="@+id/button9"
         android:layout_alignEnd="@+id/button9"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="244dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="164dp"
         android:elevation="5dp"
-        android:text="Teams"
+        android:text="LeaderBoards"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:visibility="visible" />
@@ -189,7 +189,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler1"
             android:layout_width="match_parent"
             android:layout_height="107dp"
@@ -198,7 +198,7 @@
             tools:itemCount="1"
             tools:listitem="@layout/main_menu_recycler_row">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
     <TextView
@@ -246,19 +246,5 @@
         app:layout_constraintStart_toStartOf="@+id/pointsEarned"
         app:layout_constraintTop_toTopOf="@+id/pointsEarned"
         app:layout_constraintVertical_bias="0.875" />
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView19"
-        android:layout_alignStart="@+id/button9"
-        android:layout_alignBottom="@+id/button9"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="6dp"
-        android:elevation="5dp"
-        android:text="Stats and Rosters"
-        android:textColor="@android:color/white" />
 
 </RelativeLayout>

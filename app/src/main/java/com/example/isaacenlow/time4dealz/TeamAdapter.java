@@ -61,7 +61,7 @@ public class TeamAdapter extends ArrayAdapter<Event> {
         TextView opponent_holder;
         TextView location_holder;
         TextView time_holder;
-        ImageView opponentimage_holder;
+        ImageView opponentimage_holder, image_holder;
         TextView place;
         TextView upcoming_events;
     }
@@ -87,6 +87,7 @@ public class TeamAdapter extends ArrayAdapter<Event> {
             holder.time_holder = view.findViewById(R.id.team_time);
             holder.opponentimage_holder = view.findViewById(R.id.imageView);
             holder.place = view.findViewById(R.id.place);
+            holder.image_holder = view.findViewById(R.id.opponentImage);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();
@@ -100,7 +101,7 @@ public class TeamAdapter extends ArrayAdapter<Event> {
             int hour = 0, minute = 0;
             Scanner scanner = new Scanner(teams.get(i).getTime());
             scanner.useDelimiter(":");
-            if (scanner.hasNext()) {
+            /*if (scanner.hasNext()) {
                 hour = Integer.valueOf(scanner.next());
                 minute = Integer.valueOf(scanner.next());
             }
@@ -109,12 +110,16 @@ public class TeamAdapter extends ArrayAdapter<Event> {
                 holder.time_holder.setText(String.valueOf(hour + ":" + minute + "0 PM"));
             } else if (hour == 12 && minute == 0) {
                 holder.time_holder.setText(String.valueOf(hour + ":" + minute + "0 PM"));
-            }
+            }*/
             scanner.close();
             Glide
                     .with(context)
                     .load(teams.get(i).getURL())
                     .into(holder.opponentimage_holder);
+            /*Glide
+                    .with(context)
+                    .load("https://timedealz-deployments-mobilehub-204377156.s3.amazonaws.com/Icons/radford+logo.png")
+                    .into(holder.image_holder);*/
         }
         // https://bumptech.github.io/glide/doc/getting-started.html
         return view;

@@ -3,8 +3,8 @@ package com.example.isaacenlow.time4dealz;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -96,6 +96,7 @@ public class UpdateEvent extends AppCompatActivity {
                             item.get("location").getS(),
                             item.get("time").getS(),
                             item.get("url").getS(),
+                            null,//item.get("imageUrl").getS(),
                             calendar, 0);
                     teams.add(one);
                     scanner.close();

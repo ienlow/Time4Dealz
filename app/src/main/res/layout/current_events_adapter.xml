@@ -24,22 +24,22 @@
         android:paddingBottom="5dp"
         android:shadowDx="0"
         android:shadowDy="0"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium.Inverse"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="27dp"
-        android:layout_height="20dp"
+        android:layout_width="39dp"
+        android:layout_height="26dp"
         android:layout_alignStart="@+id/place"
         android:layout_alignTop="@+id/place"
         android:layout_alignEnd="@+id/place"
         android:layout_alignBottom="@+id/place"
         android:layout_marginStart="6dp"
         android:layout_marginTop="3dp"
-        android:layout_marginEnd="359dp"
-        android:layout_marginBottom="68dp"
+        android:layout_marginEnd="330dp"
+        android:layout_marginBottom="71dp"
         android:background="@drawable/image_view"
         android:elevation="5dp"
         android:forceHasOverlappingRendering="true" />
@@ -47,14 +47,14 @@
     <TextView
         android:id="@+id/team_sport"
         android:layout_width="127dp"
-        android:layout_height="15dp"
+        android:layout_height="17dp"
         android:layout_alignStart="@+id/imageView"
         android:layout_alignTop="@+id/place"
         android:layout_alignBottom="@+id/place"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="53dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="56dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -135,5 +135,20 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/opponentImage"
+        android:layout_width="91dp"
+        android:layout_height="64dp"
+        android:layout_alignStart="@+id/place"
+        android:layout_alignTop="@+id/place"
+        android:layout_alignEnd="@+id/place"
+        android:layout_alignBottom="@+id/place"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="247dp"
+        android:layout_marginBottom="4dp"
+        android:elevation="5dp"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </RelativeLayout>

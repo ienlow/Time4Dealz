@@ -16,13 +16,14 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
@@ -110,7 +111,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
             dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
             ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchool")
-                    .withAttributesToGet("active")
                     .withAttributesToGet("latitude")
                     .withAttributesToGet(("longitude"));
             scanResult = dynamoDBClient.scan(scanRequest);
@@ -128,7 +128,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                         LatLng mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                         try {
                             for (Map<String, AttributeValue> item : scanResult.getItems()) {
-                                if (item.get("active").getBOOL()) {
                                     Log.d("Test", item.get("latitude").getN() + " " + item.get("longitude").getN());
                                     if (((Double.parseDouble(item.get("longitude").getN()) - mCurrentLocation.longitude) < .001)
                                             && ((Double.parseDouble(item.get("longitude").getN()) - mCurrentLocation.longitude) > -.001)
@@ -149,7 +148,6 @@ public class Tracker extends Service implements GoogleApiClient.OnConnectionFail
                                         isAtEvent = true;
                                         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intentTwo);
                                     }
-                                }
                             } if (!isAtEvent) {
                                 Intent intent = new Intent("Fail");
                                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intent);

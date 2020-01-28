@@ -2,11 +2,12 @@ package com.example.isaacenlow.time4dealz;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 public class TeamsRosters extends AppCompatActivity {
 

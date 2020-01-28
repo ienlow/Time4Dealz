@@ -4,25 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/email_label"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createUserName"
+        android:layout_alignStart="@+id/createPassword"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="17dp"
+        android:text="Email" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="334dp"
+        android:layout_height="292dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="227dp"
+        android:background="@drawable/login_background" />
+
     <EditText
         android:id="@+id/createPassword"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="272dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="381dp"
         android:ems="10"
         android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/createPasswordConfirm"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginBottom="258dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginBottom="215dp"
         android:ems="10"
         android:inputType="textPassword" />
 
@@ -32,20 +52,65 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="197dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="236dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name" />
 
     <Button
         android:id="@+id/createAccount"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="573dp"
+        android:background="@drawable/login_sign_in"
+        android:onClick="createAccount"
+        android:text="Sign Up"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/password_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createUserName"
+        android:layout_alignStart="@+id/createPassword"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="102dp"
+        android:text="Password" />
+
+    <EditText
+        android:id="@+id/editText7"
+        android:layout_width="wrap_content"
+        android:layout_height="59dp"
+        android:layout_below="@+id/createUserName"
+        android:layout_alignStart="@+id/textView20"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="13dp"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/textView24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="445dp"
-        android:onClick="createAccount"
-        android:text="Create Account" />
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="670dp"
+        android:text="Already have an account?"
+        android:textColor="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/password_confirm_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createUserName"
+        android:layout_alignStart="@+id/createPassword"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="176dp"
+        android:text="Password Confirm" />
+
 </RelativeLayout>

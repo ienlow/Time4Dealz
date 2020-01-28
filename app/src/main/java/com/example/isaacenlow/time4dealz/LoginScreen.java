@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
+import com.google.firebase.FirebaseApp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -13,14 +14,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -37,11 +37,13 @@ public class LoginScreen extends AppCompatActivity {
     private EditText username, password;
     public static final String MY_PREFS = "MyPrefs";
     AmazonDynamoDBClient dynamoDBClient;
+    private Intent intent;
 
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         AWSMobileClient.getInstance().initialize(this).execute();
         dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
 
@@ -97,11 +99,11 @@ public class LoginScreen extends AppCompatActivity {
                         editor.putBoolean("tracking", true);
                         editor.putBoolean("enabled", true);
                         editor.apply();
-                        Intent intent = new Intent(getApplicationContext(), Tracker.class);
-                        startForegroundService(intent);
+                        Intent intentTracker = new Intent(getApplicationContext(), Tracker.class);
+                        startForegroundService(intentTracker);
                     }
-                    Intent  intent = new Intent(getApplicationContext(), MainMenu.class);
-                    editor.putBoolean("logged in", true); // set logged in to true
+                    //intent = new Intent(getApplicationContext(), MainMenu.class);
+                    if (intent.getClass().getSimpleName().equals(MainMenu.class.getSimpleName())) {editor.putBoolean("logged in", true);}// set logged in to true
                     editor.putString("username", username.getText().toString()); // save username and password
                     editor.putString("password", password.getText().toString());
                     editor.putString("imageURL", item.get("imageURL").getS());
@@ -129,6 +131,7 @@ public class LoginScreen extends AppCompatActivity {
     Create Main Menu intent and save login info
      */
     public void createMainMenu(View view) {
+        intent = new Intent(getApplicationContext(), MainMenu.class);
         BackgroundWorker backgroundWorker = new BackgroundWorker();
         backgroundWorker.execute();
     }
@@ -139,8 +142,9 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     public void adminPage(View view) {
-        Intent intent = new Intent(this, AdminPage.class);
-        startActivity(intent);
+        intent = new Intent(this, AdminPage.class);
+        BackgroundWorker backgroundWorker = new BackgroundWorker();
+        backgroundWorker.execute();
     }
 
     @Override
