@@ -96,7 +96,6 @@ public class TeamAdapter extends ArrayAdapter<Event> {
         if (holder != null) {
             holder.sport_holder.setText(teams.get(i).getSport());
             holder.date_holder.setText(teams.get(i).getDate());
-            holder.opponent_holder.setText(teams.get(i).getOpponent());
             holder.location_holder.setText(teams.get(i).getLocation());
             int hour = 0, minute = 0;
             Scanner scanner = new Scanner(teams.get(i).getTime());

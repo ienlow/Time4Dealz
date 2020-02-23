@@ -13,7 +13,6 @@ import java.util.Calendar;
 public class Event {
     String sport;
     String date;
-    String opponent;
     String location;
     String time;
     String URL;
@@ -21,10 +20,9 @@ public class Event {
     String imageUrl;
     int type;
 
-    public Event(String _sport, String _date, String _opponent, String _location, String _time, String _URL, String imageUrl, Calendar calendar, int type) {
+    public Event(String _sport, String _date, String _location, String _time, String _URL, String imageUrl, Calendar calendar, int type) {
         this.sport = _sport;
         this.date = _date;
-        this.opponent = _opponent;
         this.location = _location;
         this.time = _time;
         this.URL = _URL;
@@ -39,10 +37,6 @@ public class Event {
 
     public String getDate() {
         return date;
-    }
-
-    public String getOpponent() {
-        return opponent;
     }
 
     public String getLocation() {

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/businessBtn"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="208dp"
+        android:background="@drawable/solid_rounded_corners2"
+        android:fontFamily="sans-serif-light"
+        android:onClick="toggleButton"
+        android:text="Business"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/artsBtn"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="290dp"
+        android:background="@drawable/solid_rounded_corners2"
+        android:fontFamily="sans-serif-light"
+        android:onClick="toggleButton"
+        android:text="Arts"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/sportsBtn"
+        android:layout_width="138dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop="208dp"
+        android:background="@drawable/solid_rounded_corners2"
+        android:fontFamily="sans-serif-light"
+        android:onClick="toggleButton"
+        android:text="Sports"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/profDevBtn"
+        android:layout_width="215dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="142dp"
+        android:layout_marginTop="289dp"
+        android:background="@drawable/solid_rounded_corners2"
+        android:fontFamily="sans-serif-light"
+        android:onClick="toggleButton"
+        android:text="Professional Development"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/button16"
+        android:layout_width="231dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="89dp"
+        android:layout_marginTop="626dp"
+        android:background="@drawable/login_sign_in"
+        android:fontFamily="sans-serif-light"
+        android:onClick="startLoginScreen"
+        android:text="NEXT"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="199dp"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="59dp"
+        android:text="Hey, what departments are you interested in?"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+</RelativeLayout>

@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-time4dealz-dev-222432-authRole",
+            "UnauthRoleArn": "arn:aws:iam::651527411535:role/amplify-time4dealz-dev-222432-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::651527411535:role/amplify-time4dealz-dev-222432-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-time4dealz-dev-222432-deployment",
+            "UnauthRoleName": "amplify-time4dealz-dev-222432-unauthRole",
+            "StackName": "amplify-time4dealz-dev-222432",
+            "StackId": "arn:aws:cloudformation:us-east-1:651527411535:stack/amplify-time4dealz-dev-222432/20f32570-55ec-11ea-8f64-12eeb59f3ad1",
+            "AmplifyAppId": "d2665labvczety"
+        },
+        "categories": {
+            "auth": {
+                "time4dealz69bdf956": {}
+            }
+        }
+    }
+}

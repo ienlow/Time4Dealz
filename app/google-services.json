@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "347881660124",
+    "firebase_url": "https://project1-36949.firebaseio.com",
+    "project_id": "project1-36949",
+    "storage_bucket": "project1-36949.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347881660124:android:1293542b9d236972",
+        "android_client_info": {
+          "package_name": "com.example.isaacenlow.time4dealz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "347881660124-okndkjcfm25qv8od4q73v7q0i5p75nl2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.isaacenlow.time4dealz",
+            "certificate_hash": "d06d54f9351395407c3fe415da4e6e4fee40e68d"
+          }
+        },
+        {
+          "client_id": "347881660124-d149imqlmaehvseoosmnjs5117ej30hk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMsqX_RMpgO3EDQIwwYpqF7ZXWmj78oCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "347881660124-d149imqlmaehvseoosmnjs5117ej30hk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

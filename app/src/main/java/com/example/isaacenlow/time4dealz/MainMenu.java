@@ -32,6 +32,8 @@ import android.widget.Toast;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.UserStateDetails;
+import com.amazonaws.mobile.client.UserStateListener;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -45,15 +47,24 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
@@ -206,7 +217,7 @@ public class MainMenu extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            /*final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
             dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
             dynamoDBMapper = DynamoDBMapper.builder()
                     .dynamoDBClient(dynamoDBClient)
@@ -239,7 +250,6 @@ public class MainMenu extends AppCompatActivity {
                     Event one = new Event(
                             item.get("sport").getS(),
                             item.get("date").getS(),
-                            item.get("opponent").getS(),
                             item.get("location").getS(),
                             item.get("time").getS(),
                             item.get("url").getS(),
@@ -249,7 +259,53 @@ public class MainMenu extends AppCompatActivity {
                     //Log.d("Item", one.getPlace());
                 } catch (Exception e) {
                 }
+            }*/
+            List<Element> elementList = new ArrayList<>();
+            try {
+                final String json = "https://calendar.radford.edu/live/calendar/view/all?user_tz=America%2FDetroit&syntax=%3Cwidget%20type%3D%22events_calendar%22%3E%3Carg%20id%3D%22mini_cal_heat_map%22%3Etrue%3C%2Farg%3E%3Carg%20id%3D%22thumb_width%22%3E200%3C%2Farg%3E%3Carg%20id%3D%22thumb_height%22%3E200%3C%2Farg%3E%3Carg%20id%3D%22hide_repeats%22%3Etrue%3C%2Farg%3E%3Carg%20id%3D%22show_groups%22%3Etrue%3C%2Farg%3E%3Carg%20id%3D%22show_locations%22%3Efalse%3C%2Farg%3E%3Carg%20id%3D%22show_tags%22%3Etrue%3C%2Farg%3E%3Carg%20id%3D%22use_tag_classes%22%3Efalse%3C%2Farg%3E%3Carg%20id%3D%22search_all_events_only%22%3Etrue%3C%2Farg%3E%3Carg%20id%3D%22use_modular_templates%22%3Etrue%3C%2Farg%3E%3C%2Fwidget%3E";
+                Gson gson = new GsonBuilder().setLenient().create();
+                String trim = readURL(json).trim();
+                JsonObject jsonObject = gson.fromJson(trim, JsonObject.class);
+                System.out.println(jsonObject.get("events"));
+                JsonObject jsonObject1 = jsonObject.get("events").getAsJsonObject();
+                Calendar current = Calendar.getInstance();
+                Calendar future = Calendar.getInstance();
+                Calendar today = Calendar.getInstance();
+                future.set(current.get(Calendar.YEAR), current.get(Calendar.MONTH) + 3, current.getActualMaximum(Calendar.DAY_OF_MONTH));
+                System.out.println(new SimpleDateFormat("yyyyMMdd").format(current.getTime()));
+                while(current.before(future) && teams.size() <= 5) {
+                    if (jsonObject1.get(new SimpleDateFormat("yyyyMMdd").format(current.getTime())) != null) {
+                        JsonArray jsonArray = jsonObject1.get(new SimpleDateFormat("yyyyMMdd").format(current.getTime())).getAsJsonArray();
+                        System.out.println(current.get(Calendar.DAY_OF_MONTH));
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            Calendar timeCal = Calendar.getInstance();
+                            timeCal.setTimeInMillis(jsonArray.get(i).getAsJsonObject().get("ts_start").getAsInt());
+                            timeCal.setTime(new java.util.Date (timeCal.getTimeInMillis()*1000));
+                            Event one = new Event(
+                                    jsonArray.get(i).getAsJsonObject().get("title").getAsString(),
+                                    new SimpleDateFormat("MM/dd/yyyy HH:mm").format(timeCal.getTime()),
+                                    jsonArray.get(i).getAsJsonObject().get("location") != null ? jsonArray.get(i).getAsJsonObject().get("location").getAsString() : "N/A",
+                                    String.valueOf(timeCal.getTimeInMillis()/1000),
+                                    "",
+                                    null,//item.get("imageUrl").getS(),
+                                    null, 0);
+                            System.out.println("timeCal: " + timeCal.get(Calendar.MONTH) + "" + timeCal.get(Calendar.DAY_OF_MONTH));
+                            if (today.get(Calendar.YEAR) == current.get(Calendar.YEAR)
+                                    && today.get(Calendar.MONTH) == current.get(Calendar.MONTH)
+                                    && today.get(Calendar.DAY_OF_MONTH) == current.get(Calendar.DAY_OF_MONTH)) {
+                                currentEvents.add(one);
+                            } else {
+                                upcomingEvents.add(one);
+                            }
+                            teams.add(one);
+                        }
+                    }
+                    current.add(Calendar.DAY_OF_MONTH, 1);
+                }
+            } catch (IOException e) {
+                Log.e("Unable to retrieve data", e.getLocalizedMessage());
             }
+            Log.e("Element List size", String.valueOf(elementList.size()));
             return null;
         }
 
@@ -257,7 +313,7 @@ public class MainMenu extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             MainTeamAdapter adapter;
-            Calendar calendar = Calendar.getInstance();
+            /*Calendar calendar = Calendar.getInstance();
             DatePicker datePicker = new DatePicker(getApplicationContext());
             // order the events
             for (int i = 0; i < teams.size(); i++) {
@@ -324,21 +380,35 @@ public class MainMenu extends AppCompatActivity {
                 } else if (calendar1.after(calendar)) {
                     orderedEvents.add(teams.get(i));
                 }
-            }
-            final RecyclerView myView = findViewById(R.id.recycler1);
+            }*/
+            RecyclerView myView = findViewById(R.id.recycler1);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            adapter = new MainTeamAdapter(getApplicationContext(), orderedEvents);
+            adapter = new MainTeamAdapter(getApplicationContext(), teams);
             myView.setLayoutManager(layoutManager);
             myView.setAdapter(adapter);
             myView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = myView.getChildLayoutPosition(view);
+                    //int position = myView.getChildLayoutPosition(view);
 
                 }
             });
         }
+    }
+
+    private String readURL(String webservice) throws IOException
+    {
+        URL url = new URL(webservice);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+        StringBuffer buffer = new StringBuffer();
+        int read;
+        char[] chars = new char[1024];
+        while ((read = bufferedReader.read(chars)) != -1)
+        {
+            buffer.append(chars, 0, read);
+        }
+        return buffer.toString();
     }
 
 

@@ -1,38 +1,51 @@
 package com.example.isaacenlow.time4dealz;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.mobile.auth.core.DefaultSignInResultHandler;
+import com.amazonaws.mobile.auth.core.IdentityManager;
+import com.amazonaws.mobile.auth.core.IdentityProvider;
+import com.amazonaws.mobile.auth.ui.AuthUIConfiguration;
+import com.amazonaws.mobile.auth.ui.SignInActivity;
+import com.amazonaws.mobile.auth.ui.SignInUI;
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
-public class CreateAccount extends AppCompatActivity {
+public class CreateAccount extends Activity {
     private DynamoDBMapper dynamoDBMapper;
+    private final String poolId = "us-east-1_YzeEinL1t";
+    private final String clientId = "5temd6asg83grvi8e99mnk8qpo";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
-
-        AWSMobileClient.getInstance().initialize(this).execute();
-        final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+        //final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
 
 
-        dynamoDBMapper = DynamoDBMapper
+        /*dynamoDBMapper = DynamoDBMapper
                 .builder()
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                .build();
+                .build();*/
     }
 
     @DynamoDBTable(tableName = "ExampleSchoolUserAccounts")

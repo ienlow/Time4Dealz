@@ -47,16 +47,12 @@ public class UpdateEvent extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            /*final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
             dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
             dynamoDBMapper = DynamoDBMapper.builder()
                     .dynamoDBClient(dynamoDBClient)
                     .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                     .build();
-
-            /**Condition condition= new Condition()
-             .withComparisonOperator(ComparisonOperator.GE)
-             .withAttributeValueList(new AttributeValue().withS("indexName"));**/
 
             ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchool")
@@ -92,7 +88,6 @@ public class UpdateEvent extends AppCompatActivity {
                     Event one = new Event(
                             item.get("sport").getS(),
                             item.get("date").getS(),
-                            item.get("opponent").getS(),
                             item.get("location").getS(),
                             item.get("time").getS(),
                             item.get("url").getS(),
@@ -104,7 +99,7 @@ public class UpdateEvent extends AppCompatActivity {
                     //Log.d("Item", one.getPlace());
                 } catch (Exception e) {
                 }
-            }
+            }*/
             return null;
         }
 

@@ -29,7 +29,7 @@ public class UpdateRewards extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_rewards);
-        AWSMobileClient.getInstance().initialize(this).execute();
+        /*AWSMobileClient.getInstance().initialize(this).execute();
         final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
 
 
@@ -37,7 +37,7 @@ public class UpdateRewards extends AppCompatActivity {
                 .builder()
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                .build();
+                .build();*/
     }
 
     @DynamoDBTable(tableName = "ExampleSchoolRewards")
@@ -81,7 +81,7 @@ public class UpdateRewards extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            /*final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
             ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchoolRewards")
                     .withAttributesToGet("ItemId");
@@ -109,7 +109,7 @@ public class UpdateRewards extends AppCompatActivity {
                     public void run() {
                         dynamoDBMapper.save(util);
                     }
-                }).start();
+                }).start();*/
             return null;
             }
 

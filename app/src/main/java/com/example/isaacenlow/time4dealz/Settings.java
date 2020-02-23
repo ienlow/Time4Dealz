@@ -58,4 +58,9 @@ public class Settings extends AppCompatActivity {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
+
+    public void resetInterests(View view) {
+        editor.putBoolean("interests_selected", false);
+        editor.apply();
+    }
 }

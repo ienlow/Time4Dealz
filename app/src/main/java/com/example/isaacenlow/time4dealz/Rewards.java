@@ -48,7 +48,7 @@ public class Rewards extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            /*final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
             ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchoolRewards")
                     .withAttributesToGet("reward_name")
@@ -56,7 +56,7 @@ public class Rewards extends AppCompatActivity {
             ScanResult scanResult = dynamoDBClient.scan(scanRequest);
             for (Map<String, AttributeValue> item : scanResult.getItems()) {
                 list.add(new RewardItem(item.get("reward_name").getS(), Integer.valueOf(item.get("points").getN())));
-            }
+            }*/
             return null;
         }
 

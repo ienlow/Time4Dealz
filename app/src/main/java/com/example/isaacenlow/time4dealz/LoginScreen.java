@@ -1,6 +1,15 @@
 package com.example.isaacenlow.time4dealz;
 
+import com.amazonaws.mobile.auth.core.IdentityManager;
+import com.amazonaws.mobile.auth.ui.SignInUI;
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
+import com.amazonaws.mobile.client.Callback;
+import com.amazonaws.mobile.client.SignInUIOptions;
+import com.amazonaws.mobile.client.UserStateDetails;
+import com.amazonaws.mobile.client.UserStateListener;
+import com.amazonaws.mobile.client.results.SignInResult;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
@@ -23,6 +32,8 @@ import android.widget.Toast;
 
 import java.util.Map;
 
+import static com.amazonaws.mobile.client.results.SignInState.DONE;
+
 /**
  * Created by isaac on 2/21/2018.
  */
@@ -34,18 +45,20 @@ public class LoginScreen extends AppCompatActivity {
     Context context;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    private EditText username, password;
+    private String username, password;
     public static final String MY_PREFS = "MyPrefs";
     AmazonDynamoDBClient dynamoDBClient;
     private Intent intent;
 
     @SuppressLint("NewApi")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseApp.initializeApp(this);
-        AWSMobileClient.getInstance().initialize(this).execute();
-        dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+
+        //setContentView(R.layout.login_screen);
+        //FirebaseApp.initializeApp(this);
+        //AWSMobileClient.getInstance().initialize(this).execute();
+        //dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
 
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         editor = prefs.edit();
@@ -53,29 +66,7 @@ public class LoginScreen extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 123);
 
-        if (prefs.getBoolean("logged in", false)) {
-            // if there isn't already a tracking service running and tracking prefs is set to true
-            if (!prefs.getBoolean("tracking", false) && (prefs.getBoolean("enabled", false))) {
-                editor.putBoolean("tracking", true);
-                editor.apply();
-                Intent intent = new Intent(this, Tracker.class);
-                startForegroundService(intent);
-                //finish();
-            }
-            Intent intent = new Intent(this, MainMenu.class);
-            editor.putBoolean("logged in", true);
-            editor.apply();
-            startActivity(intent);
-            Log.d("onCreate", "activity started");
-            finish();
-        }
-        else {
-            setContentView(R.layout.login_screen);
-            username = findViewById(R.id.username);
-            password = findViewById(R.id.password);
-            username.setText(prefs.getString("username", ""));
-            password.setText(prefs.getString("password", ""));
-        }
+
     }
 
     @SuppressLint("NewApi")
@@ -84,7 +75,7 @@ public class LoginScreen extends AppCompatActivity {
         private String match = "false";
         @Override
         protected String doInBackground(String... strings) {
-            ScanRequest scanRequest = new ScanRequest()
+            /*ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchoolUserAccounts")
                     .withAttributesToGet("userID")
                     .withAttributesToGet("password")
@@ -115,7 +106,9 @@ public class LoginScreen extends AppCompatActivity {
                     match = "true";
                 }
             }
-            return match;
+            return match;*/
+
+            return null;
         }
 
         @Override
@@ -124,6 +117,7 @@ public class LoginScreen extends AppCompatActivity {
             if (match.equals("false")) {
                 Toast.makeText(LoginScreen.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
             }
+            Log.d("Is User Logged in: ", String.valueOf(IdentityManager.getDefaultIdentityManager().isUserSignedIn()));
         }
     }
 
@@ -132,8 +126,8 @@ public class LoginScreen extends AppCompatActivity {
      */
     public void createMainMenu(View view) {
         intent = new Intent(getApplicationContext(), MainMenu.class);
-        BackgroundWorker backgroundWorker = new BackgroundWorker();
-        backgroundWorker.execute();
+        //BackgroundWorker backgroundWorker = new BackgroundWorker();
+        //backgroundWorker.execute();
     }
 
     public void createAccount(View view) {
@@ -143,8 +137,8 @@ public class LoginScreen extends AppCompatActivity {
 
     public void adminPage(View view) {
         intent = new Intent(this, AdminPage.class);
-        BackgroundWorker backgroundWorker = new BackgroundWorker();
-        backgroundWorker.execute();
+        //BackgroundWorker backgroundWorker = new BackgroundWorker();
+        //backgroundWorker.execute();
     }
 
     @Override

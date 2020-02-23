@@ -73,29 +73,15 @@
         android:textAlignment="viewStart" />
 
     <TextView
-        android:id="@+id/team_opponent"
+        android:id="@+id/team_location"
         android:layout_width="112dp"
         android:layout_height="18dp"
         android:layout_alignStart="@+id/place"
         android:layout_alignTop="@+id/place"
         android:layout_alignEnd="@+id/place"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="96dp"
-        android:elevation="5dp"
-        android:text="TextView"
-        android:textAlignment="viewStart" />
-
-    <TextView
-        android:id="@+id/team_location"
-        android:layout_width="112dp"
-        android:layout_height="18dp"
-        android:layout_below="@+id/team_opponent"
-        android:layout_alignStart="@+id/place"
-        android:layout_alignEnd="@+id/place"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="-1dp"
-        android:layout_marginEnd="96dp"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="114dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -107,9 +93,9 @@
         android:layout_below="@+id/team_location"
         android:layout_alignStart="@+id/place"
         android:layout_alignEnd="@+id/place"
-        android:layout_marginStart="137dp"
-        android:layout_marginTop="-1dp"
-        android:layout_marginEnd="95dp"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="115dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />

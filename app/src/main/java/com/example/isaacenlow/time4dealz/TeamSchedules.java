@@ -6,6 +6,8 @@ import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.JsonReader;
 import android.util.Log;
@@ -70,16 +72,11 @@ public class TeamSchedules extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_schedules);
-        teams = new ArrayList<>();
         currentEvents = new ArrayList<>();
         upcomingEvents = new ArrayList<>();
         orderedTeams = new ArrayList<>();
         backgroundWorker = new BackgroundWorker();
         backgroundWorker.execute();
-    }
-
-    public static class Page {
-        String title;
     }
 
     private class BackgroundWorker extends AsyncTask<String, Void, String> {
@@ -89,16 +86,12 @@ public class TeamSchedules extends AppCompatActivity {
         @SuppressLint("SimpleDateFormat")
         @Override
         protected String doInBackground(String... strings) {
-            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            /*final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
             dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
             dynamoDBMapper = DynamoDBMapper.builder()
                     .dynamoDBClient(dynamoDBClient)
                     .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                    .build();
-
-            /**Condition condition= new Condition()
-                    .withComparisonOperator(ComparisonOperator.GE)
-                    .withAttributeValueList(new AttributeValue().withS("indexName"));**/
+                    .build();*/
 
             /*ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchool")
@@ -172,7 +165,6 @@ public class TeamSchedules extends AppCompatActivity {
                             Event one = new Event(
                                     jsonArray.get(i).getAsJsonObject().get("title").getAsString(),
                                     new SimpleDateFormat("MM/dd/yyyy HH:mm").format(timeCal.getTime()),
-                                    "test",
                                     jsonArray.get(i).getAsJsonObject().get("location") != null ? jsonArray.get(i).getAsJsonObject().get("location").getAsString() : "N/A",
                                     String.valueOf(timeCal.getTimeInMillis()/1000),
                                     "",
@@ -210,7 +202,7 @@ public class TeamSchedules extends AppCompatActivity {
             if (upcomingEvents.size() > 0) {
                 orderedTeams.get(currentEvents.size()).type = 2;
             }
-            ListView listView = findViewById(R.id.results);;
+            ListView listView = findViewById(R.id.results);
             TeamAdapter adapter = new TeamAdapter(getApplicationContext(), R.layout.team_schedules_adapter, orderedTeams);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.UserStateDetails;
+import com.amazonaws.mobile.client.UserStateListener;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
@@ -39,7 +43,7 @@ public class Profile extends AppCompatActivity {
        super.onCreate(savedInstanceState);
        setContentView(R.layout.profile);
 
-       AWSMobileClient.getInstance().initialize(this).execute();
+       /*AWSMobileClient.getInstance().initialize(this).execute();
         dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
 
 
@@ -47,7 +51,7 @@ public class Profile extends AppCompatActivity {
                .builder()
                .dynamoDBClient(dynamoDBClient)
                .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-               .build();
+               .build();*/
 
        prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
        editor = prefs.edit();
@@ -132,20 +136,47 @@ public class Profile extends AppCompatActivity {
        Toast.makeText(this, String.valueOf(points), Toast.LENGTH_SHORT).show();
    }
 
-   public void logout(View view) {
+   public void logout(View view) throws Exception {
+        AWSMobileClient.getInstance().signOut();
        Intent intent = new Intent(getBaseContext(), Tracker.class);
        stopService(intent);
-       editor.putBoolean("logged in", false);
+       //editor.putBoolean("logged in", false);
        editor.putBoolean("timer started", false);
        editor.apply();
        // Restart app
-       Intent i = getBaseContext().getPackageManager()
-               .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-       i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-       intent = new Intent("Logout");
+      // Intent i = getBaseContext().getPackageManager()
+             //  .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+       //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+       //intent = new Intent("Logout");
        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intent);
-       startActivity(i);
-       i = new Intent(getApplicationContext(), LoginScreen.class);
+       //startActivity(i);
+       Toast.makeText(this, String.valueOf(AWSMobileClient.getInstance().isSignedIn()), Toast.LENGTH_SHORT).show();
+       AWSMobileClient.getInstance().addUserStateListener(new UserStateListener() {
+           @Override
+           public void onUserStateChanged(UserStateDetails userStateDetails) {
+               switch (userStateDetails.getUserState()){
+                   case GUEST:
+                       Log.i("userState", "user is in guest mode");
+                       break;
+                   case SIGNED_OUT:
+                       Log.i("userState", "user is signed out");
+                       Toast.makeText(Profile.this, "logged out", Toast.LENGTH_SHORT).show();
+                       break;
+                   case SIGNED_IN:
+                       Log.i("userState", "user is signed in");
+                       break;
+                   case SIGNED_OUT_USER_POOLS_TOKENS_INVALID:
+                       Log.i("userState", "need to login again");
+                       break;
+                   case SIGNED_OUT_FEDERATED_TOKENS_INVALID:
+                       Log.i("userState", "user logged in via federation, but currently needs new tokens");
+                       break;
+                   default:
+                       Log.e("userState", "unsupported");
+               }
+           }
+       });
+       Intent i = new Intent(getApplicationContext(), SplashScreen.class);
        startActivity(i);
        finish();
    }

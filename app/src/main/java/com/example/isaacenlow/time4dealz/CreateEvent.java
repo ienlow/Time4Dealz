@@ -64,8 +64,8 @@ public class CreateEvent extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_event);
-        AWSMobileClient.getInstance().initialize(this).execute();
-        final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+        //AWSMobileClient.getInstance().initialize(this).execute();
+        //final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
         getVenueName = findViewById(R.id.createEventVenue);
         getAddress = findViewById(R.id.createEventAddress);
         createEventBtn = findViewById(R.id.createEventDate);
@@ -168,11 +168,11 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
         sportSpinner.setAdapter(adapter);
-        dynamoDBMapper = DynamoDBMapper
+        /*dynamoDBMapper = DynamoDBMapper
                 .builder()
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                .build();
+                .build();*/
 
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -318,7 +318,12 @@ public class CreateEvent extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            AmazonDynamoDBClient dynamoDBClient = null;
+            try {
+                dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getAWSCredentials());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchool")
                     .withAttributesToGet("itemId");

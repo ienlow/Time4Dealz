@@ -66,9 +66,8 @@ public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyView
         //holder.mTextView.setText(teamItem.getSportDate() + " " + teamItem.getOpponentLocation());
         holder.sport_holder.setText(list.get(position).getSport());
         holder.date_holder.setText(list.get(position).getDate());
-        holder.opponent_holder.setText(list.get(position).getOpponent());
         holder.location_holder.setText(list.get(position).getLocation());
-        int hour = 0, minute = 0;
+        /*int hour = 0, minute = 0;
         Scanner scanner = new Scanner(list.get(position).getTime());
         scanner.useDelimiter(":");
         if (scanner.hasNext()) {
@@ -81,7 +80,7 @@ public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyView
         } else if (hour == 12 && minute == 0) {
             holder.time_holder.setText(String.valueOf(hour + ":" + minute + "0 PM"));
         }
-        scanner.close();
+        scanner.close();*/
         Glide
                 .with(context)
                 .load(teamItem.getURL())

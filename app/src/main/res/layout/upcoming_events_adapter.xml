@@ -95,45 +95,31 @@
         android:textAlignment="center" />
 
     <TextView
-        android:id="@+id/team_opponent"
+        android:id="@+id/team_location"
         android:layout_width="112dp"
         android:layout_height="18dp"
         android:layout_alignStart="@+id/place"
         android:layout_alignTop="@+id/place"
         android:layout_alignEnd="@+id/place"
-        android:layout_marginStart="137dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="95dp"
-        android:elevation="5dp"
-        android:text="TextView"
-        android:textAlignment="viewStart" />
-
-    <TextView
-        android:id="@+id/team_location"
-        android:layout_width="112dp"
-        android:layout_height="18dp"
-        android:layout_below="@+id/team_opponent"
-        android:layout_alignStart="@+id/place"
-        android:layout_alignEnd="@+id/place"
-        android:layout_marginStart="137dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="95dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="102dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
 
     <TextView
         android:id="@+id/team_time"
-        android:layout_width="112dp"
+        android:layout_width="wrap_content"
         android:layout_height="18dp"
         android:layout_below="@+id/team_location"
         android:layout_alignStart="@+id/place"
         android:layout_alignEnd="@+id/place"
         android:layout_alignBottom="@+id/place"
-        android:layout_marginStart="137dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="95dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="131dp"
+        android:layout_marginTop="-1dp"
+        android:layout_marginEnd="101dp"
+        android:layout_marginBottom="10dp"
         android:elevation="5dp"
         android:text="TextView"
         android:textAlignment="viewStart" />
@@ -146,9 +132,9 @@
         android:layout_alignTop="@+id/place"
         android:layout_alignEnd="@+id/place"
         android:layout_alignBottom="@+id/place"
-        android:layout_marginStart="54dp"
+        android:layout_marginStart="21dp"
         android:layout_marginTop="23dp"
-        android:layout_marginEnd="247dp"
+        android:layout_marginEnd="280dp"
         android:layout_marginBottom="4dp"
         android:elevation="5dp"
         tools:srcCompat="@tools:sample/avatars" />

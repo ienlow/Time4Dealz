@@ -90,13 +90,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected String doInBackground(String... strings) {
-            final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+            /*final AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
             dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
             ScanRequest scanRequest = new ScanRequest()
                     .withTableName("ExampleSchool")
                     .withAttributesToGet("latitude")
                     .withAttributesToGet(("longitude"));
-            scanResult = dynamoDBClient.scan(scanRequest);
+            scanResult = dynamoDBClient.scan(scanRequest);*/
             return null;
         }
 

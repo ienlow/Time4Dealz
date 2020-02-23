@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.amplifyframework:aws-api:0.9.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fa94f7546829f2ed4af1a0412a4b548e/aws-api-0.9.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fa94f7546829f2ed4af1a0412a4b548e/aws-api-0.9.1/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amplifyframework/aws-api/0.9.1/e17dc49fbe3aaf81e4beb490dbc2abe31f340ec3/aws-api-0.9.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
