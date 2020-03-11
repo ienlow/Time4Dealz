@@ -154,6 +154,7 @@ public class TeamSchedules extends AppCompatActivity {
                 Calendar today = Calendar.getInstance();
                 future.set(current.get(Calendar.YEAR), current.get(Calendar.MONTH) + 3, current.getActualMaximum(Calendar.DAY_OF_MONTH));
                 System.out.println(new SimpleDateFormat("yyyyMMdd").format(current.getTime()));
+                int x = 0;
                 while(current.before(future)) {
                     if (jsonObject1.get(new SimpleDateFormat("yyyyMMdd").format(current.getTime())) != null) {
                         JsonArray jsonArray = jsonObject1.get(new SimpleDateFormat("yyyyMMdd").format(current.getTime())).getAsJsonArray();
@@ -180,6 +181,7 @@ public class TeamSchedules extends AppCompatActivity {
                             }
                             orderedTeams.add(one);
                         }
+                        x++;
                     }
                     current.add(Calendar.DAY_OF_MONTH, 1);
                 }
@@ -209,7 +211,7 @@ public class TeamSchedules extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent(getApplicationContext(), CurrentGame.class);
-                    intent.putExtra("info", teams.get(i).sport);
+                    intent.putExtra("info", orderedTeams.get(i).sport);
                     startActivity(intent);
                 }
             });

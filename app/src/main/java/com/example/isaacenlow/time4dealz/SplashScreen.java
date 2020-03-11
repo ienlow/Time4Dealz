@@ -22,8 +22,8 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        setContentView(R.layout.splash_screen);
         prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        setContentView(R.layout.splash_screen);
         AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
                     @Override
                     public void onResult(UserStateDetails userStateDetails) {
@@ -42,14 +42,17 @@ public class SplashScreen extends AppCompatActivity {
                                         } catch(Exception e) {
                                             e.printStackTrace();
                                         } finally {
-                                            showSignIn();
+                                            //showSignIn();
+                                            startActivity(new Intent(getApplicationContext(), LoginScreen.class));
+                                            finish();
                                         }
                                     }
                                 }).start();
                                 break;
                             default:
                                 AWSMobileClient.getInstance().signOut();
-                                showSignIn();
+                                startActivity(new Intent(getApplicationContext(), LoginScreen.class));
+                                //showSignIn();
                                 break;
                         }
                     }
@@ -65,7 +68,6 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        finish();
     }
 
     private void showSignIn() {
@@ -74,6 +76,8 @@ public class SplashScreen extends AppCompatActivity {
                     this,
                     SignInUIOptions.builder()
                             .nextActivity(MainMenu.class)
+                            .logo(R.drawable.radfordlogo)
+                            .backgroundColor(R.drawable.gradient)
                             .build());
         } catch (Exception e) {
             Log.e("", e.toString());

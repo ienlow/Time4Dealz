@@ -73,7 +73,7 @@ public class Profile extends AppCompatActivity {
        displayPoints = findViewById(R.id.points_profile);
        userName = findViewById(R.id.profileUserName);
        displayPoints.setText(String.valueOf(prefs.getInt("points", 0)));
-       userName.setText(prefs.getString("username", ""));
+       userName.setText(AWSMobileClient.getInstance().getUsername());
 
 
    }
@@ -142,14 +142,15 @@ public class Profile extends AppCompatActivity {
        stopService(intent);
        //editor.putBoolean("logged in", false);
        editor.putBoolean("timer started", false);
+       editor.putInt("points", 0);
        editor.apply();
        // Restart app
-      // Intent i = getBaseContext().getPackageManager()
-             //  .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-       //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-       //intent = new Intent("Logout");
+       Intent i = getBaseContext().getPackageManager()
+               .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+       i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+       intent = new Intent("Logout");
        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcastSync(intent);
-       //startActivity(i);
+       startActivity(i);
        Toast.makeText(this, String.valueOf(AWSMobileClient.getInstance().isSignedIn()), Toast.LENGTH_SHORT).show();
        AWSMobileClient.getInstance().addUserStateListener(new UserStateListener() {
            @Override
@@ -160,7 +161,6 @@ public class Profile extends AppCompatActivity {
                        break;
                    case SIGNED_OUT:
                        Log.i("userState", "user is signed out");
-                       Toast.makeText(Profile.this, "logged out", Toast.LENGTH_SHORT).show();
                        break;
                    case SIGNED_IN:
                        Log.i("userState", "user is signed in");
@@ -176,7 +176,7 @@ public class Profile extends AppCompatActivity {
                }
            }
        });
-       Intent i = new Intent(getApplicationContext(), SplashScreen.class);
+       i = new Intent(getApplicationContext(), LoginScreen.class);
        startActivity(i);
        finish();
    }

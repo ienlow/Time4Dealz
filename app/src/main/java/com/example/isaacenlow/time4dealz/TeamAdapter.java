@@ -82,9 +82,7 @@ public class TeamAdapter extends ArrayAdapter<Event> {
             holder.upcoming_events = view.findViewById(R.id.upcoming_events);
             holder.sport_holder = view.findViewById(R.id.team_sport);
             holder.date_holder = view.findViewById(R.id.team_date);
-            holder.opponent_holder = view.findViewById(R.id.team_opponent);
             holder.location_holder = view.findViewById(R.id.team_location);
-            holder.time_holder = view.findViewById(R.id.team_time);
             holder.opponentimage_holder = view.findViewById(R.id.imageView);
             holder.place = view.findViewById(R.id.place);
             holder.image_holder = view.findViewById(R.id.opponentImage);

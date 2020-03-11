@@ -91,6 +91,7 @@ public class MainMenu extends AppCompatActivity {
     ArrayList<Event> orderedEvents = new ArrayList<>();
     ArrayList<Event> upcomingEvents = new ArrayList<>();
     ArrayList<Event> currentEvents = new ArrayList<>();
+    ArrayList<String> locationAddressList = new ArrayList<>();
     double latitude[] = new double[]{}, longitude[] = new double[]{};
     public static final String MY_PREFS = "MyPrefs";
     AnimatorSet animatorSet;
@@ -273,7 +274,8 @@ public class MainMenu extends AppCompatActivity {
                 Calendar today = Calendar.getInstance();
                 future.set(current.get(Calendar.YEAR), current.get(Calendar.MONTH) + 3, current.getActualMaximum(Calendar.DAY_OF_MONTH));
                 System.out.println(new SimpleDateFormat("yyyyMMdd").format(current.getTime()));
-                while(current.before(future) && teams.size() <= 5) {
+
+                while(current.before(future) && teams.size() < 5) {
                     if (jsonObject1.get(new SimpleDateFormat("yyyyMMdd").format(current.getTime())) != null) {
                         JsonArray jsonArray = jsonObject1.get(new SimpleDateFormat("yyyyMMdd").format(current.getTime())).getAsJsonArray();
                         System.out.println(current.get(Calendar.DAY_OF_MONTH));
@@ -284,11 +286,13 @@ public class MainMenu extends AppCompatActivity {
                             Event one = new Event(
                                     jsonArray.get(i).getAsJsonObject().get("title").getAsString(),
                                     new SimpleDateFormat("MM/dd/yyyy HH:mm").format(timeCal.getTime()),
+                                    // location
                                     jsonArray.get(i).getAsJsonObject().get("location") != null ? jsonArray.get(i).getAsJsonObject().get("location").getAsString() : "N/A",
                                     String.valueOf(timeCal.getTimeInMillis()/1000),
                                     "",
                                     null,//item.get("imageUrl").getS(),
                                     null, 0);
+                            locationAddressList.add(jsonArray.get(i).getAsJsonObject().get("location").getAsString());
                             System.out.println("timeCal: " + timeCal.get(Calendar.MONTH) + "" + timeCal.get(Calendar.DAY_OF_MONTH));
                             if (today.get(Calendar.YEAR) == current.get(Calendar.YEAR)
                                     && today.get(Calendar.MONTH) == current.get(Calendar.MONTH)
@@ -397,7 +401,7 @@ public class MainMenu extends AppCompatActivity {
         }
     }
 
-    private String readURL(String webservice) throws IOException
+    public static String readURL(String webservice) throws IOException
     {
         URL url = new URL(webservice);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -441,6 +445,7 @@ public class MainMenu extends AppCompatActivity {
 
     public void openSettings(View view) {
         intent = new Intent(this, Settings.class);
+        intent.putStringArrayListExtra("LocationAddressList", locationAddressList);
         startActivity(intent);
     }
 
@@ -478,11 +483,5 @@ public class MainMenu extends AppCompatActivity {
         super.onDestroy();
         handler.removeCallbacks(updateTimer);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(br);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        moveTaskToBack(true);
     }
 }

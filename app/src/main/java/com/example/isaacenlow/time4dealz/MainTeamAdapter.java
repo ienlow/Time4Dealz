@@ -36,9 +36,7 @@ public class MainTeamAdapter extends RecyclerView.Adapter<MainTeamAdapter.MyView
             upcoming_events = v.findViewById(R.id.upcoming_events);
             sport_holder = v.findViewById(R.id.team_sport);
             date_holder = v.findViewById(R.id.team_date);
-            opponent_holder = v.findViewById(R.id.team_opponent);
             location_holder = v.findViewById(R.id.team_location);
-            time_holder = v.findViewById(R.id.team_time);
             opponentimage_holder = v.findViewById(R.id.imageView);
             place = v.findViewById(R.id.place);
         }
